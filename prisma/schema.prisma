@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Province {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  records   MetricRecord[]
+}
+
+model Metric {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  displayName String
+  source      String
+  createdAt   DateTime @default(now())
+
+  records     MetricRecord[]
+}
+
+model MetricRecord {
+  id          BigInt    @id @default(autoincrement())
+  provinceId  Int
+  metricId    Int
+  year        Int
+  value       Float?
+  rawLabel    String?
+  rawUnit     String?
+  rawSource   String?
+  createdAt   DateTime @default(now())
+
+  province Province @relation(fields: [provinceId], references: [id])
+  metric   Metric   @relation(fields: [metricId], references: [id])
+
+  @@index([provinceId, metricId, year])
+}
+
+// Add this for semantic search on cube metadata
+model DataCube {
+  id              Int      @id @default(autoincrement())
+  cubeId          String   @unique  // StatCan productId
+  title           String            // CubeTitleEn
+  startDate       String?
+  endDate         String?
+  frequencyCode   Int?
+  geographyCount  Int?
+  surveyCode      Json?    // Store as JSON array
+  subjectCode     Json?    // Store as JSON array
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // For semantic search - we'll use pgvector extension
+  // If you want vector similarity search:
+  // embedding     Vector?  // Requires pgvector extension
+  
+  @@index([title])  // For text search
+}

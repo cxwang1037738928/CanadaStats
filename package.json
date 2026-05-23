@@ -1,0 +1,33 @@
+{
+  "name": "canadastats",
+  "version": "1.0.0",
+  "description": "This is a website that pulls data from the Canadian government and visualizes them on an interactive map of Canada. The goal is to keep the\r map simple and uncongested with tons of unnecessary data by putting an emphasis on small but meaning pillers of economic wellbeing such as\r gdp, unemployment, ... etc.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test:search": "node src/tests/testSearch.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cxwang1037738928/CanadaStats.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cxwang1037738928/CanadaStats/issues"
+  },
+  "homepage": "https://github.com/cxwang1037738928/CanadaStats#readme",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "@xenova/transformers": "^2.17.2",
+    "adm-zip": "^0.5.17",
+    "axios": "^1.16.1",
+    "csv-parse": "^6.2.1",
+    "csv-parser": "^3.2.1",
+    "dotenv": "^17.4.2",
+    "ollama": "^0.6.3",
+    "prisma": "^7.8.0",
+    "unzipper": "^0.12.3"
+  }
+}
