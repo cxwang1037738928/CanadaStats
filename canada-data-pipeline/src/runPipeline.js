@@ -3,7 +3,7 @@ import { fetchRawData } from "./collectors/fetchRawData.js";
 async function main() {
   console.log("Starting pipeline");
 
-  await collectUnemployment();
+  await fetchRawData();
 
   console.log("Pipeline complete");
 }

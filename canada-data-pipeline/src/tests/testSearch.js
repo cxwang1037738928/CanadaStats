@@ -27,7 +27,7 @@ async function fetchDataByCoordinate(productId, coordinate, latestN = 5) {
   }
 }
 
-async function fetchMultiDimensionalData(cubeId, cubeTitle) {
+async function fetchMultiDimensionalData(cubeId, cubeTitle, userQuery) {
   // Get metadata
   const url = "https://www150.statcan.gc.ca/t1/wds/rest/getCubeMetadata";
   const response = await axios.post(url, [{ productId: parseInt(cubeId) }], {
@@ -48,28 +48,6 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
   
   if (!geoDimension) {
     return { success: false, error: 'No geography dimension found' };
-  }
-  
-  // Extract unit of measurement from dimensions
-  let unitOfMeasurement = null;
-  let scalarInfo = null;
-  
-  // Look for UOM dimension or scalar factor
-  const uomDimension = metadata.dimension.find(dim => 
-    dim.hasUOM === true || dim.dimensionNameEn?.toLowerCase().includes('unit')
-  );
-  
-  if (uomDimension && uomDimension.member && uomDimension.member.length > 0) {
-    const uomMember = uomDimension.member.find(m => m.memberUomCode) || uomDimension.member[0];
-    if (uomMember && uomMember.memberNameEn) {
-      unitOfMeasurement = uomMember.memberNameEn;
-    }
-  }
-  
-  // Get scalar factor info (thousands, millions, etc.)
-  const scalarCodeSet = await fetchCodeSet('scalar');
-  if (scalarCodeSet && metadata.scalarFactorCode) {
-    scalarInfo = scalarCodeSet.find(s => s.scalarFactorCode === metadata.scalarFactorCode);
   }
   
   // Map province names
@@ -104,14 +82,58 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
     }
   }
   
-  // Identify other dimensions (excluding Geography)
+  // Identify other dimensions
   const otherDimensions = metadata.dimension.filter(dim => 
     dim.dimensionNameEn !== "Geography" && !dim.dimensionNameEn?.includes("Geography")
   );
   
-  // Collect data points
+  // Find the dimension that contains our target metric based on user query
+  const queryLower = userQuery.toLowerCase();
+  let targetMetricDimension = null;
+  let targetMetricValue = null;
+  
+  for (const dim of otherDimensions) {
+    if (dim.member) {
+      for (const member of dim.member) {
+        const memberName = member.memberNameEn?.toLowerCase() || '';
+        if (queryLower.includes('unemployment') && memberName.includes('unemployment')) {
+          targetMetricDimension = dim;
+          targetMetricValue = member;
+          break;
+        } else if (queryLower.includes('employment') && memberName.includes('employment') && !memberName.includes('unemployment')) {
+          targetMetricDimension = dim;
+          targetMetricValue = member;
+          break;
+        } else if (queryLower.includes('population') && memberName.includes('population')) {
+          targetMetricDimension = dim;
+          targetMetricValue = member;
+          break;
+        } else if (queryLower.includes('gini') && memberName.includes('gini')) {
+          targetMetricDimension = dim;
+          targetMetricValue = member;
+          break;
+        } else if (queryLower.includes('median') && memberName.includes('median')) {
+          targetMetricDimension = dim;
+          targetMetricValue = member;
+          break;
+        }
+      }
+      if (targetMetricDimension) break;
+    }
+  }
+  
+  // Build dimensions structure
+  const dimensions = [
+    { name: "Province", values: provinces.map(p => p.name) },
+    ...otherDimensions.map(dim => ({
+      name: dim.dimensionNameEn,
+      values: dim.member?.filter(m => m.memberId !== 0).map(m => m.memberNameEn) || []
+    }))
+  ];
+  
   const dataPoints = [];
   
+  // For each province
   for (const province of provinces) {
     const baseCoordinate = Array(10).fill('0');
     baseCoordinate[0] = province.id.toString();
@@ -133,8 +155,7 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
           dataPoints.push({
             dimensions: { Province: province.name, ...currentSelections },
             value: value,
-            year: year,
-            scalarFactor: point.scalarFactorCode
+            year: year
           });
         }
         return;
@@ -143,30 +164,37 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
       const dim = otherDimensions[dimIndex];
       const dimName = dim.dimensionNameEn;
       
-      const totalMember = dim.member?.find(m => 
-        m.memberNameEn?.toLowerCase().includes('total') || 
-        m.memberNameEn?.toLowerCase().includes('all') ||
-        m.memberNameEn?.toLowerCase().includes('both sexes') ||
-        m.memberNameEn?.toLowerCase().includes('both genders') ||
-        m.memberNameEn === 'Both sexes' ||
-        m.memberNameEn === 'Total'
-      );
+      // If this dimension contains our target metric and we found it, use that specific value
+      let membersToExplore = [];
+      if (targetMetricDimension && dim.dimensionNameEn === targetMetricDimension.dimensionNameEn) {
+        membersToExplore = [targetMetricValue];
+      } else {
+        // Otherwise, find "Total" or "All" or "Both sexes"
+        const totalMember = dim.member?.find(m => 
+          m.memberNameEn?.toLowerCase().includes('total') || 
+          m.memberNameEn?.toLowerCase().includes('all') ||
+          m.memberNameEn?.toLowerCase().includes('both sexes') ||
+          m.memberNameEn?.toLowerCase().includes('both genders') ||
+          m.memberNameEn === 'Both sexes' ||
+          m.memberNameEn === 'Total'
+        );
+        
+        if (totalMember) {
+          membersToExplore = [totalMember];
+        } else if (dim.member && dim.member.length > 0) {
+          const firstMember = dim.member.find(m => m.memberId !== 0);
+          if (firstMember) {
+            membersToExplore = [firstMember];
+          }
+        }
+      }
       
-      if (totalMember) {
-        currentCoordinate[dimIndex + 1] = totalMember.memberId.toString();
+      for (const member of membersToExplore) {
+        currentCoordinate[dimIndex + 1] = member.memberId.toString();
         await exploreDimension(dimIndex + 1, currentCoordinate, {
           ...currentSelections,
-          [dimName]: totalMember.memberNameEn
+          [dimName]: member.memberNameEn
         });
-      } else if (dim.member && dim.member.length > 0) {
-        const firstMember = dim.member.find(m => m.memberId !== 0);
-        if (firstMember) {
-          currentCoordinate[dimIndex + 1] = firstMember.memberId.toString();
-          await exploreDimension(dimIndex + 1, currentCoordinate, {
-            ...currentSelections,
-            [dimName]: firstMember.memberNameEn
-          });
-        }
       }
     }
     
@@ -174,26 +202,16 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
   
-  // Build dimensions structure
-  const dimensions = [
-    { name: "Province", values: provinces.map(p => p.name) },
-    ...otherDimensions.map(dim => ({
-      name: dim.dimensionNameEn,
-      values: dim.member?.filter(m => m.memberId !== 0).map(m => m.memberNameEn) || []
-    }))
-  ];
-  
+  // Organize data
   const multiDimData = {
     cubeId: cubeId,
     title: cubeTitle,
     dimensions: dimensions,
     data: dataPoints,
-    unitOfMeasurement: unitOfMeasurement,
-    scalarInfo: scalarInfo,
+    targetMetric: targetMetricValue ? targetMetricValue.memberNameEn : null,
     metadata: {
       startDate: metadata.cubeStartDate,
       endDate: metadata.cubeEndDate,
-      frequencyCode: metadata.frequencyCode,
       footnotes: metadata.footnote?.slice(0, 3).map(f => f.footnotesEn) || []
     }
   };
@@ -201,62 +219,27 @@ async function fetchMultiDimensionalData(cubeId, cubeTitle) {
   return { success: true, data: multiDimData };
 }
 
-async function fetchCodeSet(codeSetName) {
-  try {
-    const url = "https://www150.statcan.gc.ca/t1/wds/rest/getCodeSets";
-    const response = await axios.get(url);
-    if (response.data && response.data.status === "SUCCESS" && response.data.object) {
-      return response.data.object[codeSetName];
+function formatValueWithContext(value, metricName) {
+  const metricLower = metricName?.toLowerCase() || '';
+  
+  if (metricLower.includes('rate') || metricLower.includes('unemployment') || metricLower.includes('participation')) {
+    return value.toFixed(1) + '%';
+  } else if (metricLower.includes('gini')) {
+    return value.toFixed(3);
+  } else if (metricLower.includes('median') || metricLower.includes('income')) {
+    return '$' + value.toLocaleString();
+  } else if (metricLower.includes('population')) {
+    if (value > 1000) {
+      return (value / 1000).toFixed(1) + 'K';
     }
-    return null;
-  } catch (error) {
-    return null;
+    return value.toLocaleString();
+  } else {
+    return value.toLocaleString();
   }
 }
 
-function formatValueWithUnit(value, unit, scalar) {
-  let formattedValue = value;
-  
-  // Apply scalar factor (thousands, millions, etc.)
-  if (scalar) {
-    const scalarFactor = scalar.scalarFactorDescEn?.toLowerCase() || '';
-    if (scalarFactor.includes('thousands')) {
-      formattedValue = value * 1000;
-    } else if (scalarFactor.includes('millions')) {
-      formattedValue = value * 1000000;
-    } else if (scalarFactor.includes('billions')) {
-      formattedValue = value * 1000000000;
-    }
-  }
-  
-  // Format with appropriate commas
-  const formattedNumber = Math.round(formattedValue).toLocaleString();
-  
-  // Add unit
-  if (unit) {
-    const unitLower = unit.toLowerCase();
-    if (unitLower.includes('dollar') || unitLower.includes('cad')) {
-      return '$' + formattedNumber;
-    } else if (unitLower.includes('percent')) {
-      return formattedNumber + '%';
-    } else if (unitLower.includes('thousand') || unitLower.includes('thousands')) {
-      return formattedNumber + ' (thousands)';
-    } else if (unitLower.includes('million') || unitLower.includes('millions')) {
-      return formattedNumber + ' (millions)';
-    } else {
-      return formattedNumber + ' ' + unit;
-    }
-  }
-  
-  return formattedNumber;
-}
-
-function displayMultiDimData(multiDimData) {
-  console.log(`\n  📊 Unit of Measurement: ${multiDimData.unitOfMeasurement || 'Not specified'}`);
-  if (multiDimData.scalarInfo) {
-    console.log(`  📐 Scalar Factor: ${multiDimData.scalarInfo.scalarFactorDescEn || 'None'}`);
-  }
-  
+function displayMultiDimData(multiDimData, userQuery) {
+  console.log(`\n  📊 Target metric: ${multiDimData.targetMetric || 'Auto-detected'}`);
   console.log(`\n  📐 Dimensions in this cube:`);
   multiDimData.dimensions.forEach((dim, idx) => {
     console.log(`     [${idx}] ${dim.name}: ${dim.values.length} unique values`);
@@ -267,40 +250,31 @@ function displayMultiDimData(multiDimData) {
     }
   });
   
-  console.log(`\n  📊 All data points:`);
+  // Filter to show only relevant data points
+  const relevantData = multiDimData.data.filter(point => 
+    !multiDimData.targetMetric || 
+    Object.values(point.dimensions).some(v => v === multiDimData.targetMetric)
+  );
+  
+  console.log(`\n  📊 Data points for ${multiDimData.targetMetric || 'requested metric'}:`);
   console.log('  ' + '-'.repeat(80));
   
-  multiDimData.data.forEach(point => {
-    const dimStr = Object.entries(point.dimensions)
-      .filter(([k]) => k !== 'Province')
-      .map(([k, v]) => `${k}=${v}`)
-      .join(', ');
-    
-    const formattedValue = formatValueWithUnit(
-      point.value, 
-      multiDimData.unitOfMeasurement,
-      multiDimData.scalarInfo
-    );
-    
-    console.log(`     ${point.dimensions.Province.padEnd(25)} ${formattedValue.padEnd(20)} (${point.year})${dimStr ? ` [${dimStr}]` : ''}`);
+  relevantData.forEach(point => {
+    const formattedValue = formatValueWithContext(point.value, multiDimData.targetMetric);
+    console.log(`     ${point.dimensions.Province.padEnd(25)} ${formattedValue.padEnd(15)} (${point.year})`);
   });
   
-  // Create list-of-lists representation with unit
-  console.log(`\n  📋 List-of-lists representation (for easy processing):`);
+  // Create list-of-lists representation
+  console.log(`\n  📋 List-of-lists representation:`);
   console.log(`     dataAsListOfLists = [`);
-  
-  const unitLabel = multiDimData.unitOfMeasurement || 'Value';
-  const headers = ['Province', `${unitLabel}`, 'Year'];
+
+  const headers = ['Province', 'Value', 'Year'];
   console.log(`       ${JSON.stringify(headers)},`);
   
-  multiDimData.data.forEach((point, idx) => {
-    const formattedValue = formatValueWithUnit(
-      point.value, 
-      multiDimData.unitOfMeasurement,
-      multiDimData.scalarInfo
-    );
+  relevantData.forEach((point, idx) => {
+    const formattedValue = formatValueWithContext(point.value, multiDimData.targetMetric);
     const row = [point.dimensions.Province, formattedValue, point.year];
-    console.log(`       ${JSON.stringify(row)}${idx === multiDimData.data.length - 1 ? '' : ','}`);
+    console.log(`       ${JSON.stringify(row)}${idx === relevantData.length - 1 ? '' : ','}`);
   });
   
   console.log(`     ]`);
@@ -308,12 +282,6 @@ function displayMultiDimData(multiDimData) {
   if (multiDimData.metadata.footnotes.length > 0) {
     console.log(`\n  📝 Notes: ${multiDimData.metadata.footnotes[0].substring(0, 200)}...`);
   }
-  
-  // Print summary for mapping
-  console.log(`\n  🗺️ Ready for Canada Map:`);
-  console.log(`     Metric: ${multiDimData.title.split(',')[0]}`);
-  console.log(`     Unit: ${multiDimData.unitOfMeasurement || 'Count'}${multiDimData.scalarInfo ? ` (${multiDimData.scalarInfo.scalarFactorDescEn})` : ''}`);
-  console.log(`     Year: ${multiDimData.data[0]?.year || 'N/A'}`);
 }
 
 async function testSearch() {
@@ -322,7 +290,7 @@ async function testSearch() {
   const embeddingsData = await fs.readFile(embeddingsPath, 'utf8');
   const cubes = JSON.parse(embeddingsData);
   
-  const userQuery = "provincial contribution to national budget";
+  const userQuery = "unemployment rate of youths";
   
   console.log(`\nQuery: "${userQuery}"`);
   console.log(`Total cubes: ${cubes.length}\n`);
@@ -341,13 +309,13 @@ async function testSearch() {
     console.log(`Similarity: ${(cube.similarity * 100).toFixed(1)}%`);
     
     console.log(`\nFetching data...`);
-    const result = await fetchMultiDimensionalData(cube.cubeId, cube.title);
+    const result = await fetchMultiDimensionalData(cube.cubeId, cube.title, userQuery);
     
     if (result.success && result.data.data.length > 0) {
-      console.log(`\n✅ Success! Retrieved ${result.data.data.length} data points`);
-      displayMultiDimData(result.data);
+      console.log(`\n✅ Success!`);
+      displayMultiDimData(result.data, userQuery);
       
-      if (!bestMultiDimData && result.data.data.length >= 10) {
+      if (!bestMultiDimData && result.data.targetMetric) {
         bestMultiDimData = result.data;
       }
       break;
@@ -360,9 +328,9 @@ async function testSearch() {
   console.log(`Search completed in ${Date.now() - start}ms`);
   
   if (bestMultiDimData) {
-    console.log(`\n✅ Best cube for mapping: ${bestMultiDimData.cubeId}`);
-    console.log(`   ${bestMultiDimData.title}`);
-    console.log(`\n   Unit: ${bestMultiDimData.unitOfMeasurement || 'Count'} ${bestMultiDimData.scalarInfo ? `(${bestMultiDimData.scalarInfo.scalarFactorDescEn})` : ''}`);
+    console.log(`\n✅ Best cube for your query: ${bestMultiDimData.cubeId}`);
+    console.log(`   Metric: ${bestMultiDimData.targetMetric}`);
+    console.log(`\n   Ready for Canada map visualization!`);
   }
 }
 
