@@ -23,15 +23,21 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, or Postman)
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+
+    const isAllowed = allowedOrigins.includes(origin);
+    const isVercelPreview = origin.endsWith('.vercel.app'); // only allow vercel
+
+    if (isAllowed || isVercelPreview) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    
+    // Safe rejection: tell the browser "No" without crashing the server with a 500
+    return callback(null, false); 
   },
   credentials: true 
 }));
+
+
 app.use(express.json());
 
 let cachedCubes    = null;
