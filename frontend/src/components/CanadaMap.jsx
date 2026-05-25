@@ -112,7 +112,7 @@ export default function CanadaMap() {
     setDataError(null);
     setSelected(null);
     try {
-      const json = await apiFetch(`/${API_BASE}/data`, {
+      const json = await apiFetch(`/api/data`, {
         cubeId:      meta.cubeId,
         geoDimIndex: meta.geoDimIndex,
         provinces:   meta.provinces,
@@ -140,7 +140,7 @@ export default function CanadaMap() {
     setProvinceData([]);
     setSelected(null);
     try {
-      const json = await apiFetch(`/${API_BASE}/search`, { query: q, topK: 5 });
+      const json = await apiFetch(`/api/search`, { query: q, topK: 5 });
       const defaultSel = {};
       for (const dim of json.dimensionMeta) {
         const agg = dim.members.find(m => m.isAggregate);

@@ -10,8 +10,8 @@ import { pipeline } from '@xenova/transformers';
 const allowedOrigins = [
   'http://localhost:5173',                
   'http://localhost:3000',                 
-  'https://your-frontend.vercel.app'       
-];
+  process.env.FRONTEND_URL // Pulls live Vercel URL dynamically from AWS Env Variables
+].filter(Boolean); // Cleans out undefined/empty values
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -30,7 +30,7 @@ app.use(cors({
     }
     return callback(null, true);
   },
-  credentials: true // Enable this if you pass cookies or authorization headers
+  credentials: true 
 }));
 app.use(express.json());
 
@@ -40,10 +40,34 @@ let embeddingModel = null;
 // ── Startup loaders ───────────────────────────────────────────────────────────
 async function loadCubes() {
   if (cachedCubes) return cachedCubes;
-  const p = path.join(__dirname, '../canada-data-pipeline/src/collectors/cubesWithEmbeddings.json');
-  cachedCubes = JSON.parse(await fs.readFile(p, 'utf8'));
-  console.log(`Loaded ${cachedCubes.length} cubes`);
-  return cachedCubes;
+  
+  // Path option A: If you launched Node from the project ROOT directory
+  const rootWorkspacePath = path.join(process.cwd(), 'canada-data-pipeline', 'src', 'collectors', 'cubesWithEmbeddings.json');
+  
+  // Path option B: If you launched Node from INSIDE the /backend folder
+  const internalBackendPath = path.join(__dirname, '../canada-data-pipeline/src/collectors/cubesWithEmbeddings.json');
+
+  let resolvedPath;
+  try {
+    // Check if the root workspace layout can see the file
+    await fs.access(rootWorkspacePath);
+    resolvedPath = rootWorkspacePath;
+  } catch {
+    // If option A fails, default to relative directory hopping
+    resolvedPath = internalBackendPath;
+  }
+
+  console.log(`📂 Database file resolved at: ${resolvedPath}`);
+  
+  try {
+    const rawData = await fs.readFile(resolvedPath, 'utf8');
+    cachedCubes = JSON.parse(rawData);
+    console.log(`Loaded ${cachedCubes.length} cubes successfully.`);
+    return cachedCubes;
+  } catch (readError) {
+    console.error(`❌ Critical error reading the file at ${resolvedPath}:`, readError.message);
+    throw readError;
+  }
 }
 
 async function getEmbeddingModel() {
@@ -114,10 +138,6 @@ async function fetchCoordinate(cubeId, coordinate) {
 }
 
 // ── POST /api/search ──────────────────────────────────────────────────────────
-// Returns cube metadata + dimension structure. No data fetched yet.
-// Response: { cubeId, title, unit, tableUrl, dimensionMeta, geoDimIndex, provinces }
-// dimensionMeta: [{ name, dimIndex, members: [{ name, memberId, isAggregate }] }]
-// provinces: [{ name, memberId }]
 app.post('/api/search', async (req, res) => {
   try {
     const { query, topK = 5 } = req.body;
@@ -140,7 +160,6 @@ app.post('/api/search', async (req, res) => {
       console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%)`)
     );
 
-    // Find the first cube that has a Geography dimension with known provinces
     for (const candidate of ranked) {
       const metadata = await fetchMeta(candidate.cubeId);
       if (!metadata) continue;
@@ -154,9 +173,8 @@ app.post('/api/search', async (req, res) => {
         .filter(m => PROVINCE_MAPPING[m.memberNameEn])
         .map(m => ({ name: PROVINCE_MAPPING[m.memberNameEn], memberId: m.memberId }));
 
-      if (provinces.length < 8) continue; // not enough geographic coverage
+      if (provinces.length < 8) continue; 
 
-      // Unit of measurement
       let unit = null;
       const uomDim = metadata.dimension.find(d => d.hasUOM === true);
       if (uomDim?.member?.length) {
@@ -164,7 +182,6 @@ app.post('/api/search', async (req, res) => {
         unit = m?.memberNameEn ?? null;
       }
 
-      // Build dimension metadata for every non-geo dimension
       const geoDimIndex = metadata.dimension.findIndex(d =>
         d.dimensionNameEn === 'Geography' || d.dimensionNameEn?.includes('Geography')
       );
@@ -174,7 +191,7 @@ app.post('/api/search', async (req, res) => {
         .filter(({ idx }) => idx !== geoDimIndex)
         .map(({ dim, idx }) => ({
           name:     dim.dimensionNameEn,
-          dimIndex: idx,           // position in the 10-slot coordinate array
+          dimIndex: idx,           
           members:  (dim.member ?? [])
             .filter(m => m.memberId && m.memberId !== 0)
             .map(m => ({
@@ -184,14 +201,9 @@ app.post('/api/search', async (req, res) => {
             })),
         }));
 
-      // StatCan table URL (format: pid as 8-digit zero-padded, then -01)
       const pid     = String(candidate.cubeId).padStart(8, '0');
-
-      // Clean the input PID (removes hyphens if present) and appends the "01" suffix
       const cleanPid = pid.replace(/-/g, '');
       const fullPid = cleanPid.endsWith('01') ? cleanPid : `${cleanPid}01`;
-
-      // The correct StatCan interactive table URL format
       const tableUrl = `https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=${fullPid}`;
 
       console.log(`✅ Using cube ${candidate.cubeId}: ${candidate.title.slice(0, 60)}`);
@@ -203,8 +215,8 @@ app.post('/api/search', async (req, res) => {
         unit,
         tableUrl,
         geoDimIndex,
-        provinces,       // [{ name, memberId }]
-        dimensionMeta,   // [{ name, dimIndex, members[] }]
+        provinces,       
+        dimensionMeta,   
       });
     }
 
@@ -217,15 +229,9 @@ app.post('/api/search', async (req, res) => {
 });
 
 // ── POST /api/data ────────────────────────────────────────────────────────────
-// Called when the user picks dimension members. Fetches one coordinate per province.
-// Body: { cubeId, geoDimIndex, selections: { dimIndex: memberId, … } }
-// selections maps each non-geo dimension's index to the chosen memberId.
-// Response: { provinces: [{ province, value, year }], year }
 app.post('/api/data', async (req, res) => {
   try {
     const { cubeId, geoDimIndex, provinces, selections } = req.body;
-    // provinces: [{ name, memberId }]
-    // selections: { "2": 3, "3": 7 }  — dimIndex → memberId
 
     if (!cubeId || !provinces?.length || !selections) {
       return res.status(400).json({ error: 'cubeId, provinces, and selections are required' });
@@ -237,13 +243,9 @@ app.post('/api/data', async (req, res) => {
     const results = [];
 
     for (const province of provinces) {
-      // Build 10-slot coordinate string
       const coord = Array(10).fill('0');
-
-      // Slot for geography (dimIndex is 0-based; coord slots are also 0-based)
       coord[geoDimIndex] = province.memberId.toString();
 
-      // Fill in user-selected members
       for (const [dimIdx, memberId] of Object.entries(selections)) {
         coord[parseInt(dimIdx)] = memberId.toString();
       }
@@ -256,7 +258,7 @@ app.post('/api/data', async (req, res) => {
         results.push({ province: province.name, value: result.value, year: result.year });
       }
 
-      await new Promise(r => setTimeout(r, 60)); // polite delay
+      await new Promise(r => setTimeout(r, 60)); 
     }
 
     if (!results.length) {
@@ -281,5 +283,5 @@ app.get('/api/health', (_req, res) =>
   res.json({ status: 'healthy', cubesLoaded: !!cachedCubes })
 );
 
-app.listen(PORT, () => console.log(`\n🚀 http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`\n🚀 Server running on port ${PORT}`));
 loadCubes().catch(console.error);
