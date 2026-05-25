@@ -364,3 +364,26 @@ async function semanticSearch(query, cubes, topK = 5) {
 }
 
 testSearch().catch(console.error);
+
+
+
+
+
+
+
+
+
+
+// use this for unit test:  14-10-0081-01
+
+
+
+
+
+
+
+
+
+
+
+

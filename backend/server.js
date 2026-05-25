@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import fs from 'fs/promises';
@@ -5,15 +6,32 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import axios from 'axios';
 import { pipeline } from '@xenova/transformers';
-import 'dotenv/config';
+
+const allowedOrigins = [
+  'http://localhost:5173',                
+  'http://localhost:3000',                 
+  'https://your-frontend.vercel.app'       
+];
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
 const app  = express();
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.BACKEND_PORT || process.env.PORT || 9999;
 
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true // Enable this if you pass cookies or authorization headers
+}));
 app.use(express.json());
 
 let cachedCubes    = null;
@@ -168,7 +186,7 @@ app.post('/api/search', async (req, res) => {
 
       // StatCan table URL (format: pid as 8-digit zero-padded, then -01)
       const pid     = String(candidate.cubeId).padStart(8, '0');
-      
+
       // Clean the input PID (removes hyphens if present) and appends the "01" suffix
       const cleanPid = pid.replace(/-/g, '');
       const fullPid = cleanPid.endsWith('01') ? cleanPid : `${cleanPid}01`;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
+import './CanadaMap.css';
 
 const CANADA_GEOJSON_URL =
   'https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson';
@@ -15,12 +16,10 @@ const ABBR = {
 const BLUE_LOW  = '#dbeafe';
 const BLUE_HIGH = '#1e3a8a';
 
-const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL)
-  ? import.meta.env.VITE_API_URL
-  : 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
 async function apiFetch(path, body) {
-  const res  = await fetch(`${API_BASE}${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify(body),
@@ -33,6 +32,25 @@ async function apiFetch(path, body) {
   return json;
 }
 
+function DimensionFilter({ dim, selectedId, onChange, disabled }) {
+  return (
+    <div className="dim-filter">
+      <label className="dim-label">{dim.name}</label>
+      <select
+        className="dim-select"
+        style={{ opacity: disabled ? 0.5 : 1 }}
+        value={selectedId ?? ''}
+        disabled={disabled}
+        onChange={e => onChange(dim.dimIndex, Number(e.target.value))}
+      >
+        {dim.members.map(m => (
+          <option key={m.memberId} value={m.memberId}>{m.name}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export default function CanadaMap() {
   const svgRef       = useRef(null);
   const containerRef = useRef(null);
@@ -42,23 +60,20 @@ export default function CanadaMap() {
   const [geoError,    setGeoError]    = useState(false);
   const [geoLoading,  setGeoLoading]  = useState(true);
 
-  // Search phase
+  // Search
   const [query,       setQuery]       = useState('');
   const [searching,   setSearching]   = useState(false);
   const [searchError, setSearchError] = useState(null);
 
-  // Cube metadata returned by /api/search
-  // { cubeId, title, unit, tableUrl, geoDimIndex, provinces, dimensionMeta }
+  // Cube metadata
   const [cubeMeta, setCubeMeta] = useState(null);
 
-  // Active selection: dimIndex (string) → memberId (number)
-  // Initialised to the aggregate member of each dimension
+  // Active selections: dimIndex → memberId
   const [selections, setSelections] = useState({});
 
-  // Data phase
-  const [dataLoading, setDataLoading] = useState(false);
-  const [dataError,   setDataError]   = useState(null);
-  // [{ province, value, year }]
+  // Data
+  const [dataLoading,  setDataLoading]  = useState(false);
+  const [dataError,    setDataError]    = useState(null);
   const [provinceData, setProvinceData] = useState([]);
   const [dataYear,     setDataYear]     = useState('—');
 
@@ -66,7 +81,6 @@ export default function CanadaMap() {
   const [tooltip,  setTooltip]  = useState(null);
   const [selected, setSelected] = useState(null);
 
-  // value lookup for D3
   const valueMap = useMemo(
     () => Object.fromEntries(provinceData.map(p => [p.province, p.value])),
     [provinceData]
@@ -75,66 +89,34 @@ export default function CanadaMap() {
   const minVal = nums.length ? Math.min(...nums) : 0;
   const maxVal = nums.length ? Math.max(...nums) : 1;
 
-  // ── Load GeoJSON once ───────────────────────────────────────────────────────
+  // ── GeoJSON ─────────────────────────────────────────────────────────────────
   useEffect(() => {
     fetch(CANADA_GEOJSON_URL)
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(raw => {
         const seen = new Set();
-        const features = raw.features.filter(f => {
+        setGeoFeatures(raw.features.filter(f => {
           const n = f.properties?.name;
           if (!n || seen.has(n)) return false;
           seen.add(n); return true;
-        });
-        setGeoFeatures(features);
+        }));
         setGeoLoading(false);
       })
       .catch(() => { setGeoError(true); setGeoLoading(false); });
   }, []);
 
-  // ── Step 1: Search — get cube metadata only ─────────────────────────────────
-  async function handleSearch() {
-    const q = query.trim();
-    if (!q) return;
-    setSearching(true);
-    setSearchError(null);
-    setDataError(null);
-    setCubeMeta(null);
-    setSelections({});
-    setProvinceData([]);
-    setSelected(null);
-    try {
-      const json = await apiFetch('/api/search', { query: q, topK: 5 });
-      // Build default selections: pick aggregate member if present, else first
-      const defaultSel = {};
-      for (const dim of json.dimensionMeta) {
-        const agg = dim.members.find(m => m.isAggregate);
-        const def = agg ?? dim.members[0];
-        if (def) defaultSel[dim.dimIndex] = def.memberId;
-      }
-      setCubeMeta(json);
-      setSelections(defaultSel);
-      // Immediately fetch data with defaults
-      await fetchData(json, defaultSel);
-    } catch (err) {
-      setSearchError(err.message);
-    } finally {
-      setSearching(false);
-    }
-  }
-
-  // ── Step 2: Fetch province data for current selections ──────────────────────
+  // ── Fetch data for current selections ────────────────────────────────────────
   const fetchData = useCallback(async (meta, sel) => {
     if (!meta) return;
     setDataLoading(true);
     setDataError(null);
     setSelected(null);
     try {
-      const json = await apiFetch('/api/data', {
+      const json = await apiFetch(`/${API_BASE}/data`, {
         cubeId:      meta.cubeId,
         geoDimIndex: meta.geoDimIndex,
-        provinces:   meta.provinces,   // [{ name, memberId }]
-        selections:  sel,              // { dimIndex: memberId }
+        provinces:   meta.provinces,
+        selections:  sel,
       });
       setProvinceData(json.provinces);
       setDataYear(json.year);
@@ -146,14 +128,44 @@ export default function CanadaMap() {
     }
   }, []);
 
-  // When user clicks a dimension button
-  function handleMemberClick(dimIndex, memberId) {
-    const newSel = { ...selections, [dimIndex]: memberId };
-    setSelections(newSel);
-    fetchData(cubeMeta, newSel);
+  // ── Search ───────────────────────────────────────────────────────────────────
+  async function handleSearch() {
+    const q = query.trim();
+    if (!q) return;
+    setSearching(true);
+    setSearchError(null);
+    setDataError(null);
+    setCubeMeta(null);
+    setSelections({});
+    setProvinceData([]);
+    setSelected(null);
+    try {
+      const json = await apiFetch(`/${API_BASE}/search`, { query: q, topK: 5 });
+      const defaultSel = {};
+      for (const dim of json.dimensionMeta) {
+        const agg = dim.members.find(m => m.isAggregate);
+        const def = agg ?? dim.members[0];
+        if (def) defaultSel[dim.dimIndex] = def.memberId;
+      }
+      setCubeMeta(json);
+      setSelections(defaultSel);
+      await fetchData(json, defaultSel);
+    } catch (err) {
+      setSearchError(err.message);
+    } finally {
+      setSearching(false);
+    }
   }
 
-  // ── Draw map ─────────────────────────────────────────────────────────────────
+  function handleDimChange(dimIndex, memberId) {
+    setSelections(prev => ({ ...prev, [dimIndex]: memberId }));
+  }
+
+  function handleApplyFilters() {
+    fetchData(cubeMeta, selections);
+  }
+
+  // ── D3 map ───────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!geoFeatures || !svgRef.current || !containerRef.current) return;
 
@@ -165,10 +177,10 @@ export default function CanadaMap() {
       .attr('width', W).attr('height', H);
     svg.selectAll('*').remove();
 
-    const geoCollection = { type: 'FeatureCollection', features: geoFeatures };
-    const proj = d3.geoConicEqualArea()
+    const geoCol = { type: 'FeatureCollection', features: geoFeatures };
+    const proj   = d3.geoConicEqualArea()
       .parallels([49, 77]).rotate([96, 0]).center([0, 62])
-      .fitExtent([[20, 20], [W - 20, H - 20]], geoCollection);
+      .fitExtent([[20, 20], [W - 20, H - 20]], geoCol);
     const path = d3.geoPath().projection(proj);
 
     const colorScale = d3.scaleSequential()
@@ -178,10 +190,7 @@ export default function CanadaMap() {
     svg.append('g').selectAll('path')
       .data(geoFeatures).join('path')
         .attr('d', path)
-        .attr('fill', d => {
-          const v = valueMap[d.properties.name];
-          return v != null ? colorScale(v) : '#d4d4d4';
-        })
+        .attr('fill', d => { const v = valueMap[d.properties.name]; return v != null ? colorScale(v) : '#d4d4d4'; })
         .attr('stroke', '#1c1c1c').attr('stroke-width', 0.8).attr('stroke-linejoin', 'round')
         .style('cursor', 'pointer').style('transition', 'filter 0.15s ease')
         .on('mouseenter', function(event, d) {
@@ -215,7 +224,10 @@ export default function CanadaMap() {
   }, [geoFeatures, valueMap, minVal, maxVal]);
 
   // ── Formatting ───────────────────────────────────────────────────────────────
-  const unit = cubeMeta?.unit ?? null;
+  const unit       = cubeMeta?.unit ?? null;
+  const metricName = cubeMeta?.title?.split(',')[0]?.trim() ?? '';
+  const rankings   = [...provinceData].sort((a,b) => b.value - a.value);
+
   function fmtVal(v) {
     if (v == null) return '—';
     const u = (unit ?? '').toLowerCase();
@@ -224,163 +236,185 @@ export default function CanadaMap() {
     return v.toLocaleString() + (unit ? ' ' + unit : '');
   }
 
-  const metricName = cubeMeta?.title?.split(',')[0]?.trim() ?? '';
-  const rankings   = [...provinceData].sort((a,b) => b.value - a.value);
-
-  // ── Render ────────────────────────────────────────────────────────────────────
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
-    <div style={S.page}>
+    <div className="page">
 
       {/* Header */}
-      <header style={S.header}>
-        <div style={S.wordmark}>
-          <span style={S.wPrimary}>STATCAN</span>
-          <span style={S.wDiv}>/</span>
-          <span style={S.wSecondary}>Explorer</span>
+      <header className="header">
+        <div className="wordmark">
+          <span className="w-primary">STATCAN</span>
+          <span className="w-div">/</span>
+          <span className="w-secondary">Explorer</span>
         </div>
-        <div style={S.searchWrap}>
-          <svg style={S.searchIcon} viewBox="0 0 20 20" fill="none">
+        <div className="search-wrap">
+          <svg className="search-icon" viewBox="0 0 20 20" fill="none">
             <circle cx="9" cy="9" r="6" stroke="#6b7280" strokeWidth="1.5"/>
             <path d="M14 14l3 3" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
           <input
-            style={S.searchInput}
+            className="search-input"
             placeholder="Search a metric… e.g. provincial unemployment"
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
           />
-          {query && <button style={S.clearBtn} onClick={() => { setQuery(''); setSearchError(null); }}>✕</button>}
-          <button style={{ ...S.searchBtn, opacity: (searching || dataLoading) ? 0.6 : 1 }}
-            onClick={handleSearch} disabled={searching || dataLoading}>
+          {query && (
+            <button className="clear-btn" onClick={() => { setQuery(''); setSearchError(null); }}>✕</button>
+          )}
+          <button
+            className="search-btn"
+            style={{ opacity: (searching || dataLoading) ? 0.6 : 1 }}
+            onClick={handleSearch}
+            disabled={searching || dataLoading}
+          >
             {searching ? '…' : 'Search'}
           </button>
         </div>
       </header>
 
-      {/* Dimension filter bar */}
-      {cubeMeta?.dimensionMeta?.length > 0 && (
-        <div style={S.filterBar}>
-          {dataLoading && <span style={S.fetchingBadge}>Fetching…</span>}
-          {cubeMeta.dimensionMeta.map(dim => (
-            <div key={dim.name} style={S.filterGroup}>
-              <span style={S.filterLabel}>{dim.name}</span>
-              <div style={S.filterBtns}>
-                {dim.members.map(member => {
-                  const active = selections[dim.dimIndex] === member.memberId;
-                  return (
-                    <button
-                      key={member.memberId}
-                      onClick={() => handleMemberClick(dim.dimIndex, member.memberId)}
-                      disabled={dataLoading}
-                      style={{
-                        ...S.filterBtn,
-                        ...(active      ? S.filterBtnActive   : {}),
-                        ...(dataLoading ? S.filterBtnDisabled : {}),
-                      }}
-                      title={member.name}
-                    >
-                      {member.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Body */}
-      <main style={S.body}>
+      <main className="body">
 
-        {/* Map */}
-        <div ref={containerRef} style={S.mapArea}>
+        {/* Map area */}
+        <div ref={containerRef} className="map-area">
           {geoLoading && (
-            <div style={S.loadState}>
-              <div style={S.spinner} />
+            <div className="load-state">
+              <div className="spinner" />
               <p style={{ color:'#6b7280', fontFamily:'monospace', marginTop:12 }}>Loading map…</p>
             </div>
           )}
-          {geoError && <div style={S.loadState}><p style={{ color:'#dc2626', fontFamily:'monospace' }}>Failed to load map.</p></div>}
-          {!geoLoading && !geoError && <svg ref={svgRef} style={{ display:'block', width:'100%', height:'100%' }} />}
+          {geoError && (
+            <div className="load-state">
+              <p style={{ color:'#dc2626', fontFamily:'monospace' }}>Failed to load map boundaries.</p>
+            </div>
+          )}
+          {!geoLoading && !geoError && (
+            <svg ref={svgRef} style={{ display:'block', width:'100%', height:'100%' }} />
+          )}
 
-          {/* Overlays */}
           {(searchError || dataError) && (
-            <div style={S.errorBanner}>{searchError ?? dataError}</div>
+            <div className="error-banner">{searchError ?? dataError}</div>
           )}
           {!cubeMeta && !searching && !searchError && !geoLoading && (
-            <div style={S.emptyPrompt}>Search a metric above to colour the map</div>
+            <div className="empty-prompt">Search a metric above to colour the map</div>
           )}
           {dataLoading && (
-            <div style={S.fetchingOverlay}>
-              <div style={S.spinnerSm} /> Fetching province data…
+            <div className="fetching-overlay">
+              <div className="spinner-sm" />Fetching province data…
             </div>
           )}
         </div>
 
-        {/* Sidebar */}
-        <aside style={S.sidebar}>
-          <div style={S.metaCard}>
-            <div style={S.metaLabel}>Metric</div>
-            <div style={S.metaValue}>{metricName || '—'}</div>
-            <div style={{ ...S.metaLabel, marginTop:8 }}>Year</div>
-            <div style={S.metaValue}>{dataYear}</div>
-            <div style={{ ...S.metaLabel, marginTop:8 }}>Unit</div>
-            <div style={S.metaValue}>{unit ?? 'N/A'}</div>
+        {/* Sidebar with internal scrolling layout enabled */}
+        <aside className="sidebar">
+
+          {/* Metric info */}
+          <div className="side-section">
+            <div className="meta-label">Metric</div>
+            <div className="meta-value">{metricName || '—'}</div>
+            <div className="meta-label" style={{ marginTop: 8 }}>Year</div>
+            <div className="meta-value">{dataYear}</div>
+            <div className="meta-label" style={{ marginTop: 8 }}>Unit</div>
+            <div className="meta-value">{unit ?? 'N/A'}</div>
             {cubeMeta?.tableUrl && (
-              <a href={cubeMeta.tableUrl} target="_blank" rel="noreferrer" style={S.tableLink}>
+              <a href={cubeMeta.tableUrl} target="_blank" rel="noreferrer" className="table-link">
                 View source table ↗
               </a>
             )}
           </div>
 
-          <div style={S.legendCard}>
-            <div style={S.legendTitle}>Legend</div>
-            <div style={{ height:12, borderRadius:6, background:`linear-gradient(to right, ${BLUE_LOW}, ${BLUE_HIGH})`, margin:'8px 0 6px', opacity: rankings.length ? 1 : 0.3 }} />
-            <div style={S.legendLabels}>
+          {/* Dimension filters */}
+          {cubeMeta?.dimensionMeta?.length > 0 && (
+            <div className="filter-section">
+              <div className="filter-header">
+                <span className="section-title">Filters</span>
+                {dataLoading && <span className="fetching-badge">updating…</span>}
+              </div>
+              <div className="filter-scroll">
+                {cubeMeta.dimensionMeta.map(dim => (
+                  <DimensionFilter
+                    key={dim.dimIndex}
+                    dim={dim}
+                    selectedId={selections[dim.dimIndex]}
+                    onChange={handleDimChange}
+                    disabled={dataLoading}
+                  />
+                ))}
+                <button 
+                  className="filter-action-btn"
+                  onClick={handleApplyFilters}
+                  disabled={dataLoading}
+                  style={{ opacity: dataLoading ? 0.6 : 1 }}
+                >
+                  Filter
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Legend */}
+          <div className="side-section">
+            <div className="section-title">Legend</div>
+            <div style={{
+              height: 12, borderRadius: 6,
+              background: `linear-gradient(to right, ${BLUE_LOW}, ${BLUE_HIGH})`,
+              margin: '8px 0 6px', opacity: rankings.length ? 1 : 0.3,
+            }} />
+            <div className="legend-labels">
               <span>{rankings.length ? fmtVal(rankings.at(-1).value) : '—'}</span>
               <span>{rankings.length ? fmtVal(rankings[0].value)     : '—'}</span>
             </div>
-            <div style={S.legendNA}><span style={S.naBox} /><span>No data</span></div>
+            <div className="legend-na"><span className="na-box"/><span>No data</span></div>
           </div>
 
+          {/* Province detail card */}
           {selected ? (
-            <div style={S.detailCard}>
-              <div style={S.detailName}>{selected.name}</div>
+            <div className="detail-card">
+              <div className="detail-name">{selected.name}</div>
               {selected.value != null
-                ? <><div style={S.detailValue}>{fmtVal(selected.value)}</div><div style={S.detailMeta}>{metricName} · {selected.year ?? dataYear}</div></>
-                : <div style={S.detailMeta}>No data for this combination</div>
+                ? <>
+                    <div className="detail-value">{fmtVal(selected.value)}</div>
+                    <div className="detail-meta">{metricName} · {selected.year ?? dataYear}</div>
+                  </>
+                : <div className="detail-meta">No data for this combination</div>
               }
-              <button style={S.closeBtn} onClick={() => setSelected(null)}>✕</button>
+              <button className="close-btn" onClick={() => setSelected(null)}>✕</button>
             </div>
           ) : (
-            <div style={S.hintCard}>Click a province to see details</div>
+            <div className="hint-card">Click a province to see details</div>
           )}
 
-          <div style={S.rankCard}>
-            <div style={S.rankTitle}>Rankings</div>
+          {/* Rankings */}
+          <div className="rank-card">
+            <div className="section-title">Rankings</div>
             {rankings.length > 0
               ? rankings.map((p, i) => (
                   <div key={p.province}
-                    style={{ ...S.rankRow, background: selected?.name === p.province ? '#eff6ff' : 'transparent', cursor:'pointer' }}
-                    onClick={() => setSelected({ name:p.province, value:p.value, year:p.year })}>
-                    <span style={S.rankNum}>{i + 1}</span>
-                    <span style={S.rankName}>{ABBR[p.province] ?? p.province}</span>
-                    <span style={S.rankVal}>{fmtVal(p.value)}</span>
+                    className="rank-row"
+                    style={{
+                      background: selected?.name === p.province ? '#eff6ff' : 'transparent',
+                    }}
+                    onClick={() => setSelected({ name:p.province, value:p.value, year:p.year })}
+                  >
+                    <span className="rank-num">{i + 1}</span>
+                    <span className="rank-name">{ABBR[p.province] ?? p.province}</span>
+                    <span className="rank-val">{fmtVal(p.value)}</span>
                   </div>
                 ))
-              : <div style={{ fontSize:11, color:'#d1d5db', fontStyle:'italic' }}>
-                  {cubeMeta ? 'No data for selection' : 'No data yet'}
+              : <div style={{ fontSize:11, color:'#d1d5db', fontStyle:'italic', marginTop:4 }}>
+                  {cubeMeta ? 'No data for this selection' : 'No data yet'}
                 </div>
             }
           </div>
         </aside>
       </main>
 
+      {/* Tooltip */}
       {tooltip && (
-        <div style={{ ...S.tooltip, left: tooltip.x + 14, top: tooltip.y - 48 }}>
-          <div style={S.ttName}>{tooltip.name}</div>
-          <div style={S.ttVal}>
+        <div className="tooltip" style={{ left: tooltip.x + 14, top: tooltip.y - 48 }}>
+          <div className="tt-name">{tooltip.name}</div>
+          <div className="tt-val">
             {valueMap[tooltip.name] != null ? fmtVal(valueMap[tooltip.name]) : 'No data'}
           </div>
         </div>
@@ -388,61 +422,3 @@ export default function CanadaMap() {
     </div>
   );
 }
-
-const S = {
-  page:        { display:'flex', flexDirection:'column', height:'100vh', width:'100vw', background:'#f5f4f0', fontFamily:'"DM Mono","IBM Plex Mono","Courier New",monospace', overflow:'hidden' },
-  header:      { display:'flex', alignItems:'center', gap:20, padding:'10px 20px', background:'#111', borderBottom:'1px solid #333', flexShrink:0, flexWrap:'wrap' },
-  wordmark:    { display:'flex', alignItems:'baseline', gap:6 },
-  wPrimary:    { color:'#fff', fontWeight:'700', fontSize:18, letterSpacing:'0.08em' },
-  wDiv:        { color:'#555', fontSize:18 },
-  wSecondary:  { color:'#9ca3af', fontWeight:'400', fontSize:14 },
-  searchWrap:  { flex:1, minWidth:220, maxWidth:520, display:'flex', alignItems:'center', background:'#1f1f1f', border:'1px solid #333', borderRadius:6, padding:'0 4px 0 10px', gap:4 },
-  searchIcon:  { width:16, height:16, flexShrink:0 },
-  searchInput: { flex:1, background:'transparent', border:'none', outline:'none', color:'#e5e7eb', fontFamily:'inherit', fontSize:13, padding:'8px 6px' },
-  clearBtn:    { background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:12, padding:'0 4px' },
-  searchBtn:   { background:'#1d4ed8', color:'#fff', border:'none', borderRadius:4, fontFamily:'inherit', fontSize:12, fontWeight:'600', padding:'5px 12px', cursor:'pointer', flexShrink:0 },
-
-  filterBar:       { display:'flex', flexWrap:'wrap', alignItems:'flex-start', gap:12, padding:'10px 20px', background:'#1a1a1a', borderBottom:'1px solid #2a2a2a', flexShrink:0 },
-  fetchingBadge:   { fontSize:10, color:'#6b7280', alignSelf:'center', fontStyle:'italic' },
-  filterGroup:     { display:'flex', flexDirection:'column', gap:5 },
-  filterLabel:     { fontSize:10, color:'#6b7280', textTransform:'uppercase', letterSpacing:'0.08em' },
-  filterBtns:      { display:'flex', gap:4, flexWrap:'wrap' },
-  filterBtn:       { background:'#2a2a2a', border:'1px solid #3a3a3a', color:'#9ca3af', borderRadius:4, fontFamily:'inherit', fontSize:11, padding:'3px 10px', cursor:'pointer', transition:'all 0.1s', whiteSpace:'nowrap' },
-  filterBtnActive: { background:'#1d4ed8', border:'1px solid #1d4ed8', color:'#fff' },
-  filterBtnDisabled:{ opacity:0.4, cursor:'not-allowed' },
-
-  body:           { display:'flex', flex:1, overflow:'hidden' },
-  mapArea:        { flex:1, position:'relative', background:'#e8e6e0', display:'flex', alignItems:'center', justifyContent:'center' },
-  loadState:      { display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' },
-  spinner:        { width:32, height:32, borderRadius:'50%', border:'3px solid #d1d5db', borderTopColor:'#111', animation:'spin 0.7s linear infinite' },
-  spinnerSm:      { width:14, height:14, borderRadius:'50%', border:'2px solid #9ca3af', borderTopColor:'#1d4ed8', animation:'spin 0.7s linear infinite', display:'inline-block', marginRight:6 },
-  fetchingOverlay:{ position:'absolute', bottom:20, left:'50%', transform:'translateX(-50%)', background:'rgba(255,255,255,0.92)', borderRadius:6, padding:'8px 16px', fontSize:12, color:'#374151', display:'flex', alignItems:'center', backdropFilter:'blur(4px)' },
-  errorBanner:    { position:'absolute', bottom:20, left:'50%', transform:'translateX(-50%)', background:'#fef2f2', border:'1px solid #fca5a5', color:'#dc2626', borderRadius:6, padding:'8px 16px', fontSize:12, maxWidth:'80%' },
-  emptyPrompt:    { position:'absolute', bottom:20, left:'50%', transform:'translateX(-50%)', background:'rgba(255,255,255,0.85)', borderRadius:6, padding:'8px 16px', fontSize:12, color:'#6b7280', whiteSpace:'nowrap', backdropFilter:'blur(4px)' },
-
-  sidebar:     { width:220, flexShrink:0, background:'#fff', borderLeft:'1px solid #e5e7eb', overflowY:'auto', display:'flex', flexDirection:'column' },
-  metaCard:    { padding:'16px 16px 12px', borderBottom:'1px solid #f0f0f0' },
-  metaLabel:   { fontSize:10, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.08em' },
-  metaValue:   { fontSize:13, color:'#111', fontWeight:'600', marginTop:2 },
-  tableLink:   { display:'inline-block', marginTop:10, fontSize:11, color:'#1d4ed8', textDecoration:'none', borderBottom:'1px solid #bfdbfe', paddingBottom:1 },
-  legendCard:  { padding:'14px 16px', borderBottom:'1px solid #f0f0f0' },
-  legendTitle: { fontSize:10, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.08em' },
-  legendLabels:{ display:'flex', justifyContent:'space-between', fontSize:10, color:'#6b7280' },
-  legendNA:    { display:'flex', alignItems:'center', gap:6, fontSize:10, color:'#6b7280', marginTop:6 },
-  naBox:       { display:'inline-block', width:12, height:12, background:'#d4d4d4', borderRadius:2 },
-  detailCard:  { padding:'14px 16px', borderBottom:'1px solid #f0f0f0', position:'relative', background:'#fafafa' },
-  detailName:  { fontSize:12, fontWeight:'700', color:'#111', marginBottom:4 },
-  detailValue: { fontSize:22, fontWeight:'700', color:'#1d4ed8', lineHeight:1.1 },
-  detailMeta:  { fontSize:10, color:'#9ca3af', marginTop:4 },
-  closeBtn:    { position:'absolute', top:10, right:10, background:'none', border:'none', color:'#9ca3af', cursor:'pointer', fontSize:12 },
-  hintCard:    { padding:'14px 16px', borderBottom:'1px solid #f0f0f0', fontSize:11, color:'#9ca3af', fontStyle:'italic' },
-  rankCard:    { flex:1, padding:'14px 16px', overflowY:'auto' },
-  rankTitle:   { fontSize:10, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:8 },
-  rankRow:     { display:'flex', alignItems:'center', gap:8, padding:'5px 4px', borderRadius:4, transition:'background 0.1s' },
-  rankNum:     { fontSize:10, color:'#d1d5db', width:16, textAlign:'right', flexShrink:0 },
-  rankName:    { fontSize:11, color:'#374151', flex:1 },
-  rankVal:     { fontSize:11, color:'#111', fontWeight:'600' },
-  tooltip:     { position:'fixed', zIndex:1000, pointerEvents:'none', background:'#111', color:'#fff', borderRadius:6, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.25)' },
-  ttName:      { fontSize:11, color:'#9ca3af', marginBottom:2 },
-  ttVal:       { fontSize:14, fontWeight:'700' },
-};
