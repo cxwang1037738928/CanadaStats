@@ -8,6 +8,8 @@ import axios from 'axios';
 import { pipeline } from '@xenova/transformers';
 
 const allowedOrigins = [
+   "https://canadamapped.ca",
+   "https://www.canadamapped.ca",
   'http://localhost:5173',                
   'http://localhost:3000',                 
   process.env.FRONTEND_URL // Pulls live Vercel URL dynamically from AWS Env Variables
