@@ -446,3 +446,22 @@
   font-size: 14px;
   font-weight: 700;
 }
+
+/* Moves the project link wrapper to the far right */
+.header-link-wrap {
+  margin-left: auto;
+}
+
+/* Styles the link with a clean light blue, matching the project's monospace vibe */
+.header-link-wrap a {
+  color: #60a5fa; /* Vibrant light blue (Tailwind's blue-400) */
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+/* Subtle hover effect for better UX */
+.header-link-wrap a:hover {
+  color: #93c5fd; /* Slightly brighter light blue on hover */
+  text-decoration: underline;
+}

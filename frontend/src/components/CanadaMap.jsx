@@ -271,6 +271,11 @@ export default function CanadaMap() {
             {searching ? '…' : 'Search'}
           </button>
         </div>
+        <div className="header-link-wrap">
+            <a href="https://github.com/cxwang1037738928" target="_blank" rel="noreferrer">
+              Check out my other projects
+            </a>
+          </div>
       </header>
 
       {/* Body */}
