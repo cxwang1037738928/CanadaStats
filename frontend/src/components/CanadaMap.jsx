@@ -5,6 +5,7 @@ import './CanadaMap.css';
 const CANADA_GEOJSON_URL =
   'https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson';
 
+  // abbreviation map for provinces/territories to fit better on the map.
 const ABBR = {
   'British Columbia': 'BC',      'Alberta': 'AB',          'Saskatchewan': 'SK',
   'Manitoba': 'MB',              'Ontario': 'ON',           'Quebec': 'QC',
@@ -18,6 +19,7 @@ const BLUE_HIGH = '#1e3a8a';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
+// Helper function to call backend API endpoints with error handling
 async function apiFetch(path, body) {
   const res = await fetch(`${API_BASE}${path}`, {
     method:  'POST',
@@ -32,6 +34,9 @@ async function apiFetch(path, body) {
   return json;
 }
 
+// Dynamically generate a filter UI for a dimension
+// Inputs: dim (dimension metadata), selectedId (currently selected memberId), onChange callback, disabled state
+// outputs a label and a select dropdown with options for each member of the dimension
 function DimensionFilter({ dim, selectedId, onChange, disabled }) {
   return (
     <div className="dim-filter">
@@ -42,7 +47,7 @@ function DimensionFilter({ dim, selectedId, onChange, disabled }) {
         value={selectedId ?? ''}
         disabled={disabled}
         onChange={e => onChange(dim.dimIndex, Number(e.target.value))}
-      >
+      > 
         {dim.members.map(m => (
           <option key={m.memberId} value={m.memberId}>{m.name}</option>
         ))}
@@ -50,6 +55,8 @@ function DimensionFilter({ dim, selectedId, onChange, disabled }) {
     </div>
   );
 }
+
+
 
 export default function CanadaMap() {
   const svgRef       = useRef(null);
@@ -74,22 +81,27 @@ export default function CanadaMap() {
   // Data
   const [dataLoading,  setDataLoading]  = useState(false);
   const [dataError,    setDataError]    = useState(null);
+  // in the form [{ province: 'Ontario', value: 123, year: 2020 }, ...]
   const [provinceData, setProvinceData] = useState([]);
+
   const [dataYear,     setDataYear]     = useState('—');
 
   // UI
   const [tooltip,  setTooltip]  = useState(null);
   const [selected, setSelected] = useState(null);
 
+  // cache the value of the provinces, becomes list of objects where each p is {'province': "Ontario", value: 123, ...}
   const valueMap = useMemo(
     () => Object.fromEntries(provinceData.map(p => [p.province, p.value])),
     [provinceData]
   );
+  // extracts all numbers from Object and computes max/min 
   const nums   = Object.values(valueMap).filter(Number.isFinite);
   const minVal = nums.length ? Math.min(...nums) : 0;
   const maxVal = nums.length ? Math.max(...nums) : 1;
 
   // ── GeoJSON ─────────────────────────────────────────────────────────────────
+  // fetch geojson for Canadian provinces, with some basic deduplication to avoid rendering issues (some features have same province name)
   useEffect(() => {
     fetch(CANADA_GEOJSON_URL)
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -164,8 +176,12 @@ export default function CanadaMap() {
   function handleApplyFilters() {
     fetchData(cubeMeta, selections);
   }
-
+  
   // ── D3 map ───────────────────────────────────────────────────────────────────
+  // load on initial render and whenever geoFeatures or valueMap changes
+  // Maps province data to SVG elements. Creates an SVG element for each province using d3's geopath,
+  // colors them based on the color scale derived from the data values, and creates
+  // another SVG group of text elements for province labels centered on each province SVG feature
   useEffect(() => {
     if (!geoFeatures || !svgRef.current || !containerRef.current) return;
 
@@ -178,56 +194,79 @@ export default function CanadaMap() {
     svg.selectAll('*').remove();
 
     const geoCol = { type: 'FeatureCollection', features: geoFeatures };
+    // projects cone into 2D plane. set parrallels to minimize distortion for Canadian latitudes, rotate to center on Canada, and fit to available space
     const proj   = d3.geoConicEqualArea()
       .parallels([49, 77]).rotate([96, 0]).center([0, 62])
       .fitExtent([[20, 20], [W - 20, H - 20]], geoCol);
     const path = d3.geoPath().projection(proj);
-
+    // creates a continous color scale that turns values between minVal and maxVal into colors between BLUE_LOW and BLUE_HIGH
     const colorScale = d3.scaleSequential()
       .domain([minVal, maxVal])
       .interpolator(d3.interpolateBlues);
-
+    // create a group for all map shapes, then bind each province feature to a path element.
+    // fill color is determined by looking up the province name in valueMap and passing that value through the colorScale. if no value, use light gray.
+    // Geojson into SVG paths, then colored it by data, implements toolbar by tracking mouse events and updating react state
+    // highlights on hover and clicking selects region while re-rendering to update colours and details.
     svg.append('g').selectAll('path')
       .data(geoFeatures).join('path')
-        .attr('d', path)
+        .attr('d', path) // IMPORTANT: turns geojson into actual SVG path strings
+        // d.properties.name is the province name, used in valueMap to look up colour scale value, if no data use #d4d4d4 (grey)
         .attr('fill', d => { const v = valueMap[d.properties.name]; return v != null ? colorScale(v) : '#d4d4d4'; })
+        // styling border color, border thickness, and smooth corners
         .attr('stroke', '#1c1c1c').attr('stroke-width', 0.8).attr('stroke-linejoin', 'round')
         .style('cursor', 'pointer').style('transition', 'filter 0.15s ease')
+        // highlights province by making its border thicker strokes and black outline, slightly brightens fill color
+        // also updates react state
         .on('mouseenter', function(event, d) {
           d3.select(this).attr('stroke-width', 2).attr('stroke', '#000').style('filter', 'brightness(1.1)');
           setTooltip({ name: d.properties.name, x: event.clientX, y: event.clientY });
         })
+        // keeps tooltip following mouse as it moves within the province, updates position in react state
         .on('mousemove', function(event) {
           setTooltip(p => p ? { ...p, x: event.clientX, y: event.clientY } : null);
         })
+        // Resets styling to default when mouse leaves and hides tooltip by setting it to null in react state
         .on('mouseleave', function() {
           d3.select(this).attr('stroke-width', 0.8).attr('stroke', '#1c1c1c').style('filter', 'none');
           setTooltip(null);
         })
+        // updates react component to use the clicked province as the selected province, triggering the detail card
         .on('click', function(_, d) {
           const name   = d.properties.name;
           const record = provinceData.find(p => p.province === name);
           setSelected(record ? { name, value: record.value, year: record.year } : { name });
         });
-
+    
+    // creates group g for all labels, pointer-events none means mouse events will pass through the labels to the paths underneath.
     svg.append('g').style('pointer-events', 'none')
+      // .selectAll creates one text label per geographic feature
       .selectAll('text').data(geoFeatures).join('text')
+        // path.centroid(d) gets the centerpoint of the province and places text there
         .attr('transform', d => { const [x,y] = path.centroid(d); return `translate(${x},${y})`; })
+        // text-anchor: middle aligns text to center horizontally, dominant-baseline centers it vertically, text is centered at [x, y]
         .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+        // font styling.
         .attr('font-family', '"DM Mono","IBM Plex Mono",monospace')
+        // dynamically adjust font size so bigger provinces have larger labels. set font size to 11px if its one of the listed provinces
         .attr('font-size', d =>
           ['Nunavut','Quebec','Ontario','British Columbia','Alberta'].includes(d.properties.name) ? '11px' : '9px')
         .attr('font-weight', '600').attr('fill', '#111')
+        // creates a text stroke outline that makes it more readable against the fill colors.
         .attr('paint-order', 'stroke').attr('stroke', 'rgba(255,255,255,0.85)').attr('stroke-width', '2.5px')
+        // show abbreviation if this exists, otherwise no text is set
         .text(d => ABBR[d.properties.name] || '');
 
   }, [geoFeatures, valueMap, minVal, maxVal]);
 
   // ── Formatting ───────────────────────────────────────────────────────────────
+  // values displayed on the side bar
   const unit       = cubeMeta?.unit ?? null;
   const metricName = cubeMeta?.title?.split(',')[0]?.trim() ?? '';
   const rankings   = [...provinceData].sort((a,b) => b.value - a.value);
 
+  // helper that formats strings into a more readable form with appropriate units like
+  // if a unit contains 'dollar' or 'cad' it makes it $ unit
+  // or if its a percentage it makes it unit %
   function fmtVal(v) {
     if (v == null) return '—';
     const u = (unit ?? '').toLowerCase();
@@ -275,7 +314,7 @@ export default function CanadaMap() {
             <a href="https://github.com/cxwang1037738928" target="_blank" rel="noreferrer">
               Check out my other projects
             </a>
-          </div>
+        </div>
       </header>
 
       {/* Body */}
