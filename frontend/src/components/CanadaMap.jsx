@@ -33,7 +33,26 @@ async function apiFetch(path, body) {
   if (!res.ok || json.error) throw new Error(json.error ?? `Server error ${res.status}`);
   return json;
 }
-
+// cube metadata example:
+/*
+{
+    dimIndex: 0,
+    name: "Province",
+    members: [
+      { memberId: 1, name: "Ontario" },
+      { memberId: 2, name: "Quebec" }
+    ]
+  },
+  {
+    dimIndex: 1,
+    name: "Year",
+    members: [
+      { memberId: 2020, name: "2020" },
+      { memberId: 2021, name: "2021" }
+    ]
+  }
+];
+ */
 // Dynamically generate a filter UI for a dimension
 // Inputs: dim (dimension metadata), selectedId (currently selected memberId), onChange callback, disabled state
 // outputs a label and a select dropdown with options for each member of the dimension
@@ -222,6 +241,8 @@ export default function CanadaMap() {
           setTooltip({ name: d.properties.name, x: event.clientX, y: event.clientY });
         })
         // keeps tooltip following mouse as it moves within the province, updates position in react state
+        // tracks position relative to the viewport, not the element, so tooltip won't jump around if the element changes size due to hover effects
+        // only re-renders tooltip
         .on('mousemove', function(event) {
           setTooltip(p => p ? { ...p, x: event.clientX, y: event.clientY } : null);
         })
@@ -298,6 +319,7 @@ export default function CanadaMap() {
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
           />
+          {/* Clear button */}
           {query && (
             <button className="clear-btn" onClick={() => { setQuery(''); setSearchError(null); }}>✕</button>
           )}
@@ -310,6 +332,7 @@ export default function CanadaMap() {
             {searching ? '…' : 'Search'}
           </button>
         </div>
+        {/* link to github on the right most side */}
         <div className="header-link-wrap">
             <a href="https://github.com/cxwang1037738928" target="_blank" rel="noreferrer">
               Check out my other projects
@@ -322,27 +345,33 @@ export default function CanadaMap() {
 
         {/* Map area */}
         <div ref={containerRef} className="map-area">
+          {/* set loading animation */}
           {geoLoading && (
             <div className="load-state">
               <div className="spinner" />
               <p style={{ color:'#6b7280', fontFamily:'monospace', marginTop:12 }}>Loading map…</p>
             </div>
           )}
+          {/* set error state */}
           {geoError && (
             <div className="load-state">
               <p style={{ color:'#dc2626', fontFamily:'monospace' }}>Failed to load map boundaries.</p>
             </div>
           )}
+          {/* Renders nothing if neither are true # TODO: Add error handling */}
           {!geoLoading && !geoError && (
             <svg ref={svgRef} style={{ display:'block', width:'100%', height:'100%' }} />
           )}
-
+          {/* error state for when search or data loading fails */}
           {(searchError || dataError) && (
             <div className="error-banner">{searchError ?? dataError}</div>
           )}
+          {/* Default prompt when no search has been performed */}
           {!cubeMeta && !searching && !searchError && !geoLoading && (
             <div className="empty-prompt">Search a metric above to colour the map</div>
           )}
+          {/* 
+          widget for displaying loading state */}
           {dataLoading && (
             <div className="fetching-overlay">
               <div className="spinner-sm" />Fetching province data…
@@ -361,6 +390,7 @@ export default function CanadaMap() {
             <div className="meta-value">{dataYear}</div>
             <div className="meta-label" style={{ marginTop: 8 }}>Unit</div>
             <div className="meta-value">{unit ?? 'N/A'}</div>
+            {/* source table link if it exists */}
             {cubeMeta?.tableUrl && (
               <a href={cubeMeta.tableUrl} target="_blank" rel="noreferrer" className="table-link">
                 View source table ↗
@@ -368,11 +398,12 @@ export default function CanadaMap() {
             )}
           </div>
 
-          {/* Dimension filters */}
+          {/* Dimension filters, only displayed if there are dimensions to filter by */}
           {cubeMeta?.dimensionMeta?.length > 0 && (
             <div className="filter-section">
               <div className="filter-header">
                 <span className="section-title">Filters</span>
+                {/* UI for displaying loading state in filter section */}
                 {dataLoading && <span className="fetching-badge">updating…</span>}
               </div>
               <div className="filter-scroll">
@@ -454,7 +485,7 @@ export default function CanadaMap() {
         </aside>
       </main>
 
-      {/* Tooltip */}
+      {/* Tooltip, renders a div representing the tooltip at x + 14, y - 48 */}
       {tooltip && (
         <div className="tooltip" style={{ left: tooltip.x + 14, top: tooltip.y - 48 }}>
           <div className="tt-name">{tooltip.name}</div>
