@@ -5,24 +5,27 @@
 
 .page {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* stacks elements top to bottom*/
+  /* container is the size of the viewport */
   height: 100vh;
   width: 100vw;
   background: #f5f4f0;
   font-family: "DM Mono", "IBM Plex Mono", "Courier New", monospace;
+  /*prevent content from scrolling and clips anything outside of this container*/
   overflow: hidden;
 }
 
 /* Header styling */
 .header {
   display: flex;
+  /*vertically align all items within header*/
   align-items: center;
-  gap: 20px;
+  gap: 20px;  /* 20 px of space between flex items*/
   padding: 10px 20px;
   background: #111;
   border-bottom: 1px solid #333;
-  flex-shrink: 0;
-  flex-wrap: wrap;
+  flex-shrink: 0; /*header doesn't shrink*/
+  flex-wrap: wrap; /*items wrap to next line if they don't fit */
 }
 
 .wordmark {
