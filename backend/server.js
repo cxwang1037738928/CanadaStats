@@ -4,14 +4,13 @@ import cors from 'cors';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import axios from 'axios';
+import axios from 'axios'; // auto built in json parsing and sets timeout
 import { pipeline } from '@xenova/transformers';
 
 const allowedOrigins = [
    "https://canadamapped.ca",
    "https://www.canadamapped.ca",
-  'http://localhost:5173',                
-  'http://localhost:3000',                 
+  'http://localhost:5173',        // for local development                      
   process.env.FRONTEND_URL // Pulls live Vercel URL dynamically from AWS Env Variables
 ].filter(Boolean); // Cleans out undefined/empty values
 
@@ -19,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
 const app  = express();
-const PORT = process.env.BACKEND_PORT || process.env.PORT || 9999;
+const PORT = process.env.BACKEND_PORT || 9999;
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -112,8 +111,7 @@ const PROVINCE_MAPPING = {
 };
 
 // Keywords that identify an "aggregate / total" member so we can default to it
-// not perfect since for number of students for example, this would work well
-// but if its unemployment rate, then it just adds up the rate for both genders instead of averaging it.
+
 const AGGREGATE_KW = ['total', 'both sexes', 'both genders', 'all ages', 'all ', 'aggregate'];
 
 // Simple heuristic to identify if a member is an aggregate
@@ -124,10 +122,11 @@ function isAggregate(name) {
 
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
 async function fetchMeta(cubeId) {
-  const r = await axios.post(
+  const r = await axios.post( // auto parses r as JSON
     `${STATCAN}/getCubeMetadata`,
-    [{ productId: parseInt(cubeId) }],
-    { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
+    [{ productId: parseInt(cubeId) }], // body, list of objects
+    { headers: { 'Content-Type': 'application/json' }, 
+     timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
   );
   return r.data?.[0]?.object ?? null;
 }
