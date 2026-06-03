@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
 const app  = express();
-const PORT = process.env.BACKEND_PORT || 9999;
+const PORT = process.env.BACKEND_PORT || process.env.PORT || 9999;
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -120,23 +120,73 @@ function isAggregate(name) {
   return AGGREGATE_KW.some(k => l.includes(k));
 }
 
+/**
+ * Fetches metadata for a given cube ID.
+ * @param {*} cubeId 
+ * @returns [Object], fields include:
+ * {
+"status": "SUCCESS",
+"object": {
+"responseStatusCode": 0,
+"productId": "35100003",
+"cansimId": "251-0008",
+"cubeTitleEn": "Average counts of young persons in provincial and territorial correctional services",
+"cubeTitleFr": "Comptes moyens des adolescents dans les services correctionnels provinciaux et territoriaux",
+"cubeStartDate": "1997-01-01",
+"cubeEndDate": "2015-01-01",
+"frequencyCode": 12,
+"nbSeriesCube": 171,
+"nbDatapointsCube": 3129,
+"releaseTime": "2015-05-09T08:30",
+"archiveStatusCode": "2",
+"archiveStatusEn": "CURRENT - a cube available to the public and that is current",
+"archiveStatusFr": "ACTIF - un cube qui est disponible au public et qui est toujours mise a jour",
+"subjectCode": [
+"350102",
+"4211"
+],
+"surveyCode": [
+"3313"
+],
+"dimension": [
+{
+"dimensionPositionId": 1,
+"dimensionNameEn": "Geography",
+"dimensionNameFr": "Géographie",
+"hasUom": false,
+"member": [
+{
+"memberId": 1,
+"parentMemberId": 15,
+"memberNameEn": "Newfoundland and Labrador",
+"memberNameFr": "Terre-Neuve-et-Labrador",
+"classificationCode": "10",
+"classificationTypeCode": "1",
+"geoLevel": 2,
+"vintage": 2011,
+"terminated": 0,
+"memberUomCode": null
+}
+ */
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
 async function fetchMeta(cubeId) {
   const r = await axios.post( // auto parses r as JSON
     `${STATCAN}/getCubeMetadata`,
-    [{ productId: parseInt(cubeId) }], // body, list of objects
+    [{ productId: parseInt(cubeId) }], // body, list of objects, fetches metadata for the cubeId, can be extended to fetch multiple cubes at once if needed in the future
     { headers: { 'Content-Type': 'application/json' }, 
      timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
   );
-  return r.data?.[0]?.object ?? null;
+  console.log(`Fetched metadata for cube ${cubeId}:`, r.data?.[0]?.object?.titleEn ?? 'No title found');
+  return r.data?.[0]?.object ?? null; // hard coded to return the first result since only one cubeId is requested for now
 }
+
 
 // Fetch a single coordinate for a single province — returns { value, year } or null
 async function fetchCoordinate(cubeId, coordinate) {
   try {
     const r = await axios.post(
       `${STATCAN}/getDataFromCubePidCoordAndLatestNPeriods`,
-      [{ productId: parseInt(cubeId), coordinate, latestN: 1 }],
+      [{ productId: parseInt(cubeId), coordinate, latestN: 1 }], // only go back 1 period for the latest data.
       { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
     );
     // single point response, object contains the data, vectorDataPoint is an array of datapoints
@@ -185,7 +235,10 @@ app.post('/api/search', async (req, res) => {
     // fetches the metadata for each of the top K cubes
     for (const candidate of ranked) {
       const metadata = await fetchMeta(candidate.cubeId);
-      if (!metadata) continue;
+      if (!metadata) {
+
+       // console.warn(`No metadata found for cube ${candidate.cubeId}`);
+        continue;}
       // locates the geography dimension by looking for keywords
       const geoDim = metadata.dimension.find(d =>
         d.dimensionNameEn === 'Geography' || d.dimensionNameEn?.includes('Geography')
