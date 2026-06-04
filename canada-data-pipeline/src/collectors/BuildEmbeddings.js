@@ -119,34 +119,21 @@ async function testApi() {
 // Find all provincial cubes
 // -----------------------------
 async function findProvincialCubes(cubes, maxToCheck = 9000) {
-  const relevantCubes = cubes.filter((cube) => {
-    const title = (cube.cubeTitleEn || "").toLowerCase();
-    const keywords = [
-      "provincial", "territorial", "population", "labour",
-      "employment", "income", "economy", "demographic",
-    ];
-    return keywords.some((kw) => title.includes(kw));
-  });
-
-  const limit = Math.min(relevantCubes.length, maxToCheck);
-  console.log(`\n${relevantCubes.length} potentially relevant cubes — checking first ${limit}...`);
-
+  const limit = Math.min(cubes.length, maxToCheck);
   const provincialCubes = [];
-  const BATCH_SIZE = 3;
 
-  for (let i = 0; i < limit; i += BATCH_SIZE) {
-    const batch = relevantCubes.slice(i, i + BATCH_SIZE);
+  for (let i = 0; i < limit; i++) {
+    const cube = relevantCubes[i];
 
-    const results = await Promise.all(
-      batch.map(async (cube) => {
-        const metadata = await getCubeMetadata(cube.productId);
-        if (!metadata) return null;
+    const metadata = await getCubeMetadata(cube.productId);
 
-        const geographies = getGeographyMembers(metadata);
-        if (!containsAllProvinces(geographies)) return null;
+    if (metadata) {
+      const geographies = getGeographyMembers(metadata);
 
+      if (containsAllProvinces(geographies)) {
         console.log(`\n✓ ${cube.productId}: ${cube.cubeTitleEn}`);
-        return {
+
+        provincialCubes.push({
           cubeId: cube.productId.toString(),
           title: cube.cubeTitleEn,
           startDate: metadata.cubeStartDate,
@@ -156,22 +143,18 @@ async function findProvincialCubes(cubes, maxToCheck = 9000) {
           geographyCount: geographies.length,
           surveyCode: metadata.surveyCode,
           subjectCode: metadata.subjectCode,
-        };
-      })
-    );
-
-    provincialCubes.push(...results.filter(Boolean));
-
-    const processed = Math.min(i + BATCH_SIZE, limit);
+        });
+      }
+    }
+    const processed = i + 1;
     if (processed % 30 === 0 || processed === limit) {
       console.log(
         `Progress: ${processed}/${limit} checked — ${provincialCubes.length} provincial cubes found`
       );
     }
-
-    await new Promise((r) => setTimeout(r, 500));
+    // 50 ms delay before next metadata request
+    await new Promise((r) => setTimeout(r, 50));
   }
-
   return provincialCubes;
 }
 
@@ -232,7 +215,6 @@ async function main() {
     return;
   }
 
-  console.log("\nFetching all cubes...");
   const allCubes = await getAllCubes();
   if (!allCubes.length) {
     console.error("No cubes returned.");
@@ -251,7 +233,7 @@ async function main() {
 
   const cubesWithEmbeddings = await addEmbeddings(provincialCubes);
 
-  const outPath = "./cubesWithEmbeddings_test.json";
+  const outPath = "./cubesWithEmbeddings.json";
   await fs.writeFile(outPath, JSON.stringify(cubesWithEmbeddings, null, 2));
 
   const stats = await fs.stat(outPath);
