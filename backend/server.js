@@ -18,7 +18,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
 const app  = express();
-const PORT = process.env.BACKEND_PORT || process.env.PORT || 9999;
+// Backend port is used only for local development
+const PORT = process.env.BACKEND_PORT || process.env.PORT || 5000; // Don't remove process.env.PORT since render relies on it.
+
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -45,7 +47,7 @@ let cachedCubes    = null;
 let embeddingModel = null;
 
 // ── Startup loaders ───────────────────────────────────────────────────────────
-// loads the cube metadata from the pre-generated file with embeddings
+// loads the cube metadata as json objects from the pre-generated file with embeddings
 async function loadCubes() {
   if (cachedCubes) return cachedCubes; // return cached version if already loaded, saves file read time on subsequent requests
   
@@ -79,6 +81,13 @@ async function loadCubes() {
   }
 }
 // load the embedding once once at startup anc cache it
+// Outputs tensor with the properties below:
+// Tensor {
+//   dims: [ 2, 384 ],
+//   type: 'float32',
+//   data: Float32Array(768) [ 0.04592696577310562, 0.07328180968761444, ... ],
+//   size: 768
+// }
 async function getEmbeddingModel() {
   if (!embeddingModel) {
     console.log('Loading embedding model…');
@@ -119,12 +128,10 @@ function isAggregate(name) {
   const l = (name ?? '').toLowerCase();
   return AGGREGATE_KW.some(k => l.includes(k));
 }
-
-/**
- * Fetches metadata for a given cube ID.
- * @param {*} cubeId 
- * @returns [Object], fields include:
- * {
+// Fetches the cube metadata for a given cubeId, returns an object with the cube metadata
+/* Cube metadata example:
+[
+{
 "status": "SUCCESS",
 "object": {
 "responseStatusCode": 0,
@@ -166,8 +173,12 @@ function isAggregate(name) {
 "vintage": 2011,
 "terminated": 0,
 "memberUomCode": null
-}
- */
+},
+… repeating objects
+"footnote":[{"footnoteId":1,"footnotesEn":"Corrections Key Indicator Report for Youth, Canadian Centre for Justice and Community Safety Statistics (CCJCSS), Statistics Canada. Fiscal year (April 1 through March 31). Due to rounding,
+… repeating objects
+"link":{"footnoteId":22,"dimensionPositionId":2,"memberId":12}}],"correctionFootnote":[],"geoAttribute":[],"correction":[],"issueDate":"2021-04-13"}}]
+*/
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
 async function fetchMeta(cubeId) {
   const r = await axios.post( // auto parses r as JSON
@@ -176,8 +187,8 @@ async function fetchMeta(cubeId) {
     { headers: { 'Content-Type': 'application/json' }, 
      timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
   );
-  console.log(`Fetched metadata for cube ${cubeId}:`, r.data?.[0]?.object?.titleEn ?? 'No title found');
-  return r.data?.[0]?.object ?? null; // hard coded to return the first result since only one cubeId is requested for now
+  console.log(`Fetched metadata for cube ${cubeId}:`, r.data?.[0]?.object?.cubeTitleEn ?? 'No title found');
+  return r.data?.[0]?.object ?? null;
 }
 
 
@@ -204,31 +215,38 @@ async function fetchCoordinate(cubeId, coordinate) {
 }
 
 // ── POST /api/search ──────────────────────────────────────────────────────────
-// compares query embedding with the store cube embeddings and finds the most semanticaly similar cubes
+// compares query embedding with the stored cube embeddings and finds the most semanticaly similar cubes
 // then validates that the cube contains provincial data and extract the meta data about
 // dimensions and provinces
+/**
+ * Request body: query, topK (optional, default 5)
+ * Response: {}
+ *  
+ */
 app.post('/api/search', async (req, res) => {
   try {
     const { query, topK = 5 } = req.body;
     if (!query?.trim()) return res.status(400).json({ error: 'Query is required' });
 
     console.log(`\n${'─'.repeat(60)}\nSearching: "${query}"`);
-    
     const cubes = await loadCubes();
     const model = await getEmbeddingModel();
     const emb   = await model(query, { pooling: 'mean', normalize: true });
-    const qVec  = Array.from(emb.data);
+    const qVec  = Array.from(emb.data); // creates new array from the embedding data
+
+    // console.log(`\n ${'-'.repeat(60)}$\n`);
+    // console.log('qVec sample:', qVec.slice(0,5), 'qVec length:', qVec.length);
     
     // cube structure: { cubeId, title, embedding}
     // performs a cosine similary check between the query embedding and each
     // cube embedding, then sorts by similarity and takes the top K results
     const ranked = cubes
       .map(c => ({ cubeId: c.cubeId, title: c.title, similarity: cosineSimilarity(qVec, c.embedding) }))
-      .sort((a, b) => b.similarity - a.similarity)
+      .sort((a, b) => b.similarity - a.similarity) // sort in descending order
       .slice(0, topK);
     
     console.log('Top results:');
-    // logs the top K results with their similarity scores
+    // logs the top K results with their similarity scores, truncated title to 60 characters and similarity percentage to 1 decimal place
     ranked.forEach((r, i) =>
       console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%)`)
     );
@@ -243,13 +261,14 @@ app.post('/api/search', async (req, res) => {
       const geoDim = metadata.dimension.find(d =>
         d.dimensionNameEn === 'Geography' || d.dimensionNameEn?.includes('Geography')
       );
+
       // does not consider cubes that do not have a geography dimension, since we need provincial data for the map
       if (!geoDim) continue;
       // removes members that are not provinces based on PROVINCE_MAPPING
-      const provinces = geoDim.member
-        .filter(m => PROVINCE_MAPPING[m.memberNameEn])
-        // transforms the member list into a list of objects with province name and memberId
-        .map(m => ({ name: PROVINCE_MAPPING[m.memberNameEn], memberId: m.memberId }));
+
+      const provinces = geoDim.member // object with all the memebrs of the geography dimension
+        .filter(m => PROVINCE_MAPPING[m.memberNameEn]) // transforms the member list into a list of objects with province name and memberId
+        .map(m => ({ name: PROVINCE_MAPPING[m.memberNameEn], memberId: m.memberId })); // used in the /api/data endpoint below to build the coordinates
 
       // if there are less than 8 provinces, then the cube is skipped
       if (provinces.length < 8) continue; 
@@ -257,7 +276,7 @@ app.post('/api/search', async (req, res) => {
       let unit = null;
 
       const uomDim = metadata.dimension.find(d => d.hasUOM === true);
-      // attempts to find the UoM, #TODO: this always fails so it needs another look in the future
+      // attempts to find the UoM
       if (uomDim?.member?.length) {
         const m = uomDim.member.find(m => m.memberUomCode) ?? uomDim.member[0];
         unit = m?.memberNameEn ?? null;
@@ -271,39 +290,38 @@ app.post('/api/search', async (req, res) => {
       const dimensionMeta = metadata.dimension
         // creates a new array where each dimension object is paired with its index in the array
         .map((dim, idx) => ({ dim, idx }))
-        // removes geography dimension 
+        // removes geography dimension since its handled separately
         .filter(({ idx }) => idx !== geoDimIndex)
-        // transform each remaining dimension into:
+        // transform each remaining dimension into example below:
         /** {
               name: "Time",
               dimIndex: 1,
-              members: [
-                { name: "2020", memberId: 101, isAggregate: false },
-                { name: "2021", memberId: 102, isAggregate: false }
+              members: [...,
               ]
             },
             {
-              name: "Sex",
+              name: "Age Group",
               dimIndex: 2,
-              members: [
-                { name: "Male", memberId: 1, isAggregate: false },
-                { name: "Female", memberId: 2, isAggregate: false }
+              members: [ ...,
               ]
             }
           ];
-         * 
          */
+        // #TODO: If StatCan changes dimIndex to not be 0 based this would break
         .map(({ dim, idx }) => ({
           name:     dim.dimensionNameEn,
           dimIndex: idx,           
           members:  (dim.member ?? []) // use an empty array if there are no members
-            .filter(m => m.memberId && m.memberId !== 0)
+            .filter(m => m.memberId && m.memberId !== 0) // removes members with no memberId or memberId of 0 since memberId starts at 1
             .map(m => ({
               name:        m.memberNameEn,
               memberId:    m.memberId,
               isAggregate: isAggregate(m.memberNameEn),
             })),
         }));
+
+      console.log(`dimensionMeta sample:`, dimensionMeta); 
+      console.log(`dimensionMeta members sample:`, dimensionMeta[0]?.members[0]?.name);
       // padds it with leading zeros until it is 8 units long
       const pid     = String(candidate.cubeId).padStart(8, '0');
       // removes any hyphens from the cube ID
@@ -339,6 +357,10 @@ app.post('/api/search', async (req, res) => {
 // ── POST /api/data ────────────────────────────────────────────────────────────
 // Builds StatCan coordinates per province and then fetch the data for each province
 // based on the selected cube and dimensions
+// Suppose a cube as dimensions: 1: geography, 2: time, 3: age group. 
+// and each of those dimensions have members such as "Ontario" with memeberId 2 for geography,
+// "2020" with memberId 10 for time, and "15-24" with memberId 1 for age group, each with their own memberId.
+// Then 2, 10, 1, 0, 0, ... would give the row in the cube for Ontario, 15-24 age group, in 2020.
 app.post('/api/data', async (req, res) => {
   try {
     const { cubeId, geoDimIndex, provinces, selections } = req.body;
@@ -400,4 +422,4 @@ app.get('/api/health', (_req, res) =>
 );
 
 app.listen(PORT, () => console.log(`\n🚀 Server running on port ${PORT}`));
-loadCubes().catch(console.error);
+loadCubes().catch(console.error); // loads the cubes on server start 
