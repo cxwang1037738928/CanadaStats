@@ -108,10 +108,10 @@ async function testApi() {
   console.log("Testing API with cube 35100003...");
   const metadata = await getCubeMetadata(35100003);
   if (metadata) {
-    console.log(`  ✓ API OK — "${metadata.cubeTitleEn}"`);
+    console.log(` API OK — "${metadata.cubeTitleEn}"`);
     return true;
   }
-  console.log("  ✗ API test failed");
+  console.log("  API test failed");
   return false;
 }
 

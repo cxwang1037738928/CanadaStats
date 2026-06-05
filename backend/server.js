@@ -361,6 +361,7 @@ app.post('/api/search', async (req, res) => {
 // and each of those dimensions have members such as "Ontario" with memeberId 2 for geography,
 // "2020" with memberId 10 for time, and "15-24" with memberId 1 for age group, each with their own memberId.
 // Then 2, 10, 1, 0, 0, ... would give the row in the cube for Ontario, 15-24 age group, in 2020.
+// returns a list of results where each result is { province: province.name, value: result.value, year: result.year }
 app.post('/api/data', async (req, res) => {
   try {
     const { cubeId, geoDimIndex, provinces, selections } = req.body;

@@ -127,6 +127,7 @@ export default function CanadaMap() {
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(raw => {
         const seen = new Set();
+        // sets the GeoJSON features to a state
         setGeoFeatures(raw.features.filter(f => {
           const n = f.properties?.name;
           if (!n || seen.has(n)) return false;
@@ -181,6 +182,7 @@ export default function CanadaMap() {
         const def = agg ?? dim.members[0]; // default to first member if no aggregate is found
         if (def) defaultSel[dim.dimIndex] = def.memberId;
       }
+      // By default fetches data from aggregate memebers, otherwise first member of each dimension
       setCubeMeta(json);
       console.log('Cube Metadata:', json);
       setSelections(defaultSel);
@@ -218,6 +220,7 @@ export default function CanadaMap() {
       .attr('width', W).attr('height', H);
     svg.selectAll('*').remove();
 
+    // creates a GEOJSON feature collection from the list of province features.
     const geoCol = { type: 'FeatureCollection', features: geoFeatures };
     // projects cone into 2D plane. set parrallels to minimize distortion for Canadian latitudes, rotate to center on Canada, and fit to available space
     const proj   = d3.geoConicEqualArea()
@@ -412,6 +415,7 @@ export default function CanadaMap() {
                 {/* UI for displaying loading state in filter section */}
                 {dataLoading && <span className="fetching-badge">updating…</span>}
               </div>
+              {/* Dynamically generates a filter for each dimension in cubeMeta */}
               <div className="filter-scroll">
                 {cubeMeta.dimensionMeta.map(dim => (
                   <DimensionFilter
