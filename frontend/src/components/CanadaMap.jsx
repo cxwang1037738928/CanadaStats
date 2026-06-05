@@ -18,6 +18,7 @@ const BLUE_LOW  = '#dbeafe';
 const BLUE_HIGH = '#1e3a8a';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
+// const API_BASE = 'http://localhost:5000'; // for local development
 
 // Helper function to call backend API endpoints with error handling
 async function apiFetch(path, body) {
@@ -120,7 +121,7 @@ export default function CanadaMap() {
   const maxVal = nums.length ? Math.max(...nums) : 1;
 
   // ── GeoJSON ─────────────────────────────────────────────────────────────────
-  // fetch geojson for Canadian provinces, with some basic deduplication to avoid rendering issues (some features have same province name)
+  // fetch geojson for Canadian provinces, with some basic deduplication to avoid rendering issues (some features have same province name), runs once
   useEffect(() => {
     fetch(CANADA_GEOJSON_URL)
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -160,6 +161,7 @@ export default function CanadaMap() {
   }, []);
 
   // ── Search ───────────────────────────────────────────────────────────────────
+  // retrieves the initial cube metadata and default selections for a given search query.
   async function handleSearch() {
     const q = query.trim();
     if (!q) return;
@@ -174,12 +176,15 @@ export default function CanadaMap() {
       const json = await apiFetch(`/api/search`, { query: q, topK: 5 });
       const defaultSel = {};
       for (const dim of json.dimensionMeta) {
-        const agg = dim.members.find(m => m.isAggregate);
-        const def = agg ?? dim.members[0];
+         // return first member with isAggregate true. use .filter() if multiple aggregates per dimension need to be supported
+        const agg = dim?.members.find(m => m.isAggregate); // added ? to handle case where members might be missing
+        const def = agg ?? dim.members[0]; // default to first member if no aggregate is found
         if (def) defaultSel[dim.dimIndex] = def.memberId;
       }
       setCubeMeta(json);
+      console.log('Cube Metadata:', json);
       setSelections(defaultSel);
+      console.log('Default Selections:', defaultSel);
       await fetchData(json, defaultSel);
     } catch (err) {
       setSearchError(err.message);
@@ -206,7 +211,8 @@ export default function CanadaMap() {
 
     const W = containerRef.current.clientWidth  || 900;
     const H = containerRef.current.clientHeight || 520;
-
+    // full re-render of the map by selecting the SVG element and setting its viewbox and dimensions, then removing everything inside it
+    // so the new map can be drawn
     const svg = d3.select(svgRef.current)
       .attr('viewBox', `0 0 ${W} ${H}`)
       .attr('width', W).attr('height', H);

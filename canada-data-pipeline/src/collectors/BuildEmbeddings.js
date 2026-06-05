@@ -147,12 +147,13 @@ async function findProvincialCubes(cubes, maxToCheck = 9000) {
       }
     }
     const processed = i + 1;
+    // print a console log everytime 30 cubes are processed, or at the end of the loop
     if (processed % 30 === 0 || processed === limit) {
       console.log(
         `Progress: ${processed}/${limit} checked — ${provincialCubes.length} provincial cubes found`
       );
     }
-    // 50 ms delay before next metadata request
+    // 50 ms delay before next metadata request, so max 20 requests per second, STATCAN limits 25 requests per ip address per second.
     await new Promise((r) => setTimeout(r, 50));
   }
   return provincialCubes;
