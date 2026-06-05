@@ -212,7 +212,7 @@ async function main() {
   console.log("===========================================\n");
 
   if (!(await testApi())) {
-    console.error("\n❌ API unavailable. Check network connectivity.");
+    console.error("\n API unavailable. Check network connectivity.");
     return;
   }
 

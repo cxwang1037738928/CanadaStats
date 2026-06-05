@@ -110,7 +110,9 @@ export default function CanadaMap() {
   const [tooltip,  setTooltip]  = useState(null);
   const [selected, setSelected] = useState(null);
 
+  // DO NOT REMOVE USEMEMO, IT WILL RE-DRAW THE MAP EVERYTIME ANY STATE IS CHANGED
   // cache the value of the provinces, becomes list of objects where each p is {'province': "Ontario", value: 123, ...}
+  // stops value map from being re-built every re-render
   const valueMap = useMemo(
     () => Object.fromEntries(provinceData.map(p => [p.province, p.value])),
     [provinceData]
@@ -127,7 +129,7 @@ export default function CanadaMap() {
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(raw => {
         const seen = new Set();
-        // sets the GeoJSON features to a state
+        // sets the GeoJSON features to a state, filters out any features with duplicate province names
         setGeoFeatures(raw.features.filter(f => {
           const n = f.properties?.name;
           if (!n || seen.has(n)) return false;
@@ -139,6 +141,7 @@ export default function CanadaMap() {
   }, []);
 
   // ── Fetch data for current selections ────────────────────────────────────────
+  // calls the backend API which generates coordinates and fetches the data values for each province
   const fetchData = useCallback(async (meta, sel) => {
     if (!meta) return;
     setDataLoading(true);
@@ -210,6 +213,13 @@ export default function CanadaMap() {
   // another SVG group of text elements for province labels centered on each province SVG feature
   useEffect(() => {
     if (!geoFeatures || !svgRef.current || !containerRef.current) return;
+
+    const currentWidth = containerRef.current.clientWidth;
+    const currentHeight = containerRef.current.clientHeight;
+  
+    // If the browser reports 0 because the tab is hidden/sleeping, 
+    // exit immediately 
+    if (currentWidth === 0 || currentHeight === 0) return;
 
     const W = containerRef.current.clientWidth  || 900;
     const H = containerRef.current.clientHeight || 520;
@@ -290,7 +300,7 @@ export default function CanadaMap() {
 
   // ── Formatting ───────────────────────────────────────────────────────────────
   // values displayed on the side bar
-  const unit       = cubeMeta?.unit ?? null;
+  const unit       = cubeMeta?.uom ?? cubeMeta?.memberUomCode ?? null;
   const metricName = cubeMeta?.title?.split(',')[0]?.trim() ?? '';
   const rankings   = [...provinceData].sort((a,b) => b.value - a.value);
 
