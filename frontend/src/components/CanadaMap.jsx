@@ -17,8 +17,8 @@ const ABBR = {
 const BLUE_LOW  = '#dbeafe';
 const BLUE_HIGH = '#1e3a8a';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? '';
-// const API_BASE = 'http://localhost:5000'; // for local development
+// const API_BASE = import.meta.env.VITE_API_URL ?? '';
+const API_BASE = 'http://localhost:5000'; // for local development
 
 // Helper function to call backend API endpoints with error handling
 async function apiFetch(path, body) {
@@ -393,7 +393,7 @@ export default function CanadaMap() {
           widget for displaying loading state */}
           {dataLoading && (
             <div className="fetching-overlay">
-              <div className="spinner-sm" />Fetching province data…
+              <div className="spinner-sm" />Fetching province data… This may take a while on the first request
             </div>
           )}
         </div>
