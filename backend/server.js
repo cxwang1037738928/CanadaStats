@@ -68,7 +68,7 @@ async function loadCubes() {
     resolvedPath = internalBackendPath;
   }
 
-  console.log(`📂 Database file resolved at: ${resolvedPath}`);
+  console.log(` Database file resolved at: ${resolvedPath}`);
   
   try {
     const rawData = await fs.readFile(resolvedPath, 'utf8');
@@ -332,7 +332,7 @@ app.post('/api/search', async (req, res) => {
       // full table URL
       const tableUrl = `https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=${fullPid}`;
 
-      console.log(`✅ Using cube ${candidate.cubeId}: ${candidate.title.slice(0, 60)}`);
+      console.log(`Using cube ${candidate.cubeId}: ${candidate.title.slice(0, 60)}`);
 
       return res.json({
         success: true,
@@ -422,5 +422,5 @@ app.get('/api/health', (_req, res) =>
   res.json({ status: 'healthy', cubesLoaded: !!cachedCubes })
 );
 
-app.listen(PORT, () => console.log(`\n🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`\nServer running on port ${PORT}`));
 loadCubes().catch(console.error); // loads the cubes on server start 
