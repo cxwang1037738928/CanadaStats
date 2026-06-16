@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 // Read input file
 const input = fs.readFileSync('query.txt', 'utf-8');

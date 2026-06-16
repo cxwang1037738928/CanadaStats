@@ -4,8 +4,9 @@ import 'dotenv/config';
 const SERPER_API_KEY = process.env.SERPER_API_KEY;
 const QUERY_FILE = "query.json";
 const OUTPUT_FILE = "searchResults.json";
-const MAX_PAGES = 5;
-const RESULTS_PER_PAGE = 10;
+
+// Hardcoded to 10 to guarantee exactly 1 token/credit per API call
+const RESULTS_PER_PAGE = 10; 
 
 /**
  * Returns true if the URL is from the StatCan domain AND ends with
@@ -19,14 +20,18 @@ function isStatCanPidUrl(url) {
   return /^\d*=dip/i.test(reversed);
 }
 
-async function searchSerper(query, page = 1) {
+async function searchSerper(query) {
   const response = await fetch("https://google.serper.dev/search", {
     method: "POST",
     headers: {
       "X-API-KEY": SERPER_API_KEY,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ q: query, num: RESULTS_PER_PAGE, page }),
+    body: JSON.stringify({ 
+      q: query, 
+      num: RESULTS_PER_PAGE, // Strictly limited to 10 results
+      page: 1                // Always stick to page 1
+    }),
   });
 
   if (!response.ok) {
@@ -44,7 +49,6 @@ async function main() {
     process.exit(1);
   }
 
-  // query.json: [{ "id": 1, "query": "..." }, ...]  OR  a single { "id": 1, "query": "..." }
   const raw = JSON.parse(fs.readFileSync(QUERY_FILE, "utf-8"));
   const queries = Array.isArray(raw) ? raw : [raw];
 
@@ -53,7 +57,7 @@ async function main() {
     process.exit(1);
   }
 
-  const allResults = []; // will hold { id, query, link } objects
+  const allResults = []; 
 
   for (const { id, query } of queries) {
     if (!query?.trim()) {
@@ -62,33 +66,23 @@ async function main() {
     }
 
     console.log(`\nQuery [id=${id}]: ${query}`);
-    console.log("Searching for StatCan links ending in 'pid=<number>'...");
+    console.log("Searching Page 1 (Top 10 results)...");
 
+    const modified_query = `${query} StatCan`;
+    const results = await searchSerper(modified_query);
     let foundForQuery = false;
 
-    for (let page = 1; page <= MAX_PAGES; page++) {
-      console.log(`  Fetching page ${page}...`);
-      const results = await searchSerper(query, page);
-
-      if (!results.length) {
-        console.log("  No more results returned.");
-        break;
+    for (const result of results) {
+      const link = result.link ?? "";
+      if (isStatCanPidUrl(link)) {
+        console.log(`  ✓ Match found: ${link}`);
+        allResults.push({ id, query, link });
+        foundForQuery = true;
       }
-
-      for (const result of results) {
-        const link = result.link ?? "";
-        if (isStatCanPidUrl(link)) {
-          console.log(`  ✓ Match found: ${link}`);
-          allResults.push({ id, query, link });
-          foundForQuery = true;
-        }
-      }
-
-      if (foundForQuery) break;
     }
 
     if (!foundForQuery) {
-      console.log(`  No matching link found for id=${id}.`);
+      console.log(`  No matching link found in the top 10 results for id=${id}.`);
       allResults.push({ id, query, link: null });
     }
   }
