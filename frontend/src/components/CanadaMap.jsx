@@ -17,8 +17,8 @@ const ABBR = {
 const BLUE_LOW  = '#dbeafe';
 const BLUE_HIGH = '#1e3a8a';
 
-// const API_BASE = import.meta.env.VITE_API_URL ?? '';
-const API_BASE = 'http://localhost:5000'; // for local development
+const API_BASE = import.meta.env.VITE_API_URL ?? '';
+// const API_BASE = 'http://localhost:5000'; // for local development
 
 // Helper function to call backend API endpoints with error handling
 async function apiFetch(path, body) {
