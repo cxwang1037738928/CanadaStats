@@ -12,7 +12,15 @@ if (!fs.existsSync(OUTPUT_DIR)) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
-export async function trainAndSaveMLP(trainX, trainY, valX, valY, testX, testY, embeddingDim, numCats) {
+// Turns a model id like "Xenova/all-mpnet-base-v2" into a filesystem-safe
+// string, e.g. "Xenova_all-mpnet-base-v2". Used to namespace saved files per
+// embedding model so training multiple models in a loop doesn't overwrite
+// each other's saved MLP.
+export function safeModelKey(modelId) {
+  return modelId.replace(/[\/\\]/g, "_");
+}
+
+export async function trainAndSaveMLP(modelId, trainX, trainY, valX, valY, testX, testY, embeddingDim, numCats) {
   const model = tf.sequential();
   model.add(tf.layers.dense({ inputShape: [embeddingDim], units: 128, activation: "relu" }));
   model.add(tf.layers.dense({ units: numCats, activation: "softmax" }));
@@ -39,21 +47,65 @@ export async function trainAndSaveMLP(trainX, trainY, valX, valY, testX, testY, 
     }
   });
 
-  // Manual save using fs to bypass the 'file://' protocol handler issue
-  const modelJson = model.toJSON();
-  const weights = await model.getWeights();
-  const weightData = await Promise.all(weights.map(async (w) => ({
-    name: w.name,
-    shape: w.shape,
-    data: Array.from(await w.data())
-  })));
+  // Manual save using fs to bypass the 'file://' protocol handler issue (no
+  // tfjs-node available). IMPORTANT: model.toJSON() does NOT return valid
+  // model topology — it returns a JSON *string* of internal serialization
+  // state that is not the same shape tf.loadLayersModel expects, and is not
+  // safely re-stringifiable. The correct topology object only comes from
+  // model.save() via a custom IOHandler (tf.io.withSaveHandler), which is
+  // the same mechanism @tensorflow/tfjs-node's file:// handler uses
+  // internally — we're just intercepting the artifacts instead of writing
+  // them to a single file ourselves.
+  let artifacts;
+  await model.save(
+    tf.io.withSaveHandler(async (modelArtifacts) => {
+      artifacts = modelArtifacts;
+      return { modelArtifactsInfo: { dateSaved: new Date(), modelTopologyType: "JSON" } };
+    })
+  );
 
-  fs.writeFileSync(path.join(OUTPUT_DIR, "mlp-model.json"), JSON.stringify(modelJson, null, 2));
-  fs.writeFileSync(path.join(OUTPUT_DIR, "mlp-weights.json"), JSON.stringify(weightData, null, 2));
+  // Filenames are namespaced per embedding model (safeModelKey) so training
+  // multiple models in a loop doesn't have each one overwrite the last.
+  const key = safeModelKey(modelId);
+  fs.writeFileSync(
+    path.join(OUTPUT_DIR, `mlp-model__${key}.json`),
+    JSON.stringify(artifacts.modelTopology, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(OUTPUT_DIR, `mlp-weights__${key}.json`),
+    JSON.stringify(
+      {
+        weightSpecs: artifacts.weightSpecs,
+        weightDataBase64: Buffer.from(artifacts.weightData).toString("base64")
+      },
+      null,
+      2
+    )
+  );
   
   // Cleanup
   [trainXs, trainYs, valXs, valYs, testXs, testYs].forEach(t => t.dispose());
   model.dispose();
   
   return history;
+}
+
+// Loads a model previously saved by trainAndSaveMLP for the given modelId,
+// reading the same two namespaced files back via tf.io.fromMemory — the
+// load-side counterpart to tf.io.withSaveHandler used above. This avoids
+// tf.loadLayersModel('file://...'), which requires @tensorflow/tfjs-node
+// and is not available in this project.
+export async function loadMLP(modelId) {
+  const key = safeModelKey(modelId);
+  const modelTopology = JSON.parse(
+    fs.readFileSync(path.join(OUTPUT_DIR, `mlp-model__${key}.json`), "utf8")
+  );
+  const { weightSpecs, weightDataBase64 } = JSON.parse(
+    fs.readFileSync(path.join(OUTPUT_DIR, `mlp-weights__${key}.json`), "utf8")
+  );
+  const weightData = Uint8Array.from(Buffer.from(weightDataBase64, "base64")).buffer;
+
+  return tf.loadLayersModel(
+    tf.io.fromMemory({ modelTopology, weightSpecs, weightData })
+  );
 }

@@ -1,20 +1,11 @@
-// classifier/benchmark_result.js
 import fs from "fs";
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+import { fileURLToPath } from "url";
+import path from "path";
 
 const rawData = JSON.parse(fs.readFileSync("benchmark_results.json", "utf8"));
 const metrics = ['accuracy', 'val_accuracy', 'test_accuracy'];
 
-console.log("=== Final Accuracy Comparison (Terminal Summary) ===");
-console.log("Model".padEnd(30) + "| Final Test | Centroid");
-console.log("-".repeat(50));
-for (const [model, stats] of Object.entries(rawData)) {
-    const final = stats.epochHistory[stats.epochHistory.length - 1];
-    console.log(`${model.padEnd(29)}| ${(final.test_accuracy * 100).toFixed(1)}%     | ${(stats.centroidAcc * 100).toFixed(1)}%`);
-}
-
-// Colors are assigned once per model and reused across every chart so a given
-// model is visually consistent (e.g. same hue in the line charts and the dot plot).
 function colorForModel(index, total) {
     return `hsl(${Math.round((index * 360) / total)}, 70%, 50%)`;
 }
@@ -23,7 +14,6 @@ async function generateCharts() {
     const width = 800;
     const height = 400;
     const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
-
     const modelNames = Object.keys(rawData);
 
     for (const metric of metrics) {
@@ -34,10 +24,9 @@ async function generateCharts() {
             fill: false,
             tension: 0.1
         }));
-        // Add Centroid Baseline as a dashed line for reference
         datasets.push({
             label: 'Centroid Baseline (Avg)',
-            data: [], // Note: Centroid is constant, handled in tooltips/legend
+            data: [],
             borderColor: '#555',
             borderDash: [5, 5],
             borderWidth: 2
@@ -50,8 +39,7 @@ async function generateCharts() {
             },
             options: {
                 plugins: {
-                    title: { display: true, text: `Model Performance: ${metric.toUpperCase()}` },
-                    subtitle: { display: true, text: 'Dashed line represents representative baseline (see terminal for exact values)' }
+                    title: { display: true, text: `Model Performance: ${metric.toUpperCase()}` }
                 }
             }
         };
@@ -63,12 +51,7 @@ async function generateCharts() {
     await generateCentroidScatterChart(chartJSNodeCanvas, modelNames);
 }
 
-// New: scatter/dot plot of per-category centroid accuracy, one color per model.
-// X-axis = category (categorical), Y-axis = accuracy (0-1). Each (model, category)
-// pair contributes one dot.
 async function generateCentroidScatterChart(chartJSNodeCanvas, modelNames) {
-    // Build the full ordered category list from whichever model has the most
-    // complete breakdown (they should all share the same category set).
     const categorySet = new Set();
     for (const model of modelNames) {
         const perCat = rawData[model].centroidPerCategory || {};
@@ -101,34 +84,17 @@ async function generateCentroidScatterChart(chartJSNodeCanvas, modelNames) {
         type: 'scatter',
         data: { datasets },
         options: {
-            plugins: {
-                title: { display: true, text: 'Centroid Accuracy per Category per Model' },
-                legend: { display: true, position: 'top' }
-            },
+            plugins: { title: { display: true, text: 'Centroid Accuracy per Category per Model' } },
             scales: {
                 x: {
                     type: 'linear',
-                    min: -0.5,
-                    max: categories.length - 0.5,
-                    title: { display: true, text: 'Category' },
-                    ticks: {
-                        stepSize: 1,
-                        callback: (value) => categories[value] ?? ''
-                    }
+                    ticks: { callback: (value) => categories[value] ?? '' }
                 },
-                y: {
-                    min: 0,
-                    max: 1,
-                    title: { display: true, text: 'Centroid Accuracy' },
-                    ticks: {
-                        callback: (value) => `${Math.round(value * 100)}%`
-                    }
-                }
+                y: { min: 0, max: 1 }
             }
         }
     };
 
-    // Wider canvas since there are many categories along the x-axis.
     const wideChartJSNodeCanvas = new ChartJSNodeCanvas({ width: 1400, height: 700 });
     const image = await wideChartJSNodeCanvas.renderToBuffer(config);
     fs.writeFileSync('centroid_accuracy_per_category.png', image);

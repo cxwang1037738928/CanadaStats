@@ -1,5 +1,6 @@
 // classifier/train_model.js
 import fs from "fs";
+import path from "path";
 import { pipeline } from "@xenova/transformers";
 import { trainCentroids, saveCentroids } from "./train_centroids.js";
 import { trainAndSaveMLP } from "./train_mlp.js";
@@ -9,9 +10,36 @@ const CATEGORIES = ["Government", "Income, pensions, spending and wealth", "Inte
 
 const labelToId = Object.fromEntries(CATEGORIES.map((c, i) => [c, i]));
 
-function shuffle(arrX, arrY) {
-  const idx = [...arrX.keys()].sort(() => Math.random() - 0.5);
-  return { X: idx.map(i => arrX[i]), y: idx.map(i => arrY[i]) };
+// epochHistory rows look like { epoch, accuracy, val_accuracy, test_accuracy }.
+// CSV split label -> epochHistory field name.
+const SPLIT_FIELDS = {
+  train: "accuracy",
+  val: "val_accuracy",
+  test: "test_accuracy"
+};
+
+function escapeCsvField(value) {
+  const str = String(value);
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+}
+
+// Converts { [modelId]: { epochHistory: [...] } } into long-format CSV rows:
+// model, split, epoch, accuracy — one row per (model, split, epoch).
+function buildEpochAccuracyCsv(benchmarkResults) {
+  const header = ["model", "split", "epoch", "accuracy"];
+  const rows = [header];
+
+  for (const [modelId, stats] of Object.entries(benchmarkResults)) {
+    for (const point of stats.epochHistory) {
+      for (const [split, field] of Object.entries(SPLIT_FIELDS)) {
+        const acc = point[field];
+        if (acc === undefined || acc === null) continue;
+        rows.push([modelId, split, point.epoch, acc]);
+      }
+    }
+  }
+
+  return rows.map(row => row.map(escapeCsvField).join(",")).join("\n") + "\n";
 }
 
 function cosine(a, b) {
@@ -51,9 +79,37 @@ function perCategoryCentroidAccuracy(centroids, X, y) {
   }, {});
 }
 
+// Data now lives pre-split on disk under input_data/outputs/{train,val,test}/,
+// one JSON array per split, each item shaped { id, query, classification }.
+// No more inputs.json/classifications.json lookup-by-id, and no more in-code
+// 70/15/15 shuffle-split — that's all handled by however the splits were built.
+const DATA_DIR = path.join("input_data", "outputs");
+
+function loadSplit(splitName) {
+  const filePath = path.join(DATA_DIR, `${splitName}.json`);
+  return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+// Embeds one split's items with the given embedder, keeping only items whose
+// classification matches a known category.
+async function embedSplit(embedder, items) {
+  const X = [], y = [];
+  for (const item of items) {
+    const cat = item.classification;
+    if (cat && cat in labelToId) {
+      const emb = await embedder(item.query, { pooling: "mean", normalize: true });
+      X.push(Array.from(emb.data));
+      y.push(labelToId[cat]);
+    }
+  }
+  return { X, y };
+}
+
 async function main() {
-  const inputs = JSON.parse(fs.readFileSync("inputs.json", "utf8"));
-  const classifications = JSON.parse(fs.readFileSync("classifications.json", "utf8"));
+  const trainItems = loadSplit("train");
+  const valItems = loadSplit("val");
+  const testItems = loadSplit("test");
+
   const benchmarkResults = {};
 
   for (const modelId of MODELS) {
@@ -62,33 +118,37 @@ async function main() {
     console.log(`STARTING TRAINING FOR MODEL: ${modelId}`);
     console.log(`==================================================`);
     const embedder = await pipeline("feature-extraction", modelId);
-    const X = [], y = [];
-    for (const item of inputs) {
-      const cat = classifications.find(c => String(c.id) === String(item.id))?.classification;
-      if (cat && cat in labelToId) {
-        const emb = await embedder(item.query, { pooling: "mean", normalize: true });
-        X.push(Array.from(emb.data));
-        y.push(labelToId[cat]);
-      }
-    }
-    await embedder.dispose();
-    const embeddingDim = X[0].length;
-    const { X: sX, y: sY } = shuffle(X, y);
-    const trainEnd = Math.floor(sX.length * 0.7);
-    const valEnd = Math.floor(sX.length * 0.85);
 
-    const centroids = trainCentroids(sX.slice(0, trainEnd), sY.slice(0, trainEnd), embeddingDim);
+    const { X: trainX, y: trainY } = await embedSplit(embedder, trainItems);
+    const { X: valX, y: valY } = await embedSplit(embedder, valItems);
+    const { X: testX, y: testY } = await embedSplit(embedder, testItems);
+
+    await embedder.dispose();
+
+    if (trainX.length === 0) {
+      console.log(`No training data for ${modelId}, skipping.`);
+      continue;
+    }
+
+    const embeddingDim = trainX[0].length;
+
+    const centroids = trainCentroids(trainX, trainY, embeddingDim);
     saveCentroids(centroids, modelId);
-    
-    const epochHistory = await trainAndSaveMLP(sX.slice(0, trainEnd), sY.slice(0, trainEnd), sX.slice(trainEnd, valEnd), sY.slice(trainEnd, valEnd), sX.slice(valEnd), sY.slice(valEnd), embeddingDim, CATEGORIES.length);
+
+    const epochHistory = await trainAndSaveMLP(modelId, trainX, trainY, valX, valY, testX, testY, embeddingDim, CATEGORIES.length);
 
     benchmarkResults[modelId] = {
       embeddingDim,
-      centroidAcc: evaluateCentroids(centroids, sX.slice(valEnd), sY.slice(valEnd)),
-      centroidPerCategory: perCategoryCentroidAccuracy(centroids, sX.slice(valEnd), sY.slice(valEnd)),
+      centroidAcc: evaluateCentroids(centroids, testX, testY),
+      centroidPerCategory: perCategoryCentroidAccuracy(centroids, testX, testY),
       epochHistory
     };
   }
   fs.writeFileSync("benchmark_results.json", JSON.stringify(benchmarkResults, null, 2));
+  console.log("Saved benchmark_results.json");
+
+  const csv = buildEpochAccuracyCsv(benchmarkResults);
+  fs.writeFileSync("epoch_accuracy.csv", csv);
+  console.log("Saved epoch_accuracy.csv");
 }
 main().catch(console.error);

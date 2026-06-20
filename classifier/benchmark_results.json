@@ -1,1561 +1,1561 @@
 {
   "Xenova/all-MiniLM-L6-v2": {
     "embeddingDim": 384,
-    "centroidAcc": 0.5047558655675333,
+    "centroidAcc": 0.4076923076923077,
     "centroidPerCategory": {
       "Government": {
-        "accuracy": 0.6785714285714286,
-        "support": 28
+        "accuracy": 0.05555555555555555,
+        "support": 36
       },
       "Income, pensions, spending and wealth": {
-        "accuracy": 0.336,
-        "support": 125
+        "accuracy": 0.24375,
+        "support": 160
       },
       "International trade": {
-        "accuracy": 0.6774193548387096,
-        "support": 31
-      },
-      "Health": {
-        "accuracy": 0.6555555555555556,
-        "support": 90
-      },
-      "Labour": {
-        "accuracy": 0.6846153846153846,
-        "support": 130
-      },
-      "Languages": {
-        "accuracy": 0.8666666666666667,
-        "support": 15
-      },
-      "Manufacturing": {
-        "accuracy": 0.7222222222222222,
-        "support": 18
-      },
-      "Population and demography": {
-        "accuracy": 0.2901960784313726,
-        "support": 255
-      },
-      "Prices and price indexes": {
-        "accuracy": 0.9772727272727273,
-        "support": 44
-      },
-      "Statistical methods": {
-        "accuracy": 0,
-        "support": 2
-      },
-      "Retail and wholesale": {
-        "accuracy": 0.4666666666666667,
-        "support": 15
-      },
-      "Business and consumer services and culture": {
-        "accuracy": 0.7931034482758621,
-        "support": 145
-      },
-      "Digital economy and society": {
-        "accuracy": 0.21052631578947367,
-        "support": 19
-      },
-      "Transportation": {
-        "accuracy": 0.8051948051948052,
-        "support": 77
-      },
-      "Travel and tourism": {
-        "accuracy": 0.5161290322580645,
-        "support": 31
-      },
-      "Energy": {
-        "accuracy": 0.5714285714285714,
-        "support": 7
-      },
-      "Science and technology": {
-        "accuracy": 0.4666666666666667,
-        "support": 30
-      },
-      "Agriculture and food": {
-        "accuracy": 0.9375,
-        "support": 32
-      },
-      "Business performance and ownership": {
-        "accuracy": 0.625,
-        "support": 32
-      },
-      "Construction": {
-        "accuracy": 0.6666666666666666,
-        "support": 6
-      },
-      "Crime and justice": {
-        "accuracy": 0.96,
-        "support": 25
-      },
-      "Economic accounts": {
-        "accuracy": 0.46153846153846156,
-        "support": 13
-      },
-      "Education, training and learning": {
-        "accuracy": 0.7307692307692307,
-        "support": 26
-      },
-      "Environment": {
-        "accuracy": 0.9375,
-        "support": 32
-      },
-      "Families, households and marital status": {
-        "accuracy": 0.5555555555555556,
-        "support": 9
-      },
-      "Indigenous peoples": {
-        "accuracy": 0.6666666666666666,
-        "support": 6
-      },
-      "Children and youth": {
-        "accuracy": 0.5,
-        "support": 8
-      },
-      "Immigration and ethnocultural diversity": {
-        "accuracy": 0.6363636363636364,
-        "support": 11
-      },
-      "Older adults and population aging": {
-        "accuracy": 1,
-        "support": 4
-      },
-      "Society and community": {
-        "accuracy": 0.05415162454873646,
-        "support": 277
-      },
-      "Housing": {
-        "accuracy": 0.8529411764705882,
-        "support": 34
-      }
-    },
-    "epochHistory": [
-      {
-        "epoch": 0,
-        "accuracy": 0.41876277327537537,
-        "val_accuracy": 0.5697969794273376,
-        "test_accuracy": 0.5434368848800659
-      },
-      {
-        "epoch": 1,
-        "accuracy": 0.640244722366333,
-        "val_accuracy": 0.6732233762741089,
-        "test_accuracy": 0.6277742385864258
-      },
-      {
-        "epoch": 2,
-        "accuracy": 0.7048266530036926,
-        "val_accuracy": 0.6998730897903442,
-        "test_accuracy": 0.6670894026756287
-      },
-      {
-        "epoch": 3,
-        "accuracy": 0.740992546081543,
-        "val_accuracy": 0.7233502268791199,
-        "test_accuracy": 0.6810399293899536
-      },
-      {
-        "epoch": 4,
-        "accuracy": 0.7662814855575562,
-        "val_accuracy": 0.7341370582580566,
-        "test_accuracy": 0.6867470145225525
-      },
-      {
-        "epoch": 5,
-        "accuracy": 0.7838205695152283,
-        "val_accuracy": 0.7417512536048889,
-        "test_accuracy": 0.712745726108551
-      },
-      {
-        "epoch": 6,
-        "accuracy": 0.7955132722854614,
-        "val_accuracy": 0.7639594078063965,
-        "test_accuracy": 0.7292327284812927
-      },
-      {
-        "epoch": 7,
-        "accuracy": 0.8125085234642029,
-        "val_accuracy": 0.7614213228225708,
-        "test_accuracy": 0.7343056201934814
-      },
-      {
-        "epoch": 8,
-        "accuracy": 0.8193066120147705,
-        "val_accuracy": 0.7690355181694031,
-        "test_accuracy": 0.7387444376945496
-      },
-      {
-        "epoch": 9,
-        "accuracy": 0.8311353325843811,
-        "val_accuracy": 0.779187798500061,
-        "test_accuracy": 0.7476220726966858
-      },
-      {
-        "epoch": 10,
-        "accuracy": 0.8392930030822754,
-        "val_accuracy": 0.7829949259757996,
-        "test_accuracy": 0.7552314400672913
-      },
-      {
-        "epoch": 11,
-        "accuracy": 0.8451393842697144,
-        "val_accuracy": 0.7829949259757996,
-        "test_accuracy": 0.7571337819099426
-      },
-      {
-        "epoch": 12,
-        "accuracy": 0.8543847799301147,
-        "val_accuracy": 0.7899746298789978,
-        "test_accuracy": 0.7615725994110107
-      },
-      {
-        "epoch": 13,
-        "accuracy": 0.8585996031761169,
-        "val_accuracy": 0.7944162487983704,
-        "test_accuracy": 0.756499707698822
-      },
-      {
-        "epoch": 14,
-        "accuracy": 0.86594158411026,
-        "val_accuracy": 0.7950507402420044,
-        "test_accuracy": 0.7672796249389648
-      },
-      {
-        "epoch": 15,
-        "accuracy": 0.8696125149726868,
-        "val_accuracy": 0.7956852912902832,
-        "test_accuracy": 0.7679137587547302
-      },
-      {
-        "epoch": 16,
-        "accuracy": 0.8770904541015625,
-        "val_accuracy": 0.8052030205726624,
-        "test_accuracy": 0.7723525762557983
-      },
-      {
-        "epoch": 17,
-        "accuracy": 0.8794018030166626,
-        "val_accuracy": 0.8013959527015686,
-        "test_accuracy": 0.7742549180984497
-      },
-      {
-        "epoch": 18,
-        "accuracy": 0.8855201005935669,
-        "val_accuracy": 0.8001269102096558,
-        "test_accuracy": 0.7748890519142151
-      },
-      {
-        "epoch": 19,
-        "accuracy": 0.8872875571250916,
-        "val_accuracy": 0.807741105556488,
-        "test_accuracy": 0.7793278098106384
-      },
-      {
-        "epoch": 20,
-        "accuracy": 0.895309329032898,
-        "val_accuracy": 0.8052030205726624,
-        "test_accuracy": 0.7755231261253357
-      },
-      {
-        "epoch": 21,
-        "accuracy": 0.8951733708381653,
-        "val_accuracy": 0.8052030205726624,
-        "test_accuracy": 0.7818642854690552
-      },
-      {
-        "epoch": 22,
-        "accuracy": 0.9014276266098022,
-        "val_accuracy": 0.8045685291290283,
-        "test_accuracy": 0.7812302112579346
-      },
-      {
-        "epoch": 23,
-        "accuracy": 0.9050986170768738,
-        "val_accuracy": 0.8058375716209412,
-        "test_accuracy": 0.7818642854690552
-      },
-      {
-        "epoch": 24,
-        "accuracy": 0.9106730222702026,
-        "val_accuracy": 0.8109136819839478,
-        "test_accuracy": 0.7793278098106384
-      },
-      {
-        "epoch": 25,
-        "accuracy": 0.9113528728485107,
-        "val_accuracy": 0.8140863180160522,
-        "test_accuracy": 0.7818642854690552
-      },
-      {
-        "epoch": 26,
-        "accuracy": 0.9151597619056702,
-        "val_accuracy": 0.8052030205726624,
-        "test_accuracy": 0.7786937355995178
-      },
-      {
-        "epoch": 27,
-        "accuracy": 0.9180150032043457,
-        "val_accuracy": 0.8109136819839478,
-        "test_accuracy": 0.7831325531005859
-      },
-      {
-        "epoch": 28,
-        "accuracy": 0.9226377010345459,
-        "val_accuracy": 0.8083756566047668,
-        "test_accuracy": 0.7818642854690552
-      },
-      {
-        "epoch": 29,
-        "accuracy": 0.9244052171707153,
-        "val_accuracy": 0.8052030205726624,
-        "test_accuracy": 0.7850348949432373
-      }
-    ]
-  },
-  "Xenova/all-MiniLM-L12-v2": {
-    "embeddingDim": 384,
-    "centroidAcc": 0.5168040583386176,
-    "centroidPerCategory": {
-      "Government": {
-        "accuracy": 0.64,
-        "support": 25
-      },
-      "Income, pensions, spending and wealth": {
-        "accuracy": 0.39097744360902253,
-        "support": 133
-      },
-      "International trade": {
-        "accuracy": 0.7241379310344828,
+        "accuracy": 0.3103448275862069,
         "support": 29
       },
       "Health": {
-        "accuracy": 0.46956521739130436,
-        "support": 115
+        "accuracy": 0.4098360655737705,
+        "support": 122
       },
       "Labour": {
-        "accuracy": 0.7898550724637681,
-        "support": 138
+        "accuracy": 0.16822429906542055,
+        "support": 107
       },
       "Languages": {
-        "accuracy": 1,
+        "accuracy": 0.3333333333333333,
         "support": 6
       },
       "Manufacturing": {
-        "accuracy": 0.8571428571428571,
-        "support": 7
+        "accuracy": 0.4,
+        "support": 30
       },
       "Population and demography": {
-        "accuracy": 0.3155893536121673,
-        "support": 263
+        "accuracy": 0.3194444444444444,
+        "support": 216
       },
       "Prices and price indexes": {
-        "accuracy": 0.8064516129032258,
-        "support": 62
+        "accuracy": 0.859375,
+        "support": 64
       },
       "Statistical methods": {
         "accuracy": 1,
         "support": 1
       },
       "Retail and wholesale": {
-        "accuracy": 0.78125,
-        "support": 32
+        "accuracy": 0.45714285714285713,
+        "support": 35
       },
       "Business and consumer services and culture": {
-        "accuracy": 0.6484375,
-        "support": 128
+        "accuracy": 0.9743589743589743,
+        "support": 117
       },
       "Digital economy and society": {
-        "accuracy": 0.5714285714285714,
-        "support": 7
+        "accuracy": 0,
+        "support": 12
       },
       "Transportation": {
-        "accuracy": 0.7866666666666666,
-        "support": 75
+        "accuracy": 1,
+        "support": 52
       },
       "Travel and tourism": {
-        "accuracy": 0.3888888888888889,
-        "support": 18
+        "accuracy": 0,
+        "support": 26
       },
       "Energy": {
-        "accuracy": 1,
-        "support": 7
+        "accuracy": 0.8571428571428571,
+        "support": 21
       },
       "Science and technology": {
-        "accuracy": 0.32,
-        "support": 25
+        "accuracy": 0,
+        "support": 13
       },
       "Agriculture and food": {
-        "accuracy": 1,
-        "support": 29
+        "accuracy": 0.8611111111111112,
+        "support": 36
       },
       "Business performance and ownership": {
-        "accuracy": 0.8095238095238095,
-        "support": 21
+        "accuracy": 0.391304347826087,
+        "support": 23
       },
       "Construction": {
         "accuracy": 1,
         "support": 4
       },
       "Crime and justice": {
-        "accuracy": 0.9642857142857143,
-        "support": 28
+        "accuracy": 1,
+        "support": 19
       },
       "Economic accounts": {
-        "accuracy": 0.9166666666666666,
-        "support": 12
+        "accuracy": 1,
+        "support": 16
       },
       "Education, training and learning": {
-        "accuracy": 0.8076923076923077,
-        "support": 26
-      },
-      "Environment": {
-        "accuracy": 0.96875,
+        "accuracy": 0.84375,
         "support": 32
       },
+      "Environment": {
+        "accuracy": 0.5,
+        "support": 20
+      },
       "Families, households and marital status": {
-        "accuracy": 0.5833333333333334,
-        "support": 12
-      },
-      "Indigenous peoples": {
-        "accuracy": 0.75,
-        "support": 12
-      },
-      "Children and youth": {
-        "accuracy": 0.2,
+        "accuracy": 0.8,
         "support": 5
       },
-      "Immigration and ethnocultural diversity": {
-        "accuracy": 0.75,
-        "support": 8
-      },
-      "Older adults and population aging": {
+      "Indigenous peoples": {
         "accuracy": 1,
         "support": 5
       },
+      "Children and youth": {
+        "accuracy": 0.07142857142857142,
+        "support": 14
+      },
+      "Immigration and ethnocultural diversity": {
+        "accuracy": 1,
+        "support": 41
+      },
+      "Older adults and population aging": {
+        "accuracy": 0,
+        "support": 0
+      },
       "Society and community": {
-        "accuracy": 0.08759124087591241,
-        "support": 274
+        "accuracy": 0.02962962962962963,
+        "support": 270
       },
       "Housing": {
-        "accuracy": 0.8421052631578947,
-        "support": 38
+        "accuracy": 0.14285714285714285,
+        "support": 28
       }
     },
     "epochHistory": [
       {
         "epoch": 0,
-        "accuracy": 0.4148198664188385,
-        "val_accuracy": 0.5615482330322266,
-        "test_accuracy": 0.5935320258140564
+        "accuracy": 0.5279858708381653,
+        "val_accuracy": 0.3900311589241028,
+        "test_accuracy": 0.5346153974533081
       },
       {
         "epoch": 1,
-        "accuracy": 0.618354856967926,
-        "val_accuracy": 0.635152280330658,
-        "test_accuracy": 0.6715282201766968
+        "accuracy": 0.7934087514877319,
+        "val_accuracy": 0.3725856840610504,
+        "test_accuracy": 0.5730769038200378
       },
       {
         "epoch": 2,
-        "accuracy": 0.690958559513092,
-        "val_accuracy": 0.6878172755241394,
-        "test_accuracy": 0.7203550934791565
+        "accuracy": 0.8386218547821045,
+        "val_accuracy": 0.38068535923957825,
+        "test_accuracy": 0.571794867515564
       },
       {
         "epoch": 3,
-        "accuracy": 0.7265805602073669,
-        "val_accuracy": 0.6973350048065186,
-        "test_accuracy": 0.7406467795372009
+        "accuracy": 0.8613646030426025,
+        "val_accuracy": 0.37196260690689087,
+        "test_accuracy": 0.5429487228393555
       },
       {
         "epoch": 4,
-        "accuracy": 0.7462950348854065,
-        "val_accuracy": 0.7087563276290894,
-        "test_accuracy": 0.7507926225662231
+        "accuracy": 0.8781152367591858,
+        "val_accuracy": 0.3657320737838745,
+        "test_accuracy": 0.5108974575996399
       },
       {
         "epoch": 5,
-        "accuracy": 0.7688647508621216,
-        "val_accuracy": 0.7220812439918518,
-        "test_accuracy": 0.7647432088851929
+        "accuracy": 0.8925507664680481,
+        "val_accuracy": 0.3626168370246887,
+        "test_accuracy": 0.5051282048225403
       },
       {
         "epoch": 6,
-        "accuracy": 0.7823249697685242,
-        "val_accuracy": 0.7379441857337952,
-        "test_accuracy": 0.7691819667816162
+        "accuracy": 0.9027645587921143,
+        "val_accuracy": 0.3725856840610504,
+        "test_accuracy": 0.5108974575996399
       },
       {
         "epoch": 7,
-        "accuracy": 0.7974167466163635,
-        "val_accuracy": 0.7519035339355469,
-        "test_accuracy": 0.7755231261253357
+        "accuracy": 0.9105270504951477,
+        "val_accuracy": 0.37632399797439575,
+        "test_accuracy": 0.5230769515037537
       },
       {
         "epoch": 8,
-        "accuracy": 0.807341992855072,
-        "val_accuracy": 0.7519035339355469,
-        "test_accuracy": 0.7824984192848206
+        "accuracy": 0.9170638918876648,
+        "val_accuracy": 0.35638630390167236,
+        "test_accuracy": 0.5057692527770996
       },
       {
         "epoch": 9,
-        "accuracy": 0.8130523562431335,
-        "val_accuracy": 0.7563451528549194,
-        "test_accuracy": 0.7837666273117065
+        "accuracy": 0.9227836728096008,
+        "val_accuracy": 0.3632398843765259,
+        "test_accuracy": 0.5128205418586731
       },
       {
         "epoch": 10,
-        "accuracy": 0.8243371844291687,
-        "val_accuracy": 0.7664974331855774,
-        "test_accuracy": 0.7920101284980774
+        "accuracy": 0.9286395907402039,
+        "val_accuracy": 0.3601246178150177,
+        "test_accuracy": 0.5185897350311279
       },
       {
         "epoch": 11,
-        "accuracy": 0.8323589563369751,
-        "val_accuracy": 0.7722080945968628,
-        "test_accuracy": 0.790107786655426
+        "accuracy": 0.9325889348983765,
+        "val_accuracy": 0.33831775188446045,
+        "test_accuracy": 0.5032051205635071
       },
       {
         "epoch": 12,
-        "accuracy": 0.8384772539138794,
-        "val_accuracy": 0.7728426456451416,
-        "test_accuracy": 0.7863031029701233
+        "accuracy": 0.9343593120574951,
+        "val_accuracy": 0.34953272342681885,
+        "test_accuracy": 0.5102564096450806
       },
       {
         "epoch": 13,
-        "accuracy": 0.8459551334381104,
-        "val_accuracy": 0.7741116881370544,
-        "test_accuracy": 0.78883957862854
+        "accuracy": 0.9417132139205933,
+        "val_accuracy": 0.3570093512535095,
+        "test_accuracy": 0.5160256624221802
       },
       {
         "epoch": 14,
-        "accuracy": 0.8543847799301147,
-        "val_accuracy": 0.7741116881370544,
-        "test_accuracy": 0.7907419204711914
+        "accuracy": 0.9463434815406799,
+        "val_accuracy": 0.36822429299354553,
+        "test_accuracy": 0.5108974575996399
       },
       {
         "epoch": 15,
-        "accuracy": 0.8583276867866516,
-        "val_accuracy": 0.7766497731208801,
-        "test_accuracy": 0.7977172136306763
+        "accuracy": 0.949884295463562,
+        "val_accuracy": 0.36386293172836304,
+        "test_accuracy": 0.5147435665130615
       },
       {
         "epoch": 16,
-        "accuracy": 0.8637661933898926,
-        "val_accuracy": 0.778553307056427,
-        "test_accuracy": 0.7989854216575623
+        "accuracy": 0.9519270658493042,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5115384459495544
       },
       {
         "epoch": 17,
-        "accuracy": 0.8685248494148254,
-        "val_accuracy": 0.7848984599113464,
-        "test_accuracy": 0.8053265810012817
+        "accuracy": 0.955059289932251,
+        "val_accuracy": 0.34641745686531067,
+        "test_accuracy": 0.49935898184776306
       },
       {
         "epoch": 18,
-        "accuracy": 0.8720598220825195,
-        "val_accuracy": 0.7766497731208801,
-        "test_accuracy": 0.8008877635002136
+        "accuracy": 0.9569658637046814,
+        "val_accuracy": 0.35950157046318054,
+        "test_accuracy": 0.5083333253860474
       },
       {
         "epoch": 19,
-        "accuracy": 0.8776342868804932,
-        "val_accuracy": 0.7874365448951721,
-        "test_accuracy": 0.8002536296844482
+        "accuracy": 0.9607790112495422,
+        "val_accuracy": 0.3470405042171478,
+        "test_accuracy": 0.5083333253860474
       },
       {
         "epoch": 20,
-        "accuracy": 0.8804894685745239,
-        "val_accuracy": 0.7804568409919739,
-        "test_accuracy": 0.7970830798149109
+        "accuracy": 0.9640474319458008,
+        "val_accuracy": 0.3489096462726593,
+        "test_accuracy": 0.5147435665130615
       },
       {
         "epoch": 21,
-        "accuracy": 0.8879674077033997,
-        "val_accuracy": 0.7918781638145447,
-        "test_accuracy": 0.802790105342865
+        "accuracy": 0.9645921587944031,
+        "val_accuracy": 0.36074766516685486,
+        "test_accuracy": 0.5185897350311279
       },
       {
         "epoch": 22,
-        "accuracy": 0.8910945057868958,
-        "val_accuracy": 0.7982233762741089,
-        "test_accuracy": 0.8053265810012817
+        "accuracy": 0.9671796560287476,
+        "val_accuracy": 0.35950157046318054,
+        "test_accuracy": 0.517307698726654
       },
       {
         "epoch": 23,
-        "accuracy": 0.8932698965072632,
-        "val_accuracy": 0.789340078830719,
-        "test_accuracy": 0.7958148121833801
+        "accuracy": 0.9699033498764038,
+        "val_accuracy": 0.3632398843765259,
+        "test_accuracy": 0.5153846144676208
       },
       {
         "epoch": 24,
-        "accuracy": 0.8951733708381653,
-        "val_accuracy": 0.7963197827339172,
-        "test_accuracy": 0.804058313369751
+        "accuracy": 0.9720823168754578,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5128205418586731
       },
       {
         "epoch": 25,
-        "accuracy": 0.9007478356361389,
-        "val_accuracy": 0.789340078830719,
-        "test_accuracy": 0.8002536296844482
+        "accuracy": 0.9720823168754578,
+        "val_accuracy": 0.3514018654823303,
+        "test_accuracy": 0.5057692527770996
       },
       {
         "epoch": 26,
-        "accuracy": 0.9027872681617737,
-        "val_accuracy": 0.7944162487983704,
-        "test_accuracy": 0.8059606552124023
+        "accuracy": 0.9756230711936951,
+        "val_accuracy": 0.34828659892082214,
+        "test_accuracy": 0.5
       },
       {
         "epoch": 27,
-        "accuracy": 0.9090415239334106,
-        "val_accuracy": 0.7848984599113464,
-        "test_accuracy": 0.802790105342865
+        "accuracy": 0.9769849181175232,
+        "val_accuracy": 0.34953272342681885,
+        "test_accuracy": 0.5019230842590332
       },
       {
         "epoch": 28,
-        "accuracy": 0.9098572731018066,
-        "val_accuracy": 0.7925127148628235,
-        "test_accuracy": 0.8065947890281677
+        "accuracy": 0.9788914918899536,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.5064102411270142
       },
       {
         "epoch": 29,
-        "accuracy": 0.9150238037109375,
-        "val_accuracy": 0.7918781638145447,
-        "test_accuracy": 0.7989854216575623
+        "accuracy": 0.9803895354270935,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.5076923370361328
+      }
+    ]
+  },
+  "Xenova/all-MiniLM-L12-v2": {
+    "embeddingDim": 384,
+    "centroidAcc": 0.4076923076923077,
+    "centroidPerCategory": {
+      "Government": {
+        "accuracy": 0.08333333333333333,
+        "support": 36
+      },
+      "Income, pensions, spending and wealth": {
+        "accuracy": 0.25625,
+        "support": 160
+      },
+      "International trade": {
+        "accuracy": 0.13793103448275862,
+        "support": 29
+      },
+      "Health": {
+        "accuracy": 0.3770491803278688,
+        "support": 122
+      },
+      "Labour": {
+        "accuracy": 0.2523364485981308,
+        "support": 107
+      },
+      "Languages": {
+        "accuracy": 0.3333333333333333,
+        "support": 6
+      },
+      "Manufacturing": {
+        "accuracy": 0.3333333333333333,
+        "support": 30
+      },
+      "Population and demography": {
+        "accuracy": 0.32407407407407407,
+        "support": 216
+      },
+      "Prices and price indexes": {
+        "accuracy": 0.875,
+        "support": 64
+      },
+      "Statistical methods": {
+        "accuracy": 1,
+        "support": 1
+      },
+      "Retail and wholesale": {
+        "accuracy": 0.45714285714285713,
+        "support": 35
+      },
+      "Business and consumer services and culture": {
+        "accuracy": 0.905982905982906,
+        "support": 117
+      },
+      "Digital economy and society": {
+        "accuracy": 0.08333333333333333,
+        "support": 12
+      },
+      "Transportation": {
+        "accuracy": 1,
+        "support": 52
+      },
+      "Travel and tourism": {
+        "accuracy": 0,
+        "support": 26
+      },
+      "Energy": {
+        "accuracy": 0.8571428571428571,
+        "support": 21
+      },
+      "Science and technology": {
+        "accuracy": 0,
+        "support": 13
+      },
+      "Agriculture and food": {
+        "accuracy": 1,
+        "support": 36
+      },
+      "Business performance and ownership": {
+        "accuracy": 0.43478260869565216,
+        "support": 23
+      },
+      "Construction": {
+        "accuracy": 1,
+        "support": 4
+      },
+      "Crime and justice": {
+        "accuracy": 1,
+        "support": 19
+      },
+      "Economic accounts": {
+        "accuracy": 1,
+        "support": 16
+      },
+      "Education, training and learning": {
+        "accuracy": 0.84375,
+        "support": 32
+      },
+      "Environment": {
+        "accuracy": 0.35,
+        "support": 20
+      },
+      "Families, households and marital status": {
+        "accuracy": 0.6,
+        "support": 5
+      },
+      "Indigenous peoples": {
+        "accuracy": 0.4,
+        "support": 5
+      },
+      "Children and youth": {
+        "accuracy": 0.35714285714285715,
+        "support": 14
+      },
+      "Immigration and ethnocultural diversity": {
+        "accuracy": 1,
+        "support": 41
+      },
+      "Older adults and population aging": {
+        "accuracy": 0,
+        "support": 0
+      },
+      "Society and community": {
+        "accuracy": 0.037037037037037035,
+        "support": 270
+      },
+      "Housing": {
+        "accuracy": 0.10714285714285714,
+        "support": 28
+      }
+    },
+    "epochHistory": [
+      {
+        "epoch": 0,
+        "accuracy": 0.522402286529541,
+        "val_accuracy": 0.3937694728374481,
+        "test_accuracy": 0.5185897350311279
+      },
+      {
+        "epoch": 1,
+        "accuracy": 0.7898679375648499,
+        "val_accuracy": 0.38629284501075745,
+        "test_accuracy": 0.5634615421295166
+      },
+      {
+        "epoch": 2,
+        "accuracy": 0.841209352016449,
+        "val_accuracy": 0.3601246178150177,
+        "test_accuracy": 0.5307692289352417
+      },
+      {
+        "epoch": 3,
+        "accuracy": 0.8672205209732056,
+        "val_accuracy": 0.37071651220321655,
+        "test_accuracy": 0.5269230604171753
+      },
+      {
+        "epoch": 4,
+        "accuracy": 0.8794770836830139,
+        "val_accuracy": 0.35514017939567566,
+        "test_accuracy": 0.5057692527770996
+      },
+      {
+        "epoch": 5,
+        "accuracy": 0.8910527229309082,
+        "val_accuracy": 0.3601246178150177,
+        "test_accuracy": 0.5083333253860474
+      },
+      {
+        "epoch": 6,
+        "accuracy": 0.9018113017082214,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.4891025722026825
+      },
+      {
+        "epoch": 7,
+        "accuracy": 0.9088928699493408,
+        "val_accuracy": 0.358878493309021,
+        "test_accuracy": 0.5128205418586731
+      },
+      {
+        "epoch": 8,
+        "accuracy": 0.916110634803772,
+        "val_accuracy": 0.3470405042171478,
+        "test_accuracy": 0.5019230842590332
+      },
+      {
+        "epoch": 9,
+        "accuracy": 0.9218303561210632,
+        "val_accuracy": 0.35825544595718384,
+        "test_accuracy": 0.5205128192901611
+      },
+      {
+        "epoch": 10,
+        "accuracy": 0.9260520935058594,
+        "val_accuracy": 0.3713395595550537,
+        "test_accuracy": 0.4980769157409668
+      },
+      {
+        "epoch": 11,
+        "accuracy": 0.9328612685203552,
+        "val_accuracy": 0.361370712518692,
+        "test_accuracy": 0.5121794939041138
+      },
+      {
+        "epoch": 12,
+        "accuracy": 0.9368106126785278,
+        "val_accuracy": 0.3601246178150177,
+        "test_accuracy": 0.5089743733406067
+      },
+      {
+        "epoch": 13,
+        "accuracy": 0.9408961534500122,
+        "val_accuracy": 0.36822429299354553,
+        "test_accuracy": 0.5147435665130615
+      },
+      {
+        "epoch": 14,
+        "accuracy": 0.947024405002594,
+        "val_accuracy": 0.350155770778656,
+        "test_accuracy": 0.5032051205635071
+      },
+      {
+        "epoch": 15,
+        "accuracy": 0.9464796781539917,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5211538672447205
+      },
+      {
+        "epoch": 16,
+        "accuracy": 0.9517908692359924,
+        "val_accuracy": 0.3570093512535095,
+        "test_accuracy": 0.5269230604171753
+      },
+      {
+        "epoch": 17,
+        "accuracy": 0.9536974430084229,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5128205418586731
+      },
+      {
+        "epoch": 18,
+        "accuracy": 0.9572382569313049,
+        "val_accuracy": 0.34641745686531067,
+        "test_accuracy": 0.5115384459495544
+      },
+      {
+        "epoch": 19,
+        "accuracy": 0.9607790112495422,
+        "val_accuracy": 0.3401869237422943,
+        "test_accuracy": 0.5032051205635071
+      },
+      {
+        "epoch": 20,
+        "accuracy": 0.963775098323822,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.5198717713356018
+      },
+      {
+        "epoch": 21,
+        "accuracy": 0.9635027050971985,
+        "val_accuracy": 0.35264796018600464,
+        "test_accuracy": 0.5096153616905212
+      },
+      {
+        "epoch": 22,
+        "accuracy": 0.9675882458686829,
+        "val_accuracy": 0.34392523765563965,
+        "test_accuracy": 0.5089743733406067
+      },
+      {
+        "epoch": 23,
+        "accuracy": 0.9699033498764038,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5134615302085876
+      },
+      {
+        "epoch": 24,
+        "accuracy": 0.9704480767250061,
+        "val_accuracy": 0.36386293172836304,
+        "test_accuracy": 0.5211538672447205
+      },
+      {
+        "epoch": 25,
+        "accuracy": 0.9733079671859741,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.514102578163147
+      },
+      {
+        "epoch": 26,
+        "accuracy": 0.9741250872612,
+        "val_accuracy": 0.35514017939567566,
+        "test_accuracy": 0.5205128192901611
+      },
+      {
+        "epoch": 27,
+        "accuracy": 0.9784829616546631,
+        "val_accuracy": 0.3576323986053467,
+        "test_accuracy": 0.5243589878082275
+      },
+      {
+        "epoch": 28,
+        "accuracy": 0.9791638851165771,
+        "val_accuracy": 0.3433021903038025,
+        "test_accuracy": 0.5096153616905212
+      },
+      {
+        "epoch": 29,
+        "accuracy": 0.9812066555023193,
+        "val_accuracy": 0.34953272342681885,
+        "test_accuracy": 0.5153846144676208
       }
     ]
   },
   "Xenova/paraphrase-MiniLM-L3-v2": {
     "embeddingDim": 384,
-    "centroidAcc": 0.47431832593532025,
+    "centroidAcc": 0.42243589743589743,
     "centroidPerCategory": {
       "Government": {
-        "accuracy": 0.3170731707317073,
-        "support": 41
+        "accuracy": 0.08333333333333333,
+        "support": 36
       },
       "Income, pensions, spending and wealth": {
-        "accuracy": 0.3712121212121212,
-        "support": 132
+        "accuracy": 0.275,
+        "support": 160
       },
       "International trade": {
-        "accuracy": 0.7105263157894737,
-        "support": 38
-      },
-      "Health": {
-        "accuracy": 0.43636363636363634,
-        "support": 110
-      },
-      "Labour": {
-        "accuracy": 0.768,
-        "support": 125
-      },
-      "Languages": {
-        "accuracy": 1,
-        "support": 11
-      },
-      "Manufacturing": {
-        "accuracy": 0.8571428571428571,
-        "support": 14
-      },
-      "Population and demography": {
-        "accuracy": 0.29577464788732394,
-        "support": 213
-      },
-      "Prices and price indexes": {
-        "accuracy": 0.82,
-        "support": 50
-      },
-      "Statistical methods": {
-        "accuracy": 0,
-        "support": 0
-      },
-      "Retail and wholesale": {
-        "accuracy": 0.6451612903225806,
-        "support": 31
-      },
-      "Business and consumer services and culture": {
-        "accuracy": 0.6065573770491803,
-        "support": 122
-      },
-      "Digital economy and society": {
-        "accuracy": 0.5,
-        "support": 6
-      },
-      "Transportation": {
-        "accuracy": 0.7017543859649122,
-        "support": 57
-      },
-      "Travel and tourism": {
-        "accuracy": 0.34782608695652173,
-        "support": 23
-      },
-      "Energy": {
-        "accuracy": 0.25,
-        "support": 4
-      },
-      "Science and technology": {
-        "accuracy": 0.36,
-        "support": 25
-      },
-      "Agriculture and food": {
-        "accuracy": 1,
-        "support": 26
-      },
-      "Business performance and ownership": {
-        "accuracy": 0.84,
-        "support": 25
-      },
-      "Construction": {
-        "accuracy": 1,
-        "support": 3
-      },
-      "Crime and justice": {
-        "accuracy": 0.9523809523809523,
-        "support": 21
-      },
-      "Economic accounts": {
-        "accuracy": 0.8095238095238095,
-        "support": 21
-      },
-      "Education, training and learning": {
-        "accuracy": 0.8333333333333334,
-        "support": 24
-      },
-      "Environment": {
-        "accuracy": 0.9117647058823529,
-        "support": 34
-      },
-      "Families, households and marital status": {
-        "accuracy": 0.5,
-        "support": 6
-      },
-      "Indigenous peoples": {
-        "accuracy": 0.5714285714285714,
-        "support": 7
-      },
-      "Children and youth": {
-        "accuracy": 0.5882352941176471,
-        "support": 17
-      },
-      "Immigration and ethnocultural diversity": {
-        "accuracy": 0.5714285714285714,
-        "support": 7
-      },
-      "Older adults and population aging": {
-        "accuracy": 1,
-        "support": 3
-      },
-      "Society and community": {
-        "accuracy": 0.050793650793650794,
-        "support": 315
-      },
-      "Housing": {
-        "accuracy": 0.8333333333333334,
-        "support": 66
-      }
-    },
-    "epochHistory": [
-      {
-        "epoch": 0,
-        "accuracy": 0.42501699924468994,
-        "val_accuracy": 0.5615482330322266,
-        "test_accuracy": 0.5504121780395508
-      },
-      {
-        "epoch": 1,
-        "accuracy": 0.6243371963500977,
-        "val_accuracy": 0.6465736031532288,
-        "test_accuracy": 0.6398224234580994
-      },
-      {
-        "epoch": 2,
-        "accuracy": 0.683208703994751,
-        "val_accuracy": 0.6668781638145447,
-        "test_accuracy": 0.6772352457046509
-      },
-      {
-        "epoch": 3,
-        "accuracy": 0.7207342386245728,
-        "val_accuracy": 0.6973350048065186,
-        "test_accuracy": 0.701331615447998
-      },
-      {
-        "epoch": 4,
-        "accuracy": 0.7544527649879456,
-        "val_accuracy": 0.7265228629112244,
-        "test_accuracy": 0.72542804479599
-      },
-      {
-        "epoch": 5,
-        "accuracy": 0.7730795741081238,
-        "val_accuracy": 0.7290608882904053,
-        "test_accuracy": 0.7298668622970581
-      },
-      {
-        "epoch": 6,
-        "accuracy": 0.7859959602355957,
-        "val_accuracy": 0.7404822111129761,
-        "test_accuracy": 0.7406467795372009
-      },
-      {
-        "epoch": 7,
-        "accuracy": 0.8013596534729004,
-        "val_accuracy": 0.7442893385887146,
-        "test_accuracy": 0.7488902807235718
-      },
-      {
-        "epoch": 8,
-        "accuracy": 0.8078858256340027,
-        "val_accuracy": 0.750634491443634,
-        "test_accuracy": 0.7476220726966858
-      },
-      {
-        "epoch": 9,
-        "accuracy": 0.8193066120147705,
-        "val_accuracy": 0.7480964660644531,
-        "test_accuracy": 0.7641090750694275
-      },
-      {
-        "epoch": 10,
-        "accuracy": 0.8255608677864075,
-        "val_accuracy": 0.7582487463951111,
-        "test_accuracy": 0.7603043913841248
-      },
-      {
-        "epoch": 11,
-        "accuracy": 0.8353501558303833,
-        "val_accuracy": 0.7645938992500305,
-        "test_accuracy": 0.7672796249389648
-      },
-      {
-        "epoch": 12,
-        "accuracy": 0.8429639935493469,
-        "val_accuracy": 0.7677664756774902,
-        "test_accuracy": 0.770450234413147
-      },
-      {
-        "epoch": 13,
-        "accuracy": 0.8501699566841125,
-        "val_accuracy": 0.7664974331855774,
-        "test_accuracy": 0.7710843086242676
-      },
-      {
-        "epoch": 14,
-        "accuracy": 0.8537049889564514,
-        "val_accuracy": 0.7633248567581177,
-        "test_accuracy": 0.7691819667816162
-      },
-      {
-        "epoch": 15,
-        "accuracy": 0.8644459843635559,
-        "val_accuracy": 0.7760152220726013,
-        "test_accuracy": 0.7736207842826843
-      },
-      {
-        "epoch": 16,
-        "accuracy": 0.8689327239990234,
-        "val_accuracy": 0.779187798500061,
-        "test_accuracy": 0.7780596017837524
-      },
-      {
-        "epoch": 17,
-        "accuracy": 0.8716519474983215,
-        "val_accuracy": 0.7880710363388062,
-        "test_accuracy": 0.7799619436264038
-      },
-      {
-        "epoch": 18,
-        "accuracy": 0.8772264122962952,
-        "val_accuracy": 0.7880710363388062,
-        "test_accuracy": 0.7856689691543579
-      },
-      {
-        "epoch": 19,
-        "accuracy": 0.8818491101264954,
-        "val_accuracy": 0.7868020534515381,
-        "test_accuracy": 0.78883957862854
-      },
-      {
-        "epoch": 20,
-        "accuracy": 0.889462947845459,
-        "val_accuracy": 0.7950507402420044,
-        "test_accuracy": 0.7882054448127747
-      },
-      {
-        "epoch": 21,
-        "accuracy": 0.8904147148132324,
-        "val_accuracy": 0.7925127148628235,
-        "test_accuracy": 0.7882054448127747
-      },
-      {
-        "epoch": 22,
-        "accuracy": 0.8939497470855713,
-        "val_accuracy": 0.7975888252258301,
-        "test_accuracy": 0.7977172136306763
-      },
-      {
-        "epoch": 23,
-        "accuracy": 0.8999320268630981,
-        "val_accuracy": 0.7982233762741089,
-        "test_accuracy": 0.7920101284980774
-      },
-      {
-        "epoch": 24,
-        "accuracy": 0.9033311009407043,
-        "val_accuracy": 0.8001269102096558,
-        "test_accuracy": 0.7945466041564941
-      },
-      {
-        "epoch": 25,
-        "accuracy": 0.9056424498558044,
-        "val_accuracy": 0.7944162487983704,
-        "test_accuracy": 0.7958148121833801
-      },
-      {
-        "epoch": 26,
-        "accuracy": 0.9124405384063721,
-        "val_accuracy": 0.799492359161377,
-        "test_accuracy": 0.8002536296844482
-      },
-      {
-        "epoch": 27,
-        "accuracy": 0.9157036542892456,
-        "val_accuracy": 0.8020304441452026,
-        "test_accuracy": 0.804058313369751
-      },
-      {
-        "epoch": 28,
-        "accuracy": 0.9176070690155029,
-        "val_accuracy": 0.8032994866371155,
-        "test_accuracy": 0.8002536296844482
-      },
-      {
-        "epoch": 29,
-        "accuracy": 0.9229096174240112,
-        "val_accuracy": 0.8007614016532898,
-        "test_accuracy": 0.7983512878417969
-      }
-    ]
-  },
-  "Xenova/all-mpnet-base-v2": {
-    "embeddingDim": 768,
-    "centroidAcc": 0.4914394419784401,
-    "centroidPerCategory": {
-      "Government": {
-        "accuracy": 0.38461538461538464,
-        "support": 26
-      },
-      "Income, pensions, spending and wealth": {
-        "accuracy": 0.4420289855072464,
-        "support": 138
-      },
-      "International trade": {
-        "accuracy": 0.7837837837837838,
-        "support": 37
-      },
-      "Health": {
-        "accuracy": 0.6506849315068494,
-        "support": 146
-      },
-      "Labour": {
-        "accuracy": 0.8058252427184466,
-        "support": 103
-      },
-      "Languages": {
-        "accuracy": 0.7777777777777778,
-        "support": 9
-      },
-      "Manufacturing": {
-        "accuracy": 0.7142857142857143,
-        "support": 14
-      },
-      "Population and demography": {
-        "accuracy": 0.2889908256880734,
-        "support": 218
-      },
-      "Prices and price indexes": {
-        "accuracy": 0.803030303030303,
-        "support": 66
-      },
-      "Statistical methods": {
-        "accuracy": 0,
-        "support": 2
-      },
-      "Retail and wholesale": {
-        "accuracy": 0.8888888888888888,
-        "support": 18
-      },
-      "Business and consumer services and culture": {
-        "accuracy": 0.6261682242990654,
-        "support": 107
-      },
-      "Digital economy and society": {
-        "accuracy": 0.6,
-        "support": 10
-      },
-      "Transportation": {
-        "accuracy": 0.8545454545454545,
-        "support": 55
-      },
-      "Travel and tourism": {
-        "accuracy": 0.29411764705882354,
-        "support": 34
-      },
-      "Energy": {
-        "accuracy": 0.3333333333333333,
-        "support": 9
-      },
-      "Science and technology": {
-        "accuracy": 0.48148148148148145,
-        "support": 27
-      },
-      "Agriculture and food": {
-        "accuracy": 0.9411764705882353,
-        "support": 17
-      },
-      "Business performance and ownership": {
-        "accuracy": 0.7407407407407407,
-        "support": 27
-      },
-      "Construction": {
-        "accuracy": 0.8333333333333334,
-        "support": 6
-      },
-      "Crime and justice": {
-        "accuracy": 1,
-        "support": 14
-      },
-      "Economic accounts": {
-        "accuracy": 0.5714285714285714,
-        "support": 21
-      },
-      "Education, training and learning": {
-        "accuracy": 0.6470588235294118,
-        "support": 17
-      },
-      "Environment": {
-        "accuracy": 1,
-        "support": 25
-      },
-      "Families, households and marital status": {
-        "accuracy": 0.7272727272727273,
-        "support": 11
-      },
-      "Indigenous peoples": {
-        "accuracy": 1,
-        "support": 9
-      },
-      "Children and youth": {
-        "accuracy": 0.4444444444444444,
-        "support": 9
-      },
-      "Immigration and ethnocultural diversity": {
-        "accuracy": 0.8571428571428571,
-        "support": 7
-      },
-      "Older adults and population aging": {
-        "accuracy": 1,
-        "support": 2
-      },
-      "Society and community": {
-        "accuracy": 0.07492795389048991,
-        "support": 347
-      },
-      "Housing": {
-        "accuracy": 0.9565217391304348,
-        "support": 46
-      }
-    },
-    "epochHistory": [
-      {
-        "epoch": 0,
-        "accuracy": 0.4327668249607086,
-        "val_accuracy": 0.5647208094596863,
-        "test_accuracy": 0.5827520489692688
-      },
-      {
-        "epoch": 1,
-        "accuracy": 0.6256968379020691,
-        "val_accuracy": 0.6573604345321655,
-        "test_accuracy": 0.6753329038619995
-      },
-      {
-        "epoch": 2,
-        "accuracy": 0.7031951546669006,
-        "val_accuracy": 0.7081218361854553,
-        "test_accuracy": 0.7102092504501343
-      },
-      {
-        "epoch": 3,
-        "accuracy": 0.7437117695808411,
-        "val_accuracy": 0.731598973274231,
-        "test_accuracy": 0.7336715459823608
-      },
-      {
-        "epoch": 4,
-        "accuracy": 0.7623385787010193,
-        "val_accuracy": 0.7461928725242615,
-        "test_accuracy": 0.7526949644088745
-      },
-      {
-        "epoch": 5,
-        "accuracy": 0.7873555421829224,
-        "val_accuracy": 0.7512690424919128,
-        "test_accuracy": 0.7609384655952454
-      },
-      {
-        "epoch": 6,
-        "accuracy": 0.7983684539794922,
-        "val_accuracy": 0.7550761699676514,
-        "test_accuracy": 0.7641090750694275
-      },
-      {
-        "epoch": 7,
-        "accuracy": 0.8159075975418091,
-        "val_accuracy": 0.768401026725769,
-        "test_accuracy": 0.7679137587547302
-      },
-      {
-        "epoch": 8,
-        "accuracy": 0.8231135606765747,
-        "val_accuracy": 0.7734771370887756,
-        "test_accuracy": 0.7812302112579346
-      },
-      {
-        "epoch": 9,
-        "accuracy": 0.8369816541671753,
-        "val_accuracy": 0.7753807306289673,
-        "test_accuracy": 0.7812302112579346
-      },
-      {
-        "epoch": 10,
-        "accuracy": 0.8416043519973755,
-        "val_accuracy": 0.7817258834838867,
-        "test_accuracy": 0.7786937355995178
-      },
-      {
-        "epoch": 11,
-        "accuracy": 0.8493542075157166,
-        "val_accuracy": 0.7766497731208801,
-        "test_accuracy": 0.7863031029701233
-      },
-      {
-        "epoch": 12,
-        "accuracy": 0.860503077507019,
-        "val_accuracy": 0.7766497731208801,
-        "test_accuracy": 0.7837666273117065
-      },
-      {
-        "epoch": 13,
-        "accuracy": 0.8633582592010498,
-        "val_accuracy": 0.7855330109596252,
-        "test_accuracy": 0.7964489459991455
-      },
-      {
-        "epoch": 14,
-        "accuracy": 0.8727396726608276,
-        "val_accuracy": 0.7925127148628235,
-        "test_accuracy": 0.7989854216575623
-      },
-      {
-        "epoch": 15,
-        "accuracy": 0.8791298866271973,
-        "val_accuracy": 0.7880710363388062,
-        "test_accuracy": 0.7939124703407288
-      },
-      {
-        "epoch": 16,
-        "accuracy": 0.887423574924469,
-        "val_accuracy": 0.7944162487983704,
-        "test_accuracy": 0.7977172136306763
-      },
-      {
-        "epoch": 17,
-        "accuracy": 0.8931339383125305,
-        "val_accuracy": 0.7950507402420044,
-        "test_accuracy": 0.7964489459991455
-      },
-      {
-        "epoch": 18,
-        "accuracy": 0.8983005285263062,
-        "val_accuracy": 0.7950507402420044,
-        "test_accuracy": 0.801521897315979
-      },
-      {
-        "epoch": 19,
-        "accuracy": 0.9056424498558044,
-        "val_accuracy": 0.7975888252258301,
-        "test_accuracy": 0.8034242391586304
-      },
-      {
-        "epoch": 20,
-        "accuracy": 0.9064581990242004,
-        "val_accuracy": 0.7982233762741089,
-        "test_accuracy": 0.7945466041564941
-      },
-      {
-        "epoch": 21,
-        "accuracy": 0.9152957201004028,
-        "val_accuracy": 0.7963197827339172,
-        "test_accuracy": 0.8053265810012817
-      },
-      {
-        "epoch": 22,
-        "accuracy": 0.9230455756187439,
-        "val_accuracy": 0.7963197827339172,
-        "test_accuracy": 0.8116677403450012
-      },
-      {
-        "epoch": 23,
-        "accuracy": 0.9248130917549133,
-        "val_accuracy": 0.8032994866371155,
-        "test_accuracy": 0.8103994727134705
-      },
-      {
-        "epoch": 24,
-        "accuracy": 0.9298436641693115,
-        "val_accuracy": 0.8020304441452026,
-        "test_accuracy": 0.8078630566596985
-      },
-      {
-        "epoch": 25,
-        "accuracy": 0.9313392639160156,
-        "val_accuracy": 0.7950507402420044,
-        "test_accuracy": 0.8135700821876526
-      },
-      {
-        "epoch": 26,
-        "accuracy": 0.9375935196876526,
-        "val_accuracy": 0.796954333782196,
-        "test_accuracy": 0.8097653985023499
-      },
-      {
-        "epoch": 27,
-        "accuracy": 0.9404487013816833,
-        "val_accuracy": 0.7982233762741089,
-        "test_accuracy": 0.8065947890281677
-      },
-      {
-        "epoch": 28,
-        "accuracy": 0.9473827481269836,
-        "val_accuracy": 0.7931472063064575,
-        "test_accuracy": 0.8097653985023499
-      },
-      {
-        "epoch": 29,
-        "accuracy": 0.9506458640098572,
-        "val_accuracy": 0.7963197827339172,
-        "test_accuracy": 0.8186429738998413
-      }
-    ]
-  },
-  "Xenova/bge-small-en-v1.5": {
-    "embeddingDim": 384,
-    "centroidAcc": 0.5060240963855421,
-    "centroidPerCategory": {
-      "Government": {
-        "accuracy": 0.3225806451612903,
-        "support": 31
-      },
-      "Income, pensions, spending and wealth": {
-        "accuracy": 0.32038834951456313,
-        "support": 103
-      },
-      "International trade": {
-        "accuracy": 0.8333333333333334,
-        "support": 24
-      },
-      "Health": {
-        "accuracy": 0.48739495798319327,
-        "support": 119
-      },
-      "Labour": {
-        "accuracy": 0.8253968253968254,
-        "support": 126
-      },
-      "Languages": {
-        "accuracy": 0.875,
-        "support": 8
-      },
-      "Manufacturing": {
-        "accuracy": 0.6470588235294118,
-        "support": 17
-      },
-      "Population and demography": {
-        "accuracy": 0.28451882845188287,
-        "support": 239
-      },
-      "Prices and price indexes": {
-        "accuracy": 0.9367088607594937,
-        "support": 79
-      },
-      "Statistical methods": {
-        "accuracy": 0,
-        "support": 0
-      },
-      "Retail and wholesale": {
-        "accuracy": 0.7241379310344828,
+        "accuracy": 0.27586206896551724,
         "support": 29
       },
+      "Health": {
+        "accuracy": 0.39344262295081966,
+        "support": 122
+      },
+      "Labour": {
+        "accuracy": 0.2616822429906542,
+        "support": 107
+      },
+      "Languages": {
+        "accuracy": 0.3333333333333333,
+        "support": 6
+      },
+      "Manufacturing": {
+        "accuracy": 0.4666666666666667,
+        "support": 30
+      },
+      "Population and demography": {
+        "accuracy": 0.3333333333333333,
+        "support": 216
+      },
+      "Prices and price indexes": {
+        "accuracy": 0.84375,
+        "support": 64
+      },
+      "Statistical methods": {
+        "accuracy": 1,
+        "support": 1
+      },
+      "Retail and wholesale": {
+        "accuracy": 0.4857142857142857,
+        "support": 35
+      },
       "Business and consumer services and culture": {
-        "accuracy": 0.6260869565217392,
-        "support": 115
+        "accuracy": 0.9487179487179487,
+        "support": 117
       },
       "Digital economy and society": {
-        "accuracy": 0.375,
-        "support": 8
+        "accuracy": 0.3333333333333333,
+        "support": 12
       },
       "Transportation": {
-        "accuracy": 0.8524590163934426,
-        "support": 61
+        "accuracy": 1,
+        "support": 52
       },
       "Travel and tourism": {
-        "accuracy": 0.4,
-        "support": 20
+        "accuracy": 0,
+        "support": 26
       },
       "Energy": {
-        "accuracy": 0.6,
-        "support": 5
+        "accuracy": 0.8571428571428571,
+        "support": 21
       },
       "Science and technology": {
-        "accuracy": 0.13636363636363635,
-        "support": 22
+        "accuracy": 0.07692307692307693,
+        "support": 13
       },
       "Agriculture and food": {
-        "accuracy": 0.90625,
-        "support": 32
+        "accuracy": 1,
+        "support": 36
       },
       "Business performance and ownership": {
-        "accuracy": 0.7407407407407407,
-        "support": 27
+        "accuracy": 0.391304347826087,
+        "support": 23
       },
       "Construction": {
         "accuracy": 0.75,
         "support": 4
       },
       "Crime and justice": {
-        "accuracy": 0.95,
-        "support": 20
+        "accuracy": 1,
+        "support": 19
       },
       "Economic accounts": {
-        "accuracy": 0.8695652173913043,
-        "support": 23
-      },
-      "Education, training and learning": {
-        "accuracy": 0.8095238095238095,
-        "support": 21
-      },
-      "Environment": {
-        "accuracy": 0.8918918918918919,
-        "support": 37
-      },
-      "Families, households and marital status": {
-        "accuracy": 0.45454545454545453,
-        "support": 11
-      },
-      "Indigenous peoples": {
-        "accuracy": 0.5555555555555556,
-        "support": 9
-      },
-      "Children and youth": {
-        "accuracy": 0.6875,
+        "accuracy": 1,
         "support": 16
       },
+      "Education, training and learning": {
+        "accuracy": 0.8125,
+        "support": 32
+      },
+      "Environment": {
+        "accuracy": 0.25,
+        "support": 20
+      },
+      "Families, households and marital status": {
+        "accuracy": 0.8,
+        "support": 5
+      },
+      "Indigenous peoples": {
+        "accuracy": 0.4,
+        "support": 5
+      },
+      "Children and youth": {
+        "accuracy": 0.21428571428571427,
+        "support": 14
+      },
       "Immigration and ethnocultural diversity": {
-        "accuracy": 0.625,
-        "support": 8
+        "accuracy": 1,
+        "support": 41
       },
       "Older adults and population aging": {
-        "accuracy": 1,
-        "support": 8
+        "accuracy": 0,
+        "support": 0
       },
       "Society and community": {
-        "accuracy": 0.11726384364820847,
-        "support": 307
+        "accuracy": 0.05185185185185185,
+        "support": 270
       },
       "Housing": {
-        "accuracy": 0.8333333333333334,
-        "support": 48
+        "accuracy": 0.14285714285714285,
+        "support": 28
       }
     },
     "epochHistory": [
       {
         "epoch": 0,
-        "accuracy": 0.35649219155311584,
-        "val_accuracy": 0.5507614016532898,
-        "test_accuracy": 0.5320228338241577
+        "accuracy": 0.5072858929634094,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5352563858032227
       },
       {
         "epoch": 1,
-        "accuracy": 0.5760707259178162,
-        "val_accuracy": 0.6332487463951111,
-        "test_accuracy": 0.6227013468742371
+        "accuracy": 0.7742067575454712,
+        "val_accuracy": 0.3570093512535095,
+        "test_accuracy": 0.5775641202926636
       },
       {
         "epoch": 2,
-        "accuracy": 0.6599592566490173,
-        "val_accuracy": 0.6802030205726624,
-        "test_accuracy": 0.6861128807067871
+        "accuracy": 0.8270462155342102,
+        "val_accuracy": 0.36822429299354553,
+        "test_accuracy": 0.5692307949066162
       },
       {
         "epoch": 3,
-        "accuracy": 0.7052345275878906,
-        "val_accuracy": 0.7131979465484619,
-        "test_accuracy": 0.711477518081665
+        "accuracy": 0.8568705320358276,
+        "val_accuracy": 0.3401869237422943,
+        "test_accuracy": 0.5326923131942749
       },
       {
         "epoch": 4,
-        "accuracy": 0.7360979318618774,
-        "val_accuracy": 0.7239847779273987,
-        "test_accuracy": 0.7260621190071106
+        "accuracy": 0.8717145919799805,
+        "val_accuracy": 0.3320872187614441,
+        "test_accuracy": 0.5230769515037537
       },
       {
         "epoch": 5,
-        "accuracy": 0.7619307041168213,
-        "val_accuracy": 0.7417512536048889,
-        "test_accuracy": 0.7476220726966858
+        "accuracy": 0.8871033787727356,
+        "val_accuracy": 0.3308411240577698,
+        "test_accuracy": 0.5160256624221802
       },
       {
         "epoch": 6,
-        "accuracy": 0.7762066721916199,
-        "val_accuracy": 0.7436548471450806,
-        "test_accuracy": 0.7545973658561707
+        "accuracy": 0.8966363072395325,
+        "val_accuracy": 0.336448609828949,
+        "test_accuracy": 0.517307698726654
       },
       {
         "epoch": 7,
-        "accuracy": 0.7912984490394592,
-        "val_accuracy": 0.7480964660644531,
-        "test_accuracy": 0.7622067332267761
+        "accuracy": 0.9063053727149963,
+        "val_accuracy": 0.3420560657978058,
+        "test_accuracy": 0.5198717713356018
       },
       {
         "epoch": 8,
-        "accuracy": 0.7975527048110962,
-        "val_accuracy": 0.750634491443634,
-        "test_accuracy": 0.7679137587547302
+        "accuracy": 0.9114803671836853,
+        "val_accuracy": 0.33146417140960693,
+        "test_accuracy": 0.5128205418586731
       },
       {
         "epoch": 9,
-        "accuracy": 0.8096533417701721,
-        "val_accuracy": 0.7531725764274597,
-        "test_accuracy": 0.7729867100715637
+        "accuracy": 0.919106662273407,
+        "val_accuracy": 0.33520248532295227,
+        "test_accuracy": 0.5205128192901611
       },
       {
         "epoch": 10,
-        "accuracy": 0.815227746963501,
-        "val_accuracy": 0.768401026725769,
-        "test_accuracy": 0.7824984192848206
+        "accuracy": 0.9238731265068054,
+        "val_accuracy": 0.3264797627925873,
+        "test_accuracy": 0.5153846144676208
       },
       {
         "epoch": 11,
-        "accuracy": 0.8222977519035339,
-        "val_accuracy": 0.7652284502983093,
-        "test_accuracy": 0.7818642854690552
+        "accuracy": 0.9294566512107849,
+        "val_accuracy": 0.34517133235931396,
+        "test_accuracy": 0.5134615302085876
       },
       {
         "epoch": 12,
-        "accuracy": 0.8282800912857056,
-        "val_accuracy": 0.7614213228225708,
-        "test_accuracy": 0.7799619436264038
+        "accuracy": 0.9323165416717529,
+        "val_accuracy": 0.34828659892082214,
+        "test_accuracy": 0.5153846144676208
       },
       {
         "epoch": 13,
-        "accuracy": 0.8341264724731445,
-        "val_accuracy": 0.7798223495483398,
-        "test_accuracy": 0.7863031029701233
+        "accuracy": 0.9373553395271301,
+        "val_accuracy": 0.33520248532295227,
+        "test_accuracy": 0.5070512890815735
       },
       {
         "epoch": 14,
-        "accuracy": 0.8375255465507507,
-        "val_accuracy": 0.7747461795806885,
-        "test_accuracy": 0.790107786655426
+        "accuracy": 0.9399428367614746,
+        "val_accuracy": 0.33956387639045715,
+        "test_accuracy": 0.504487156867981
       },
       {
         "epoch": 15,
-        "accuracy": 0.8459551334381104,
-        "val_accuracy": 0.7804568409919739,
-        "test_accuracy": 0.7920101284980774
+        "accuracy": 0.9457987546920776,
+        "val_accuracy": 0.336448609828949,
+        "test_accuracy": 0.5012820363044739
       },
       {
         "epoch": 16,
-        "accuracy": 0.8505778908729553,
-        "val_accuracy": 0.778553307056427,
-        "test_accuracy": 0.7964489459991455
+        "accuracy": 0.9490671753883362,
+        "val_accuracy": 0.34517133235931396,
+        "test_accuracy": 0.5128205418586731
       },
       {
         "epoch": 17,
-        "accuracy": 0.8588715195655823,
-        "val_accuracy": 0.7855330109596252,
-        "test_accuracy": 0.802790105342865
+        "accuracy": 0.9504290223121643,
+        "val_accuracy": 0.33146417140960693,
+        "test_accuracy": 0.504487156867981
       },
       {
         "epoch": 18,
-        "accuracy": 0.8619986772537231,
-        "val_accuracy": 0.7817258834838867,
-        "test_accuracy": 0.8008877635002136
+        "accuracy": 0.9538336396217346,
+        "val_accuracy": 0.3420560657978058,
+        "test_accuracy": 0.514102578163147
       },
       {
         "epoch": 19,
-        "accuracy": 0.8653976917266846,
-        "val_accuracy": 0.789340078830719,
-        "test_accuracy": 0.8021559715270996
+        "accuracy": 0.958055317401886,
+        "val_accuracy": 0.32959502935409546,
+        "test_accuracy": 0.5064102411270142
       },
       {
         "epoch": 20,
-        "accuracy": 0.8683888912200928,
-        "val_accuracy": 0.7855330109596252,
-        "test_accuracy": 0.8053265810012817
+        "accuracy": 0.9599618911743164,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.5038461685180664
       },
       {
         "epoch": 21,
-        "accuracy": 0.8743712306022644,
-        "val_accuracy": 0.7906091213226318,
-        "test_accuracy": 0.801521897315979
+        "accuracy": 0.9629579782485962,
+        "val_accuracy": 0.3302180767059326,
+        "test_accuracy": 0.5012820363044739
       },
       {
         "epoch": 22,
-        "accuracy": 0.873419463634491,
-        "val_accuracy": 0.7861675024032593,
-        "test_accuracy": 0.804058313369751
+        "accuracy": 0.9677243828773499,
+        "val_accuracy": 0.33707165718078613,
+        "test_accuracy": 0.5012820363044739
       },
       {
         "epoch": 23,
-        "accuracy": 0.8806254267692566,
-        "val_accuracy": 0.7937816977500916,
-        "test_accuracy": 0.8084971308708191
+        "accuracy": 0.9684053063392639,
+        "val_accuracy": 0.3345794379711151,
+        "test_accuracy": 0.49871793389320374
       },
       {
         "epoch": 24,
-        "accuracy": 0.8810333609580994,
-        "val_accuracy": 0.7906091213226318,
-        "test_accuracy": 0.8059606552124023
+        "accuracy": 0.9707204699516296,
+        "val_accuracy": 0.3277258574962616,
+        "test_accuracy": 0.49935898184776306
       },
       {
         "epoch": 25,
-        "accuracy": 0.8852481842041016,
-        "val_accuracy": 0.789340078830719,
-        "test_accuracy": 0.8002536296844482
+        "accuracy": 0.9757592678070068,
+        "val_accuracy": 0.3401869237422943,
+        "test_accuracy": 0.5083333253860474
       },
       {
         "epoch": 26,
-        "accuracy": 0.8870156407356262,
-        "val_accuracy": 0.788705587387085,
-        "test_accuracy": 0.8021559715270996
+        "accuracy": 0.974942147731781,
+        "val_accuracy": 0.32834890484809875,
+        "test_accuracy": 0.5019230842590332
       },
       {
         "epoch": 27,
-        "accuracy": 0.8901427984237671,
-        "val_accuracy": 0.7918781638145447,
-        "test_accuracy": 0.804058313369751
+        "accuracy": 0.9767125844955444,
+        "val_accuracy": 0.32959502935409546,
+        "test_accuracy": 0.5006410479545593
       },
       {
         "epoch": 28,
-        "accuracy": 0.8966689705848694,
-        "val_accuracy": 0.7925127148628235,
-        "test_accuracy": 0.8059606552124023
+        "accuracy": 0.9794362187385559,
+        "val_accuracy": 0.3345794379711151,
+        "test_accuracy": 0.5089743733406067
       },
       {
         "epoch": 29,
-        "accuracy": 0.8965330123901367,
-        "val_accuracy": 0.8001269102096558,
-        "test_accuracy": 0.8046924471855164
+        "accuracy": 0.9797086119651794,
+        "val_accuracy": 0.33395639061927795,
+        "test_accuracy": 0.49935898184776306
+      }
+    ]
+  },
+  "Xenova/all-mpnet-base-v2": {
+    "embeddingDim": 768,
+    "centroidAcc": 0.41346153846153844,
+    "centroidPerCategory": {
+      "Government": {
+        "accuracy": 0.08333333333333333,
+        "support": 36
+      },
+      "Income, pensions, spending and wealth": {
+        "accuracy": 0.26875,
+        "support": 160
+      },
+      "International trade": {
+        "accuracy": 0.2413793103448276,
+        "support": 29
+      },
+      "Health": {
+        "accuracy": 0.3770491803278688,
+        "support": 122
+      },
+      "Labour": {
+        "accuracy": 0.21495327102803738,
+        "support": 107
+      },
+      "Languages": {
+        "accuracy": 0.3333333333333333,
+        "support": 6
+      },
+      "Manufacturing": {
+        "accuracy": 0.2,
+        "support": 30
+      },
+      "Population and demography": {
+        "accuracy": 0.37037037037037035,
+        "support": 216
+      },
+      "Prices and price indexes": {
+        "accuracy": 0.828125,
+        "support": 64
+      },
+      "Statistical methods": {
+        "accuracy": 1,
+        "support": 1
+      },
+      "Retail and wholesale": {
+        "accuracy": 0.45714285714285713,
+        "support": 35
+      },
+      "Business and consumer services and culture": {
+        "accuracy": 0.9401709401709402,
+        "support": 117
+      },
+      "Digital economy and society": {
+        "accuracy": 0.25,
+        "support": 12
+      },
+      "Transportation": {
+        "accuracy": 1,
+        "support": 52
+      },
+      "Travel and tourism": {
+        "accuracy": 0.038461538461538464,
+        "support": 26
+      },
+      "Energy": {
+        "accuracy": 0.8571428571428571,
+        "support": 21
+      },
+      "Science and technology": {
+        "accuracy": 0,
+        "support": 13
+      },
+      "Agriculture and food": {
+        "accuracy": 0.8611111111111112,
+        "support": 36
+      },
+      "Business performance and ownership": {
+        "accuracy": 0.43478260869565216,
+        "support": 23
+      },
+      "Construction": {
+        "accuracy": 0.25,
+        "support": 4
+      },
+      "Crime and justice": {
+        "accuracy": 1,
+        "support": 19
+      },
+      "Economic accounts": {
+        "accuracy": 1,
+        "support": 16
+      },
+      "Education, training and learning": {
+        "accuracy": 0.8125,
+        "support": 32
+      },
+      "Environment": {
+        "accuracy": 0.3,
+        "support": 20
+      },
+      "Families, households and marital status": {
+        "accuracy": 0.6,
+        "support": 5
+      },
+      "Indigenous peoples": {
+        "accuracy": 1,
+        "support": 5
+      },
+      "Children and youth": {
+        "accuracy": 0,
+        "support": 14
+      },
+      "Immigration and ethnocultural diversity": {
+        "accuracy": 1,
+        "support": 41
+      },
+      "Older adults and population aging": {
+        "accuracy": 0,
+        "support": 0
+      },
+      "Society and community": {
+        "accuracy": 0.06296296296296296,
+        "support": 270
+      },
+      "Housing": {
+        "accuracy": 0.21428571428571427,
+        "support": 28
+      }
+    },
+    "epochHistory": [
+      {
+        "epoch": 0,
+        "accuracy": 0.5563121438026428,
+        "val_accuracy": 0.3769470453262329,
+        "test_accuracy": 0.5333333611488342
+      },
+      {
+        "epoch": 1,
+        "accuracy": 0.8004903197288513,
+        "val_accuracy": 0.3825545310974121,
+        "test_accuracy": 0.5423076748847961
+      },
+      {
+        "epoch": 2,
+        "accuracy": 0.8523764610290527,
+        "val_accuracy": 0.3869158923625946,
+        "test_accuracy": 0.5378205180168152
+      },
+      {
+        "epoch": 3,
+        "accuracy": 0.8763448596000671,
+        "val_accuracy": 0.3769470453262329,
+        "test_accuracy": 0.5153846144676208
+      },
+      {
+        "epoch": 4,
+        "accuracy": 0.8932316899299622,
+        "val_accuracy": 0.3769470453262329,
+        "test_accuracy": 0.5262820720672607
+      },
+      {
+        "epoch": 5,
+        "accuracy": 0.9026284217834473,
+        "val_accuracy": 0.36635515093803406,
+        "test_accuracy": 0.5089743733406067
+      },
+      {
+        "epoch": 6,
+        "accuracy": 0.9129784107208252,
+        "val_accuracy": 0.3644859790802002,
+        "test_accuracy": 0.5147435665130615
+      },
+      {
+        "epoch": 7,
+        "accuracy": 0.9207409024238586,
+        "val_accuracy": 0.34828659892082214,
+        "test_accuracy": 0.504487156867981
+      },
+      {
+        "epoch": 8,
+        "accuracy": 0.9267330169677734,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.504487156867981
+      },
+      {
+        "epoch": 9,
+        "accuracy": 0.935176432132721,
+        "val_accuracy": 0.3320872187614441,
+        "test_accuracy": 0.4871794879436493
+      },
+      {
+        "epoch": 10,
+        "accuracy": 0.9384448528289795,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5083333253860474
+      },
+      {
+        "epoch": 11,
+        "accuracy": 0.9430750608444214,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.504487156867981
+      },
+      {
+        "epoch": 12,
+        "accuracy": 0.9490671753883362,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.5057692527770996
+      },
+      {
+        "epoch": 13,
+        "accuracy": 0.9523355960845947,
+        "val_accuracy": 0.3514018654823303,
+        "test_accuracy": 0.5108974575996399
+      },
+      {
+        "epoch": 14,
+        "accuracy": 0.958055317401886,
+        "val_accuracy": 0.35638630390167236,
+        "test_accuracy": 0.5051282048225403
+      },
+      {
+        "epoch": 15,
+        "accuracy": 0.9622770547866821,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.5096153616905212
+      },
+      {
+        "epoch": 16,
+        "accuracy": 0.9654092788696289,
+        "val_accuracy": 0.34953272342681885,
+        "test_accuracy": 0.5089743733406067
+      },
+      {
+        "epoch": 17,
+        "accuracy": 0.9684053063392639,
+        "val_accuracy": 0.3470405042171478,
+        "test_accuracy": 0.5147435665130615
+      },
+      {
+        "epoch": 18,
+        "accuracy": 0.9727632403373718,
+        "val_accuracy": 0.3345794379711151,
+        "test_accuracy": 0.5089743733406067
+      },
+      {
+        "epoch": 19,
+        "accuracy": 0.9753507375717163,
+        "val_accuracy": 0.3470405042171478,
+        "test_accuracy": 0.517307698726654
+      },
+      {
+        "epoch": 20,
+        "accuracy": 0.9752145409584045,
+        "val_accuracy": 0.34267911314964294,
+        "test_accuracy": 0.5192307829856873
+      },
+      {
+        "epoch": 21,
+        "accuracy": 0.9795724153518677,
+        "val_accuracy": 0.3445482850074768,
+        "test_accuracy": 0.517307698726654
+      },
+      {
+        "epoch": 22,
+        "accuracy": 0.9812066555023193,
+        "val_accuracy": 0.35264796018600464,
+        "test_accuracy": 0.5121794939041138
+      },
+      {
+        "epoch": 23,
+        "accuracy": 0.9825685024261475,
+        "val_accuracy": 0.33271026611328125,
+        "test_accuracy": 0.5083333253860474
+      },
+      {
+        "epoch": 24,
+        "accuracy": 0.9867901802062988,
+        "val_accuracy": 0.34517133235931396,
+        "test_accuracy": 0.5160256624221802
+      },
+      {
+        "epoch": 25,
+        "accuracy": 0.9865178465843201,
+        "val_accuracy": 0.34517133235931396,
+        "test_accuracy": 0.521794855594635
+      },
+      {
+        "epoch": 26,
+        "accuracy": 0.9871987700462341,
+        "val_accuracy": 0.3376947045326233,
+        "test_accuracy": 0.5032051205635071
+      },
+      {
+        "epoch": 27,
+        "accuracy": 0.9886967539787292,
+        "val_accuracy": 0.34267911314964294,
+        "test_accuracy": 0.5153846144676208
+      },
+      {
+        "epoch": 28,
+        "accuracy": 0.9897862672805786,
+        "val_accuracy": 0.3470405042171478,
+        "test_accuracy": 0.521794855594635
+      },
+      {
+        "epoch": 29,
+        "accuracy": 0.9912842512130737,
+        "val_accuracy": 0.3489096462726593,
+        "test_accuracy": 0.5179487466812134
+      }
+    ]
+  },
+  "Xenova/bge-small-en-v1.5": {
+    "embeddingDim": 384,
+    "centroidAcc": 0.43012820512820515,
+    "centroidPerCategory": {
+      "Government": {
+        "accuracy": 0.05555555555555555,
+        "support": 36
+      },
+      "Income, pensions, spending and wealth": {
+        "accuracy": 0.24375,
+        "support": 160
+      },
+      "International trade": {
+        "accuracy": 0.2413793103448276,
+        "support": 29
+      },
+      "Health": {
+        "accuracy": 0.38524590163934425,
+        "support": 122
+      },
+      "Labour": {
+        "accuracy": 0.12149532710280374,
+        "support": 107
+      },
+      "Languages": {
+        "accuracy": 0.16666666666666666,
+        "support": 6
+      },
+      "Manufacturing": {
+        "accuracy": 0.23333333333333334,
+        "support": 30
+      },
+      "Population and demography": {
+        "accuracy": 0.4212962962962963,
+        "support": 216
+      },
+      "Prices and price indexes": {
+        "accuracy": 0.890625,
+        "support": 64
+      },
+      "Statistical methods": {
+        "accuracy": 1,
+        "support": 1
+      },
+      "Retail and wholesale": {
+        "accuracy": 0.45714285714285713,
+        "support": 35
+      },
+      "Business and consumer services and culture": {
+        "accuracy": 0.9743589743589743,
+        "support": 117
+      },
+      "Digital economy and society": {
+        "accuracy": 0.16666666666666666,
+        "support": 12
+      },
+      "Transportation": {
+        "accuracy": 1,
+        "support": 52
+      },
+      "Travel and tourism": {
+        "accuracy": 0.038461538461538464,
+        "support": 26
+      },
+      "Energy": {
+        "accuracy": 0.8571428571428571,
+        "support": 21
+      },
+      "Science and technology": {
+        "accuracy": 0.3076923076923077,
+        "support": 13
+      },
+      "Agriculture and food": {
+        "accuracy": 1,
+        "support": 36
+      },
+      "Business performance and ownership": {
+        "accuracy": 0.34782608695652173,
+        "support": 23
+      },
+      "Construction": {
+        "accuracy": 0.25,
+        "support": 4
+      },
+      "Crime and justice": {
+        "accuracy": 1,
+        "support": 19
+      },
+      "Economic accounts": {
+        "accuracy": 1,
+        "support": 16
+      },
+      "Education, training and learning": {
+        "accuracy": 0.8125,
+        "support": 32
+      },
+      "Environment": {
+        "accuracy": 0.2,
+        "support": 20
+      },
+      "Families, households and marital status": {
+        "accuracy": 1,
+        "support": 5
+      },
+      "Indigenous peoples": {
+        "accuracy": 0.8,
+        "support": 5
+      },
+      "Children and youth": {
+        "accuracy": 0.5,
+        "support": 14
+      },
+      "Immigration and ethnocultural diversity": {
+        "accuracy": 1,
+        "support": 41
+      },
+      "Older adults and population aging": {
+        "accuracy": 0,
+        "support": 0
+      },
+      "Society and community": {
+        "accuracy": 0.10740740740740741,
+        "support": 270
+      },
+      "Housing": {
+        "accuracy": 0.10714285714285714,
+        "support": 28
+      }
+    },
+    "epochHistory": [
+      {
+        "epoch": 0,
+        "accuracy": 0.4359253942966461,
+        "val_accuracy": 0.35825544595718384,
+        "test_accuracy": 0.4724358916282654
+      },
+      {
+        "epoch": 1,
+        "accuracy": 0.7401607632637024,
+        "val_accuracy": 0.3881619870662689,
+        "test_accuracy": 0.5301281809806824
+      },
+      {
+        "epoch": 2,
+        "accuracy": 0.8211902976036072,
+        "val_accuracy": 0.40747663378715515,
+        "test_accuracy": 0.5596153736114502
+      },
+      {
+        "epoch": 3,
+        "accuracy": 0.8549639582633972,
+        "val_accuracy": 0.36510902643203735,
+        "test_accuracy": 0.5365384817123413
+      },
+      {
+        "epoch": 4,
+        "accuracy": 0.8680376410484314,
+        "val_accuracy": 0.38068535923957825,
+        "test_accuracy": 0.5538461804389954
+      },
+      {
+        "epoch": 5,
+        "accuracy": 0.8812475204467773,
+        "val_accuracy": 0.3713395595550537,
+        "test_accuracy": 0.528205156326294
+      },
+      {
+        "epoch": 6,
+        "accuracy": 0.8926869630813599,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.5006410479545593
+      },
+      {
+        "epoch": 7,
+        "accuracy": 0.9023560285568237,
+        "val_accuracy": 0.361370712518692,
+        "test_accuracy": 0.514102578163147
+      },
+      {
+        "epoch": 8,
+        "accuracy": 0.9118888974189758,
+        "val_accuracy": 0.35825544595718384,
+        "test_accuracy": 0.5179487466812134
+      },
+      {
+        "epoch": 9,
+        "accuracy": 0.916110634803772,
+        "val_accuracy": 0.34267911314964294,
+        "test_accuracy": 0.5070512890815735
+      },
+      {
+        "epoch": 10,
+        "accuracy": 0.9222388863563538,
+        "val_accuracy": 0.35514017939567566,
+        "test_accuracy": 0.5121794939041138
+      },
+      {
+        "epoch": 11,
+        "accuracy": 0.9283671975135803,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5070512890815735
+      },
+      {
+        "epoch": 12,
+        "accuracy": 0.930818498134613,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5121794939041138
+      },
+      {
+        "epoch": 13,
+        "accuracy": 0.9347678422927856,
+        "val_accuracy": 0.35264796018600464,
+        "test_accuracy": 0.5102564096450806
+      },
+      {
+        "epoch": 14,
+        "accuracy": 0.9369468092918396,
+        "val_accuracy": 0.35638630390167236,
+        "test_accuracy": 0.5179487466812134
+      },
+      {
+        "epoch": 15,
+        "accuracy": 0.9423941373825073,
+        "val_accuracy": 0.336448609828949,
+        "test_accuracy": 0.5012820363044739
+      },
+      {
+        "epoch": 16,
+        "accuracy": 0.9443007707595825,
+        "val_accuracy": 0.3445482850074768,
+        "test_accuracy": 0.5064102411270142
+      },
+      {
+        "epoch": 17,
+        "accuracy": 0.9475691318511963,
+        "val_accuracy": 0.361370712518692,
+        "test_accuracy": 0.5237179398536682
+      },
+      {
+        "epoch": 18,
+        "accuracy": 0.9494757652282715,
+        "val_accuracy": 0.3420560657978058,
+        "test_accuracy": 0.5070512890815735
+      },
+      {
+        "epoch": 19,
+        "accuracy": 0.9553316831588745,
+        "val_accuracy": 0.3532710373401642,
+        "test_accuracy": 0.5243589878082275
+      },
+      {
+        "epoch": 20,
+        "accuracy": 0.9539698362350464,
+        "val_accuracy": 0.36074766516685486,
+        "test_accuracy": 0.5262820720672607
+      },
+      {
+        "epoch": 21,
+        "accuracy": 0.9553316831588745,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5333333611488342
+      },
+      {
+        "epoch": 22,
+        "accuracy": 0.9596895575523376,
+        "val_accuracy": 0.347663551568985,
+        "test_accuracy": 0.5192307829856873
+      },
+      {
+        "epoch": 23,
+        "accuracy": 0.9617323279380798,
+        "val_accuracy": 0.35389408469200134,
+        "test_accuracy": 0.5134615302085876
+      },
+      {
+        "epoch": 24,
+        "accuracy": 0.9600980877876282,
+        "val_accuracy": 0.3514018654823303,
+        "test_accuracy": 0.5160256624221802
+      },
+      {
+        "epoch": 25,
+        "accuracy": 0.9662263989448547,
+        "val_accuracy": 0.3619937598705292,
+        "test_accuracy": 0.5198717713356018
+      },
+      {
+        "epoch": 26,
+        "accuracy": 0.966771125793457,
+        "val_accuracy": 0.3514018654823303,
+        "test_accuracy": 0.5051282048225403
+      },
+      {
+        "epoch": 27,
+        "accuracy": 0.969086229801178,
+        "val_accuracy": 0.35950157046318054,
+        "test_accuracy": 0.5211538672447205
+      },
+      {
+        "epoch": 28,
+        "accuracy": 0.9715375900268555,
+        "val_accuracy": 0.35077881813049316,
+        "test_accuracy": 0.5153846144676208
+      },
+      {
+        "epoch": 29,
+        "accuracy": 0.971946120262146,
+        "val_accuracy": 0.33520248532295227,
+        "test_accuracy": 0.49038460850715637
       }
     ]
   }
