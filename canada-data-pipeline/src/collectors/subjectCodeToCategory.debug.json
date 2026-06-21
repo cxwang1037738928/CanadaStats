@@ -1,0 +1,4394 @@
+{
+  "10": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "12": {
+    "category": "International trade",
+    "confidence": 1,
+    "votes": {
+      "International trade": 1
+    },
+    "totalVotes": 1
+  },
+  "13": {
+    "category": "Health",
+    "confidence": 0.8235294117647058,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 14,
+      "Labour": 1,
+      "Older adults and population aging": 1
+    },
+    "totalVotes": 17
+  },
+  "14": {
+    "category": "Housing",
+    "confidence": 0.5,
+    "votes": {
+      "Housing": 1,
+      "Labour": 1
+    },
+    "totalVotes": 2
+  },
+  "18": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 1
+    },
+    "totalVotes": 1
+  },
+  "20": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 1
+    },
+    "totalVotes": 1
+  },
+  "22": {
+    "category": "Business performance and ownership",
+    "confidence": 0.5,
+    "votes": {
+      "Business performance and ownership": 1,
+      "Labour": 1
+    },
+    "totalVotes": 2
+  },
+  "23": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "27": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "33": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.46153846153846156,
+    "votes": {
+      "Business and consumer services and culture": 6,
+      "Statistical methods": 3,
+      "Retail and wholesale": 1,
+      "International trade": 2,
+      "Labour": 1
+    },
+    "totalVotes": 13
+  },
+  "34": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Digital economy and society": 1,
+      "Population and demography": 6,
+      "Society and community": 1
+    },
+    "totalVotes": 8
+  },
+  "35": {
+    "category": "Children and youth",
+    "confidence": 1,
+    "votes": {
+      "Children and youth": 1
+    },
+    "totalVotes": 1
+  },
+  "36": {
+    "category": "Labour",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Agriculture and food": 1,
+      "International trade": 1,
+      "Economic accounts": 1,
+      "Labour": 5,
+      "Housing": 1
+    },
+    "totalVotes": 10
+  },
+  "37": {
+    "category": "Society and community",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Immigration and ethnocultural diversity": 1,
+      "Society and community": 2
+    },
+    "totalVotes": 3
+  },
+  "38": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "39": {
+    "category": "Society and community",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "43": {
+    "category": "Population and demography",
+    "confidence": 0.7142857142857143,
+    "votes": {
+      "Income, pensions, spending and wealth": 2,
+      "Population and demography": 5
+    },
+    "totalVotes": 7
+  },
+  "44": {
+    "category": "Population and demography",
+    "confidence": 0.6153846153846154,
+    "votes": {
+      "Population and demography": 8,
+      "Income, pensions, spending and wealth": 5
+    },
+    "totalVotes": 13
+  },
+  "45": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 3
+    },
+    "totalVotes": 3
+  },
+  "1001": {
+    "category": "Government",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Government": 10,
+      "Health": 1,
+      "Education, training and learning": 1
+    },
+    "totalVotes": 12
+  },
+  "1002": {
+    "category": "Labour",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Labour": 2,
+      "Society and community": 1
+    },
+    "totalVotes": 3
+  },
+  "1003": {
+    "category": "Government",
+    "confidence": 0.42857142857142855,
+    "votes": {
+      "Science and technology": 4,
+      "Government": 6,
+      "Retail and wholesale": 3,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 14
+  },
+  "1004": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "1005": {
+    "category": "Government",
+    "confidence": 0.5333333333333333,
+    "votes": {
+      "Government": 24,
+      "Health": 3,
+      "Education, training and learning": 5,
+      "Income, pensions, spending and wealth": 10,
+      "Science and technology": 1,
+      "Retail and wholesale": 1,
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 45
+  },
+  "1099": {
+    "category": "Health",
+    "confidence": 0.25,
+    "votes": {
+      "Health": 1,
+      "Languages": 1,
+      "Government": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 4
+  },
+  "1104": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Population and demography": 3,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 4
+  },
+  "1107": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Income, pensions, spending and wealth": 4,
+      "Business and consumer services and culture": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 6
+  },
+  "1108": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 7
+    },
+    "totalVotes": 7
+  },
+  "1109": {
+    "category": "Health",
+    "confidence": 0.8888888888888888,
+    "votes": {
+      "Health": 8,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 9
+  },
+  "1199": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8461538461538461,
+    "votes": {
+      "Income, pensions, spending and wealth": 11,
+      "Children and youth": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 13
+  },
+  "1201": {
+    "category": "International trade",
+    "confidence": 0.575,
+    "votes": {
+      "Income, pensions, spending and wealth": 5,
+      "International trade": 23,
+      "Society and community": 1,
+      "Business and consumer services and culture": 11
+    },
+    "totalVotes": 40
+  },
+  "1203": {
+    "category": "International trade",
+    "confidence": 0.4444444444444444,
+    "votes": {
+      "International trade": 4,
+      "Business and consumer services and culture": 3,
+      "Population and demography": 2
+    },
+    "totalVotes": 9
+  },
+  "1204": {
+    "category": "International trade",
+    "confidence": 0.875,
+    "votes": {
+      "International trade": 7,
+      "Economic accounts": 1
+    },
+    "totalVotes": 8
+  },
+  "1205": {
+    "category": "International trade",
+    "confidence": 0.6428571428571429,
+    "votes": {
+      "International trade": 9,
+      "Business and consumer services and culture": 2,
+      "Population and demography": 2,
+      "Economic accounts": 1
+    },
+    "totalVotes": 14
+  },
+  "1299": {
+    "category": "International trade",
+    "confidence": 0.5333333333333333,
+    "votes": {
+      "International trade": 8,
+      "Business and consumer services and culture": 7
+    },
+    "totalVotes": 15
+  },
+  "1301": {
+    "category": "Health",
+    "confidence": 0.88,
+    "votes": {
+      "Health": 22,
+      "Children and youth": 3
+    },
+    "totalVotes": 25
+  },
+  "1309": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.34782608695652173,
+    "votes": {
+      "Health": 6,
+      "Children and youth": 1,
+      "Business and consumer services and culture": 8,
+      "Society and community": 3,
+      "Population and demography": 5
+    },
+    "totalVotes": 23
+  },
+  "1310": {
+    "category": "Health",
+    "confidence": 0.4,
+    "votes": {
+      "Health": 4,
+      "Older adults and population aging": 1,
+      "Children and youth": 4,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 10
+  },
+  "1311": {
+    "category": "Health",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Health": 15,
+      "Population and demography": 2,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 18
+  },
+  "1399": {
+    "category": "Health",
+    "confidence": 0.6956521739130435,
+    "votes": {
+      "Travel and tourism": 4,
+      "Health": 16,
+      "Children and youth": 1,
+      "Income, pensions, spending and wealth": 1,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 23
+  },
+  "1403": {
+    "category": "Labour",
+    "confidence": 0.8125,
+    "votes": {
+      "Labour": 39,
+      "Government": 4,
+      "Health": 1,
+      "Income, pensions, spending and wealth": 3,
+      "Retail and wholesale": 1
+    },
+    "totalVotes": 48
+  },
+  "1405": {
+    "category": "Society and community",
+    "confidence": 0.25,
+    "votes": {
+      "Health": 1,
+      "Business and consumer services and culture": 4,
+      "Income, pensions, spending and wealth": 3,
+      "Labour": 1,
+      "Digital economy and society": 1,
+      "Society and community": 7,
+      "Population and demography": 5,
+      "International trade": 5,
+      "Science and technology": 1
+    },
+    "totalVotes": 28
+  },
+  "1406": {
+    "category": "Labour",
+    "confidence": 0.7307692307692307,
+    "votes": {
+      "Labour": 19,
+      "Business and consumer services and culture": 4,
+      "Income, pensions, spending and wealth": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 26
+  },
+  "1409": {
+    "category": "Labour",
+    "confidence": 0.8125,
+    "votes": {
+      "Labour": 13,
+      "Population and demography": 3
+    },
+    "totalVotes": 16
+  },
+  "1410": {
+    "category": "Labour",
+    "confidence": 1,
+    "votes": {
+      "Labour": 4
+    },
+    "totalVotes": 4
+  },
+  "1411": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "1412": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Business and consumer services and culture": 5,
+      "Digital economy and society": 1
+    },
+    "totalVotes": 6
+  },
+  "1413": {
+    "category": "Population and demography",
+    "confidence": 0.7142857142857143,
+    "votes": {
+      "Population and demography": 5,
+      "Labour": 2
+    },
+    "totalVotes": 7
+  },
+  "1499": {
+    "category": "Population and demography",
+    "confidence": 0.6,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 3,
+      "Labour": 1
+    },
+    "totalVotes": 5
+  },
+  "1504": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "1599": {
+    "category": "Languages",
+    "confidence": 1,
+    "votes": {
+      "Languages": 1
+    },
+    "totalVotes": 1
+  },
+  "1601": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "1602": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "1604": {
+    "category": "Population and demography",
+    "confidence": 0.5714285714285714,
+    "votes": {
+      "Population and demography": 4,
+      "Labour": 2,
+      "Energy": 1
+    },
+    "totalVotes": 7
+  },
+  "1605": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "1608": {
+    "category": "Population and demography",
+    "confidence": 0.42857142857142855,
+    "votes": {
+      "Population and demography": 3,
+      "Transportation": 1,
+      "Labour": 3
+    },
+    "totalVotes": 7
+  },
+  "1699": {
+    "category": "Manufacturing",
+    "confidence": 0.4666666666666667,
+    "votes": {
+      "Labour": 5,
+      "Manufacturing": 7,
+      "Population and demography": 3
+    },
+    "totalVotes": 15
+  },
+  "1702": {
+    "category": "Population and demography",
+    "confidence": 0.9523809523809523,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 20
+    },
+    "totalVotes": 21
+  },
+  "1704": {
+    "category": "Population and demography",
+    "confidence": 0.6153846153846154,
+    "votes": {
+      "Travel and tourism": 3,
+      "Health": 7,
+      "Population and demography": 16
+    },
+    "totalVotes": 26
+  },
+  "1799": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Children and youth": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 3
+  },
+  "1801": {
+    "category": "Prices and price indexes",
+    "confidence": 0.8571428571428571,
+    "votes": {
+      "Prices and price indexes": 6,
+      "Society and community": 1
+    },
+    "totalVotes": 7
+  },
+  "1802": {
+    "category": "Prices and price indexes",
+    "confidence": 0.8888888888888888,
+    "votes": {
+      "Prices and price indexes": 8,
+      "Agriculture and food": 1
+    },
+    "totalVotes": 9
+  },
+  "1804": {
+    "category": "International trade",
+    "confidence": 1,
+    "votes": {
+      "International trade": 2
+    },
+    "totalVotes": 2
+  },
+  "1806": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 5
+    },
+    "totalVotes": 5
+  },
+  "1899": {
+    "category": "Housing",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Housing": 2
+    },
+    "totalVotes": 3
+  },
+  "2001": {
+    "category": "Science and technology",
+    "confidence": 0.4444444444444444,
+    "votes": {
+      "Science and technology": 4,
+      "Retail and wholesale": 3,
+      "Prices and price indexes": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 9
+  },
+  "2002": {
+    "category": "Retail and wholesale",
+    "confidence": 1,
+    "votes": {
+      "Retail and wholesale": 16
+    },
+    "totalVotes": 16
+  },
+  "2003": {
+    "category": "Retail and wholesale",
+    "confidence": 1,
+    "votes": {
+      "Retail and wholesale": 7
+    },
+    "totalVotes": 7
+  },
+  "2099": {
+    "category": "Retail and wholesale",
+    "confidence": 1,
+    "votes": {
+      "Retail and wholesale": 3
+    },
+    "totalVotes": 3
+  },
+  "2199": {
+    "category": "Statistical methods",
+    "confidence": 0.75,
+    "votes": {
+      "Statistical methods": 3,
+      "Retail and wholesale": 1
+    },
+    "totalVotes": 4
+  },
+  "2203": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 33
+    },
+    "totalVotes": 33
+  },
+  "2206": {
+    "category": "Economic accounts",
+    "confidence": 1,
+    "votes": {
+      "Economic accounts": 1
+    },
+    "totalVotes": 1
+  },
+  "2207": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 5
+    },
+    "totalVotes": 5
+  },
+  "2208": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.9166666666666666,
+    "votes": {
+      "Business and consumer services and culture": 11,
+      "Labour": 1
+    },
+    "totalVotes": 12
+  },
+  "2209": {
+    "category": "Retail and wholesale",
+    "confidence": 0.3076923076923077,
+    "votes": {
+      "Retail and wholesale": 4,
+      "International trade": 1,
+      "Statistical methods": 3,
+      "Business and consumer services and culture": 1,
+      "Population and demography": 4
+    },
+    "totalVotes": 13
+  },
+  "2299": {
+    "category": "Science and technology",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Science and technology": 1,
+      "International trade": 1,
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 3
+  },
+  "2302": {
+    "category": "Government",
+    "confidence": 1,
+    "votes": {
+      "Government": 1
+    },
+    "totalVotes": 1
+  },
+  "2303": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "2399": {
+    "category": "Transportation",
+    "confidence": 0.4,
+    "votes": {
+      "Transportation": 2,
+      "Society and community": 1,
+      "Housing": 2
+    },
+    "totalVotes": 5
+  },
+  "2401": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 16
+    },
+    "totalVotes": 16
+  },
+  "2402": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 15
+    },
+    "totalVotes": 15
+  },
+  "2403": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "2404": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "2405": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 11
+    },
+    "totalVotes": 11
+  },
+  "2499": {
+    "category": "Society and community",
+    "confidence": 0.9090909090909091,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Society and community": 10
+    },
+    "totalVotes": 11
+  },
+  "2502": {
+    "category": "Society and community",
+    "confidence": 0.9615384615384616,
+    "votes": {
+      "Labour": 1,
+      "Society and community": 25
+    },
+    "totalVotes": 26
+  },
+  "2504": {
+    "category": "Society and community",
+    "confidence": 0.7222222222222222,
+    "votes": {
+      "Prices and price indexes": 4,
+      "Transportation": 1,
+      "Society and community": 13
+    },
+    "totalVotes": 18
+  },
+  "2599": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "2701": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "2702": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "2704": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "2799": {
+    "category": "Science and technology",
+    "confidence": 0.5,
+    "votes": {
+      "Science and technology": 1,
+      "International trade": 1
+    },
+    "totalVotes": 2
+  },
+  "3208": {
+    "category": "Society and community",
+    "confidence": 0.9423076923076923,
+    "votes": {
+      "Society and community": 49,
+      "Income, pensions, spending and wealth": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 52
+  },
+  "3299": {
+    "category": "Agriculture and food",
+    "confidence": 0.5,
+    "votes": {
+      "Agriculture and food": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 2
+  },
+  "3302": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 5
+    },
+    "totalVotes": 5
+  },
+  "3303": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 1
+  },
+  "3304": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6923076923076923,
+    "votes": {
+      "Business and consumer services and culture": 9,
+      "Population and demography": 2,
+      "Society and community": 1,
+      "Economic accounts": 1
+    },
+    "totalVotes": 13
+  },
+  "3399": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6153846153846154,
+    "votes": {
+      "Business and consumer services and culture": 16,
+      "Society and community": 2,
+      "Population and demography": 3,
+      "Prices and price indexes": 2,
+      "International trade": 2,
+      "Digital economy and society": 1
+    },
+    "totalVotes": 26
+  },
+  "3402": {
+    "category": "Digital economy and society",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Digital economy and society": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 3
+  },
+  "3403": {
+    "category": "Construction",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Construction": 1,
+      "Society and community": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 3
+  },
+  "3405": {
+    "category": "Construction",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Construction": 5,
+      "Population and demography": 1
+    },
+    "totalVotes": 6
+  },
+  "3406": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5,
+    "votes": {
+      "Construction": 1,
+      "Society and community": 1,
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 4
+  },
+  "3407": {
+    "category": "Digital economy and society",
+    "confidence": 0.4666666666666667,
+    "votes": {
+      "Digital economy and society": 7,
+      "Construction": 1,
+      "Society and community": 4,
+      "Labour": 1,
+      "Business performance and ownership": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 15
+  },
+  "3408": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 21
+    },
+    "totalVotes": 21
+  },
+  "3409": {
+    "category": "Population and demography",
+    "confidence": 0.38461538461538464,
+    "votes": {
+      "Population and demography": 5,
+      "Construction": 5,
+      "Labour": 3
+    },
+    "totalVotes": 13
+  },
+  "3410": {
+    "category": "Population and demography",
+    "confidence": 0.5454545454545454,
+    "votes": {
+      "Business and consumer services and culture": 5,
+      "Population and demography": 24,
+      "Construction": 3,
+      "Society and community": 9,
+      "Economic accounts": 2,
+      "Environment": 1
+    },
+    "totalVotes": 44
+  },
+  "3499": {
+    "category": "Digital economy and society",
+    "confidence": 1,
+    "votes": {
+      "Digital economy and society": 1
+    },
+    "totalVotes": 1
+  },
+  "3503": {
+    "category": "Labour",
+    "confidence": 1,
+    "votes": {
+      "Labour": 1
+    },
+    "totalVotes": 1
+  },
+  "3504": {
+    "category": "Labour",
+    "confidence": 0.6,
+    "votes": {
+      "Crime and justice": 2,
+      "Population and demography": 2,
+      "Labour": 6
+    },
+    "totalVotes": 10
+  },
+  "3506": {
+    "category": "Labour",
+    "confidence": 1,
+    "votes": {
+      "Labour": 1
+    },
+    "totalVotes": 1
+  },
+  "3601": {
+    "category": "Society and community",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Population and demography": 3,
+      "Society and community": 4,
+      "Digital economy and society": 1,
+      "Economic accounts": 2,
+      "Housing": 2
+    },
+    "totalVotes": 12
+  },
+  "3602": {
+    "category": "Labour",
+    "confidence": 0.36363636363636365,
+    "votes": {
+      "Manufacturing": 1,
+      "Income, pensions, spending and wealth": 2,
+      "Science and technology": 2,
+      "International trade": 1,
+      "Labour": 4,
+      "Society and community": 1
+    },
+    "totalVotes": 11
+  },
+  "3699": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6,
+    "votes": {
+      "Environment": 1,
+      "Income, pensions, spending and wealth": 3,
+      "Families, households and marital status": 1
+    },
+    "totalVotes": 5
+  },
+  "3701": {
+    "category": "Education, training and learning",
+    "confidence": 1,
+    "votes": {
+      "Education, training and learning": 2
+    },
+    "totalVotes": 2
+  },
+  "3704": {
+    "category": "Population and demography",
+    "confidence": 0.6896551724137931,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 40,
+      "Science and technology": 3,
+      "Education, training and learning": 3,
+      "Income, pensions, spending and wealth": 9,
+      "Labour": 2
+    },
+    "totalVotes": 58
+  },
+  "3707": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Population and demography": 6,
+      "Labour": 3,
+      "Science and technology": 1,
+      "Health": 2
+    },
+    "totalVotes": 12
+  },
+  "3708": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5454545454545454,
+    "votes": {
+      "Income, pensions, spending and wealth": 30,
+      "Population and demography": 18,
+      "Education, training and learning": 2,
+      "Science and technology": 2,
+      "Labour": 3
+    },
+    "totalVotes": 55
+  },
+  "3711": {
+    "category": "Society and community",
+    "confidence": 0.35,
+    "votes": {
+      "Society and community": 7,
+      "Population and demography": 6,
+      "International trade": 5,
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 20
+  },
+  "3712": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 4,
+      "Education, training and learning": 2
+    },
+    "totalVotes": 6
+  },
+  "3716": {
+    "category": "Science and technology",
+    "confidence": 0.5,
+    "votes": {
+      "Science and technology": 3,
+      "Education, training and learning": 1,
+      "Labour": 2
+    },
+    "totalVotes": 6
+  },
+  "3799": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 1
+  },
+  "3802": {
+    "category": "Society and community",
+    "confidence": 0.75,
+    "votes": {
+      "Labour": 1,
+      "Society and community": 3
+    },
+    "totalVotes": 4
+  },
+  "3805": {
+    "category": "Labour",
+    "confidence": 0.25,
+    "votes": {
+      "International trade": 1,
+      "Environment": 1,
+      "Labour": 2,
+      "Income, pensions, spending and wealth": 1,
+      "Housing": 1,
+      "Society and community": 2
+    },
+    "totalVotes": 8
+  },
+  "3810": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.5,
+    "votes": {
+      "Business and consumer services and culture": 3,
+      "Society and community": 2,
+      "Families, households and marital status": 1
+    },
+    "totalVotes": 6
+  },
+  "3899": {
+    "category": "Population and demography",
+    "confidence": 0.2857142857142857,
+    "votes": {
+      "Business and consumer services and culture": 1,
+      "Housing": 1,
+      "Population and demography": 2,
+      "Income, pensions, spending and wealth": 1,
+      "Families, households and marital status": 1,
+      "Energy": 1
+    },
+    "totalVotes": 7
+  },
+  "3902": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 11,
+      "Children and youth": 1,
+      "Population and demography": 7,
+      "Society and community": 3
+    },
+    "totalVotes": 22
+  },
+  "3903": {
+    "category": "Population and demography",
+    "confidence": 0.6,
+    "votes": {
+      "Families, households and marital status": 1,
+      "Housing": 1,
+      "Population and demography": 3
+    },
+    "totalVotes": 5
+  },
+  "3905": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "3906": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 6,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 8
+  },
+  "3999": {
+    "category": "Population and demography",
+    "confidence": 0.4,
+    "votes": {
+      "Population and demography": 2,
+      "Society and community": 1,
+      "Children and youth": 2
+    },
+    "totalVotes": 5
+  },
+  "4101": {
+    "category": "Population and demography",
+    "confidence": 0.6875,
+    "votes": {
+      "Indigenous peoples": 4,
+      "Population and demography": 11,
+      "Labour": 1
+    },
+    "totalVotes": 16
+  },
+  "4102": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Population and demography": 18,
+      "Education, training and learning": 2,
+      "Income, pensions, spending and wealth": 2,
+      "Labour": 2
+    },
+    "totalVotes": 24
+  },
+  "4103": {
+    "category": "Health",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 4,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 6
+  },
+  "4104": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Business and consumer services and culture": 2,
+      "Indigenous peoples": 1,
+      "Population and demography": 3
+    },
+    "totalVotes": 6
+  },
+  "4105": {
+    "category": "Population and demography",
+    "confidence": 0.9,
+    "votes": {
+      "Population and demography": 9,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 10
+  },
+  "4106": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Housing": 1,
+      "Population and demography": 2,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 4
+  },
+  "4107": {
+    "category": "Labour",
+    "confidence": 0.36363636363636365,
+    "votes": {
+      "Income, pensions, spending and wealth": 3,
+      "Labour": 4,
+      "Population and demography": 4
+    },
+    "totalVotes": 11
+  },
+  "4108": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8181818181818182,
+    "votes": {
+      "Income, pensions, spending and wealth": 9,
+      "Labour": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 11
+  },
+  "4110": {
+    "category": "Education, training and learning",
+    "confidence": 0.5,
+    "votes": {
+      "Education, training and learning": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "4199": {
+    "category": "Population and demography",
+    "confidence": 0.4,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 2,
+      "Indigenous peoples": 2
+    },
+    "totalVotes": 5
+  },
+  "4202": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 2,
+      "Education, training and learning": 1
+    },
+    "totalVotes": 3
+  },
+  "4203": {
+    "category": "Children and youth",
+    "confidence": 0.631578947368421,
+    "votes": {
+      "Health": 5,
+      "Children and youth": 12,
+      "Income, pensions, spending and wealth": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 19
+  },
+  "4205": {
+    "category": "Education, training and learning",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Education, training and learning": 1,
+      "Labour": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 3
+  },
+  "4206": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 1
+  },
+  "4210": {
+    "category": "Population and demography",
+    "confidence": 0.5657894736842105,
+    "votes": {
+      "Population and demography": 43,
+      "Business performance and ownership": 4,
+      "Society and community": 19,
+      "Children and youth": 3,
+      "Science and technology": 3,
+      "Education, training and learning": 4
+    },
+    "totalVotes": 76
+  },
+  "4211": {
+    "category": "Children and youth",
+    "confidence": 0.5909090909090909,
+    "votes": {
+      "Population and demography": 2,
+      "Business and consumer services and culture": 6,
+      "Children and youth": 13,
+      "Transportation": 1
+    },
+    "totalVotes": 22
+  },
+  "4213": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "4299": {
+    "category": "Children and youth",
+    "confidence": 1,
+    "votes": {
+      "Children and youth": 3
+    },
+    "totalVotes": 3
+  },
+  "4301": {
+    "category": "Population and demography",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Immigration and ethnocultural diversity": 1,
+      "Population and demography": 5
+    },
+    "totalVotes": 6
+  },
+  "4303": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Population and demography": 12,
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 16
+  },
+  "4308": {
+    "category": "Population and demography",
+    "confidence": 0.6862745098039216,
+    "votes": {
+      "Income, pensions, spending and wealth": 12,
+      "Population and demography": 35,
+      "Immigration and ethnocultural diversity": 2,
+      "Education, training and learning": 2
+    },
+    "totalVotes": 51
+  },
+  "4309": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 9
+    },
+    "totalVotes": 9
+  },
+  "4310": {
+    "category": "Population and demography",
+    "confidence": 0.9090909090909091,
+    "votes": {
+      "Population and demography": 10,
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 11
+  },
+  "4399": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 2
+    },
+    "totalVotes": 2
+  },
+  "4401": {
+    "category": "Older adults and population aging",
+    "confidence": 0.8,
+    "votes": {
+      "Health": 1,
+      "Older adults and population aging": 4
+    },
+    "totalVotes": 5
+  },
+  "4402": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Income, pensions, spending and wealth": 2,
+      "Health": 1
+    },
+    "totalVotes": 3
+  },
+  "4403": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "4406": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 1,
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 3
+  },
+  "4501": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 1,
+      "Indigenous peoples": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 4
+  },
+  "4502": {
+    "category": "Health",
+    "confidence": 0.5,
+    "votes": {
+      "Health": 2,
+      "Labour": 2
+    },
+    "totalVotes": 4
+  },
+  "4503": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "4504": {
+    "category": "Society and community",
+    "confidence": 0.375,
+    "votes": {
+      "Travel and tourism": 1,
+      "Labour": 2,
+      "Society and community": 6,
+      "Population and demography": 6,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 16
+  },
+  "4505": {
+    "category": "Population and demography",
+    "confidence": 0.7105263157894737,
+    "votes": {
+      "Income, pensions, spending and wealth": 7,
+      "Business and consumer services and culture": 2,
+      "Economic accounts": 1,
+      "Population and demography": 27,
+      "Society and community": 1
+    },
+    "totalVotes": 38
+  },
+  "4506": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 4,
+      "Children and youth": 1
+    },
+    "totalVotes": 6
+  },
+  "4507": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 2
+  },
+  "4508": {
+    "category": "Population and demography",
+    "confidence": 0.45454545454545453,
+    "votes": {
+      "Health": 1,
+      "Society and community": 4,
+      "Science and technology": 1,
+      "Population and demography": 5
+    },
+    "totalVotes": 11
+  },
+  "4509": {
+    "category": "Science and technology",
+    "confidence": 0.16666666666666666,
+    "votes": {
+      "Science and technology": 1,
+      "Government": 1,
+      "Agriculture and food": 1,
+      "Society and community": 1,
+      "Prices and price indexes": 1,
+      "Manufacturing": 1
+    },
+    "totalVotes": 6
+  },
+  "4599": {
+    "category": "Population and demography",
+    "confidence": 0.9,
+    "votes": {
+      "Population and demography": 9,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 10
+  },
+  "4601": {
+    "category": "Population and demography",
+    "confidence": 0.5862068965517241,
+    "votes": {
+      "Income, pensions, spending and wealth": 8,
+      "Population and demography": 34,
+      "Digital economy and society": 1,
+      "Society and community": 3,
+      "Science and technology": 1,
+      "Energy": 1,
+      "Housing": 10
+    },
+    "totalVotes": 58
+  },
+  "4602": {
+    "category": "Population and demography",
+    "confidence": 0.53125,
+    "votes": {
+      "Business and consumer services and culture": 1,
+      "Society and community": 1,
+      "Housing": 9,
+      "Population and demography": 17,
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 32
+  },
+  "4603": {
+    "category": "Prices and price indexes",
+    "confidence": 0.6,
+    "votes": {
+      "Prices and price indexes": 3,
+      "Housing": 2
+    },
+    "totalVotes": 5
+  },
+  "4604": {
+    "category": "Population and demography",
+    "confidence": 0.7948717948717948,
+    "votes": {
+      "Population and demography": 31,
+      "Income, pensions, spending and wealth": 4,
+      "Housing": 3,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 39
+  },
+  "4605": {
+    "category": "Population and demography",
+    "confidence": 0.39285714285714285,
+    "votes": {
+      "Population and demography": 11,
+      "Construction": 9,
+      "Digital economy and society": 1,
+      "Society and community": 2,
+      "Income, pensions, spending and wealth": 2,
+      "Housing": 3
+    },
+    "totalVotes": 28
+  },
+  "4699": {
+    "category": "Housing",
+    "confidence": 0.45454545454545453,
+    "votes": {
+      "Population and demography": 4,
+      "Housing": 5,
+      "Society and community": 2
+    },
+    "totalVotes": 11
+  },
+  "110101": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 7
+    },
+    "totalVotes": 7
+  },
+  "110102": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 6
+    },
+    "totalVotes": 6
+  },
+  "110199": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 2
+  },
+  "110201": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8666666666666667,
+    "votes": {
+      "Income, pensions, spending and wealth": 26,
+      "Digital economy and society": 1,
+      "Government": 1,
+      "Families, households and marital status": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 30
+  },
+  "110202": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 4
+  },
+  "110203": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 3,
+      "Economic accounts": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 6
+  },
+  "110299": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 3
+  },
+  "110301": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8148148148148148,
+    "votes": {
+      "Income, pensions, spending and wealth": 44,
+      "Children and youth": 1,
+      "Labour": 1,
+      "Government": 1,
+      "Society and community": 7
+    },
+    "totalVotes": 54
+  },
+  "110302": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.9230769230769231,
+    "votes": {
+      "Society and community": 1,
+      "Income, pensions, spending and wealth": 12
+    },
+    "totalVotes": 13
+  },
+  "110303": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.9047619047619048,
+    "votes": {
+      "Income, pensions, spending and wealth": 76,
+      "Labour": 1,
+      "Health": 4,
+      "Economic accounts": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 84
+  },
+  "110304": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8913043478260869,
+    "votes": {
+      "Income, pensions, spending and wealth": 41,
+      "Labour": 2,
+      "Society and community": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 46
+  },
+  "110399": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8787878787878788,
+    "votes": {
+      "Income, pensions, spending and wealth": 29,
+      "Labour": 1,
+      "Health": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 33
+  },
+  "110401": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 4
+  },
+  "110402": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8571428571428571,
+    "votes": {
+      "Income, pensions, spending and wealth": 30,
+      "Population and demography": 5
+    },
+    "totalVotes": 35
+  },
+  "110499": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 2
+  },
+  "110501": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Health": 1,
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 3
+  },
+  "110502": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "110599": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Health": 1
+    },
+    "totalVotes": 2
+  },
+  "110601": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 24
+    },
+    "totalVotes": 24
+  },
+  "110699": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 3
+    },
+    "totalVotes": 3
+  },
+  "130201": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130203": {
+    "category": "Travel and tourism",
+    "confidence": 0.6363636363636364,
+    "votes": {
+      "Travel and tourism": 7,
+      "Health": 4
+    },
+    "totalVotes": 11
+  },
+  "130205": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130206": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130207": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 2
+    },
+    "totalVotes": 2
+  },
+  "130208": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130209": {
+    "category": "Health",
+    "confidence": 0.7272727272727273,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 8,
+      "Children and youth": 2
+    },
+    "totalVotes": 11
+  },
+  "130210": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 4
+    },
+    "totalVotes": 4
+  },
+  "130211": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130218": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130221": {
+    "category": "Older adults and population aging",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Children and youth": 1,
+      "Older adults and population aging": 2
+    },
+    "totalVotes": 3
+  },
+  "130299": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 3
+    },
+    "totalVotes": 3
+  },
+  "130401": {
+    "category": "Health",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 25,
+      "Population and demography": 3,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 30
+  },
+  "130403": {
+    "category": "Health",
+    "confidence": 0.9285714285714286,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 13
+    },
+    "totalVotes": 14
+  },
+  "130404": {
+    "category": "Health",
+    "confidence": 0.9473684210526315,
+    "votes": {
+      "Health": 18,
+      "Population and demography": 1
+    },
+    "totalVotes": 19
+  },
+  "130405": {
+    "category": "Travel and tourism",
+    "confidence": 0.56,
+    "votes": {
+      "Travel and tourism": 14,
+      "Health": 11
+    },
+    "totalVotes": 25
+  },
+  "130406": {
+    "category": "Population and demography",
+    "confidence": 0.5714285714285714,
+    "votes": {
+      "Travel and tourism": 1,
+      "Population and demography": 8,
+      "Income, pensions, spending and wealth": 5
+    },
+    "totalVotes": 14
+  },
+  "130499": {
+    "category": "Health",
+    "confidence": 0.9090909090909091,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Health": 10
+    },
+    "totalVotes": 11
+  },
+  "130501": {
+    "category": "Travel and tourism",
+    "confidence": 0.5,
+    "votes": {
+      "Travel and tourism": 2,
+      "Health": 2
+    },
+    "totalVotes": 4
+  },
+  "130502": {
+    "category": "Health",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 2
+    },
+    "totalVotes": 3
+  },
+  "130503": {
+    "category": "Health",
+    "confidence": 0.5333333333333333,
+    "votes": {
+      "International trade": 1,
+      "Travel and tourism": 4,
+      "Health": 8,
+      "Income, pensions, spending and wealth": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 15
+  },
+  "130504": {
+    "category": "Health",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Health": 4,
+      "Income, pensions, spending and wealth": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 6
+  },
+  "130506": {
+    "category": "Travel and tourism",
+    "confidence": 1,
+    "votes": {
+      "Travel and tourism": 1
+    },
+    "totalVotes": 1
+  },
+  "130601": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130602": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 11
+    },
+    "totalVotes": 11
+  },
+  "130603": {
+    "category": "Health",
+    "confidence": 0.875,
+    "votes": {
+      "Health": 7,
+      "Society and community": 1
+    },
+    "totalVotes": 8
+  },
+  "130604": {
+    "category": "Health",
+    "confidence": 0.625,
+    "votes": {
+      "Travel and tourism": 3,
+      "Health": 5
+    },
+    "totalVotes": 8
+  },
+  "130605": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 1
+  },
+  "130606": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130607": {
+    "category": "Health",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Health": 4,
+      "Income, pensions, spending and wealth": 2
+    },
+    "totalVotes": 6
+  },
+  "130608": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 2
+    },
+    "totalVotes": 2
+  },
+  "130699": {
+    "category": "Health",
+    "confidence": 0.42857142857142855,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 3,
+      "Population and demography": 2,
+      "Labour": 1
+    },
+    "totalVotes": 7
+  },
+  "130701": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 2
+    },
+    "totalVotes": 2
+  },
+  "130703": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "130704": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 2
+    },
+    "totalVotes": 2
+  },
+  "130706": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 3
+    },
+    "totalVotes": 3
+  },
+  "130707": {
+    "category": "Health",
+    "confidence": 0.75,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 12,
+      "Children and youth": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 16
+  },
+  "130708": {
+    "category": "Travel and tourism",
+    "confidence": 1,
+    "votes": {
+      "Travel and tourism": 1
+    },
+    "totalVotes": 1
+  },
+  "130799": {
+    "category": "Travel and tourism",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Travel and tourism": 4,
+      "Health": 3,
+      "Population and demography": 4,
+      "Labour": 1
+    },
+    "totalVotes": 12
+  },
+  "130801": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 2
+    },
+    "totalVotes": 2
+  },
+  "130802": {
+    "category": "Population and demography",
+    "confidence": 0.8888888888888888,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 8
+    },
+    "totalVotes": 9
+  },
+  "130803": {
+    "category": "Travel and tourism",
+    "confidence": 0.5,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 1
+    },
+    "totalVotes": 2
+  },
+  "130804": {
+    "category": "Travel and tourism",
+    "confidence": 1,
+    "votes": {
+      "Travel and tourism": 1
+    },
+    "totalVotes": 1
+  },
+  "130899": {
+    "category": "Travel and tourism",
+    "confidence": 0.5,
+    "votes": {
+      "Travel and tourism": 1,
+      "Children and youth": 1
+    },
+    "totalVotes": 2
+  },
+  "140101": {
+    "category": "Labour",
+    "confidence": 0.5903614457831325,
+    "votes": {
+      "Labour": 49,
+      "Income, pensions, spending and wealth": 19,
+      "Travel and tourism": 1,
+      "Population and demography": 14
+    },
+    "totalVotes": 83
+  },
+  "140102": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Labour": 7,
+      "Population and demography": 8,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 16
+  },
+  "140103": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Labour": 2,
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 6
+  },
+  "140104": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 13
+    },
+    "totalVotes": 13
+  },
+  "140105": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.9629629629629629,
+    "votes": {
+      "Population and demography": 1,
+      "Income, pensions, spending and wealth": 26
+    },
+    "totalVotes": 27
+  },
+  "140107": {
+    "category": "Labour",
+    "confidence": 0.8571428571428571,
+    "votes": {
+      "Labour": 36,
+      "Income, pensions, spending and wealth": 4,
+      "Government": 2
+    },
+    "totalVotes": 42
+  },
+  "140199": {
+    "category": "Labour",
+    "confidence": 0.5,
+    "votes": {
+      "Labour": 8,
+      "Income, pensions, spending and wealth": 3,
+      "Health": 1,
+      "Population and demography": 4
+    },
+    "totalVotes": 16
+  },
+  "140201": {
+    "category": "Labour",
+    "confidence": 0.5984848484848485,
+    "votes": {
+      "Travel and tourism": 1,
+      "Health": 6,
+      "Labour": 79,
+      "Population and demography": 31,
+      "Society and community": 6,
+      "Science and technology": 3,
+      "Education, training and learning": 1,
+      "Income, pensions, spending and wealth": 5
+    },
+    "totalVotes": 132
+  },
+  "140202": {
+    "category": "Population and demography",
+    "confidence": 0.375,
+    "votes": {
+      "Education, training and learning": 8,
+      "Labour": 5,
+      "Population and demography": 15,
+      "Income, pensions, spending and wealth": 10,
+      "Science and technology": 2
+    },
+    "totalVotes": 40
+  },
+  "140203": {
+    "category": "Labour",
+    "confidence": 0.9722222222222222,
+    "votes": {
+      "Labour": 35,
+      "Population and demography": 1
+    },
+    "totalVotes": 36
+  },
+  "140204": {
+    "category": "Immigration and ethnocultural diversity",
+    "confidence": 0.4444444444444444,
+    "votes": {
+      "Immigration and ethnocultural diversity": 4,
+      "Education, training and learning": 1,
+      "Population and demography": 3,
+      "Labour": 1
+    },
+    "totalVotes": 9
+  },
+  "140205": {
+    "category": "Labour",
+    "confidence": 0.5306122448979592,
+    "votes": {
+      "Labour": 26,
+      "Immigration and ethnocultural diversity": 4,
+      "Population and demography": 12,
+      "Business and consumer services and culture": 5,
+      "Income, pensions, spending and wealth": 1,
+      "Science and technology": 1
+    },
+    "totalVotes": 49
+  },
+  "140207": {
+    "category": "Labour",
+    "confidence": 0.7857142857142857,
+    "votes": {
+      "Labour": 11,
+      "Education, training and learning": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 14
+  },
+  "140208": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 3,
+      "Children and youth": 2
+    },
+    "totalVotes": 6
+  },
+  "140209": {
+    "category": "Education, training and learning",
+    "confidence": 0.5,
+    "votes": {
+      "Education, training and learning": 2,
+      "Labour": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 4
+  },
+  "140210": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Labour": 3,
+      "Population and demography": 4
+    },
+    "totalVotes": 8
+  },
+  "140211": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Population and demography": 2,
+      "Health": 1,
+      "Labour": 1
+    },
+    "totalVotes": 4
+  },
+  "140212": {
+    "category": "Health",
+    "confidence": 0.8571428571428571,
+    "votes": {
+      "Health": 6,
+      "Labour": 1
+    },
+    "totalVotes": 7
+  },
+  "140299": {
+    "category": "Labour",
+    "confidence": 0.47368421052631576,
+    "votes": {
+      "Health": 2,
+      "Labour": 9,
+      "Population and demography": 4,
+      "Business and consumer services and culture": 3,
+      "Society and community": 1
+    },
+    "totalVotes": 19
+  },
+  "140401": {
+    "category": "Labour",
+    "confidence": 0.8043478260869565,
+    "votes": {
+      "Health": 1,
+      "Labour": 37,
+      "Population and demography": 8
+    },
+    "totalVotes": 46
+  },
+  "140402": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.4,
+    "votes": {
+      "Labour": 7,
+      "Population and demography": 5,
+      "Income, pensions, spending and wealth": 8
+    },
+    "totalVotes": 20
+  },
+  "140403": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 6,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 8
+  },
+  "140404": {
+    "category": "Labour",
+    "confidence": 0.7714285714285715,
+    "votes": {
+      "Labour": 27,
+      "Population and demography": 8
+    },
+    "totalVotes": 35
+  },
+  "140499": {
+    "category": "Labour",
+    "confidence": 0.8387096774193549,
+    "votes": {
+      "Health": 2,
+      "Labour": 26,
+      "Population and demography": 3
+    },
+    "totalVotes": 31
+  },
+  "140701": {
+    "category": "Society and community",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "140702": {
+    "category": "Population and demography",
+    "confidence": 0.9090909090909091,
+    "votes": {
+      "Population and demography": 10,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 11
+  },
+  "140703": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Population and demography": 12,
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 16
+  },
+  "140799": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 2
+    },
+    "totalVotes": 2
+  },
+  "150401": {
+    "category": "Population and demography",
+    "confidence": 0.9285714285714286,
+    "votes": {
+      "Population and demography": 13,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 14
+  },
+  "150402": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 4
+    },
+    "totalVotes": 4
+  },
+  "150403": {
+    "category": "Population and demography",
+    "confidence": 0.631578947368421,
+    "votes": {
+      "Languages": 7,
+      "Health": 3,
+      "Immigration and ethnocultural diversity": 1,
+      "Population and demography": 24,
+      "Income, pensions, spending and wealth": 3
+    },
+    "totalVotes": 38
+  },
+  "150499": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Languages": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 3
+  },
+  "150701": {
+    "category": "Population and demography",
+    "confidence": 0.5769230769230769,
+    "votes": {
+      "Health": 1,
+      "Languages": 6,
+      "Immigration and ethnocultural diversity": 1,
+      "Population and demography": 15,
+      "Income, pensions, spending and wealth": 3
+    },
+    "totalVotes": 26
+  },
+  "150702": {
+    "category": "Population and demography",
+    "confidence": 0.8867924528301887,
+    "votes": {
+      "Health": 1,
+      "Languages": 3,
+      "Population and demography": 47,
+      "Indigenous peoples": 2
+    },
+    "totalVotes": 53
+  },
+  "150703": {
+    "category": "Population and demography",
+    "confidence": 0.5789473684210527,
+    "votes": {
+      "Health": 3,
+      "Languages": 5,
+      "Population and demography": 11
+    },
+    "totalVotes": 19
+  },
+  "150799": {
+    "category": "Languages",
+    "confidence": 1,
+    "votes": {
+      "Languages": 2
+    },
+    "totalVotes": 2
+  },
+  "150801": {
+    "category": "Population and demography",
+    "confidence": 0.90625,
+    "votes": {
+      "Languages": 3,
+      "Population and demography": 29
+    },
+    "totalVotes": 32
+  },
+  "150802": {
+    "category": "Population and demography",
+    "confidence": 0.76,
+    "votes": {
+      "Languages": 4,
+      "Population and demography": 19,
+      "Income, pensions, spending and wealth": 1,
+      "Health": 1
+    },
+    "totalVotes": 25
+  },
+  "150803": {
+    "category": "Population and demography",
+    "confidence": 0.9,
+    "votes": {
+      "Languages": 1,
+      "Population and demography": 9
+    },
+    "totalVotes": 10
+  },
+  "150899": {
+    "category": "Languages",
+    "confidence": 0.8,
+    "votes": {
+      "Languages": 4,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 5
+  },
+  "170701": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Languages": 4,
+      "Population and demography": 20,
+      "Income, pensions, spending and wealth": 6
+    },
+    "totalVotes": 30
+  },
+  "170702": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Immigration and ethnocultural diversity": 3,
+      "Population and demography": 18,
+      "Income, pensions, spending and wealth": 3
+    },
+    "totalVotes": 24
+  },
+  "171001": {
+    "category": "Population and demography",
+    "confidence": 0.8181818181818182,
+    "votes": {
+      "Population and demography": 18,
+      "Health": 1,
+      "Immigration and ethnocultural diversity": 2,
+      "Families, households and marital status": 1
+    },
+    "totalVotes": 22
+  },
+  "171003": {
+    "category": "Population and demography",
+    "confidence": 0.7,
+    "votes": {
+      "Population and demography": 7,
+      "Immigration and ethnocultural diversity": 3
+    },
+    "totalVotes": 10
+  },
+  "171004": {
+    "category": "Population and demography",
+    "confidence": 0.9444444444444444,
+    "votes": {
+      "Population and demography": 34,
+      "Housing": 2
+    },
+    "totalVotes": 36
+  },
+  "171099": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "171105": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 2,
+      "Housing": 1
+    },
+    "totalVotes": 3
+  },
+  "171106": {
+    "category": "Indigenous peoples",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Indigenous peoples": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 3
+  },
+  "171199": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "171201": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 28
+    },
+    "totalVotes": 28
+  },
+  "171203": {
+    "category": "Population and demography",
+    "confidence": 0.9411764705882353,
+    "votes": {
+      "Children and youth": 1,
+      "Population and demography": 16
+    },
+    "totalVotes": 17
+  },
+  "171204": {
+    "category": "Population and demography",
+    "confidence": 0.6923076923076923,
+    "votes": {
+      "Population and demography": 9,
+      "Income, pensions, spending and wealth": 3,
+      "Labour": 1
+    },
+    "totalVotes": 13
+  },
+  "171205": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 15
+    },
+    "totalVotes": 15
+  },
+  "171299": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 2
+    },
+    "totalVotes": 2
+  },
+  "180501": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 4
+    },
+    "totalVotes": 4
+  },
+  "180503": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 1
+    },
+    "totalVotes": 1
+  },
+  "180504": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 5
+    },
+    "totalVotes": 5
+  },
+  "180599": {
+    "category": "Prices and price indexes",
+    "confidence": 1,
+    "votes": {
+      "Prices and price indexes": 4
+    },
+    "totalVotes": 4
+  },
+  "210201": {
+    "category": "Society and community",
+    "confidence": 0.625,
+    "votes": {
+      "Society and community": 5,
+      "Manufacturing": 2,
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 8
+  },
+  "210202": {
+    "category": "International trade",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "International trade": 1,
+      "Statistical methods": 1,
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 3
+  },
+  "210203": {
+    "category": "Society and community",
+    "confidence": 0.5833333333333334,
+    "votes": {
+      "Society and community": 7,
+      "Government": 5
+    },
+    "totalVotes": 12
+  },
+  "210204": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "210299": {
+    "category": "Population and demography",
+    "confidence": 0.38095238095238093,
+    "votes": {
+      "Government": 2,
+      "Languages": 2,
+      "Society and community": 2,
+      "Environment": 1,
+      "Business and consumer services and culture": 4,
+      "Population and demography": 8,
+      "Science and technology": 2
+    },
+    "totalVotes": 21
+  },
+  "210401": {
+    "category": "Business performance and ownership",
+    "confidence": 1,
+    "votes": {
+      "Business performance and ownership": 4
+    },
+    "totalVotes": 4
+  },
+  "210402": {
+    "category": "Business performance and ownership",
+    "confidence": 1,
+    "votes": {
+      "Business performance and ownership": 2
+    },
+    "totalVotes": 2
+  },
+  "210404": {
+    "category": "Housing",
+    "confidence": 1,
+    "votes": {
+      "Housing": 7
+    },
+    "totalVotes": 7
+  },
+  "210407": {
+    "category": "Business performance and ownership",
+    "confidence": 0.8181818181818182,
+    "votes": {
+      "Business performance and ownership": 9,
+      "Society and community": 2
+    },
+    "totalVotes": 11
+  },
+  "210408": {
+    "category": "Agriculture and food",
+    "confidence": 0.5,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Travel and tourism": 2,
+      "Agriculture and food": 7,
+      "Society and community": 3,
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 14
+  },
+  "210409": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Income, pensions, spending and wealth": 2,
+      "Society and community": 2,
+      "Science and technology": 2
+    },
+    "totalVotes": 6
+  },
+  "210410": {
+    "category": "Business performance and ownership",
+    "confidence": 0.75,
+    "votes": {
+      "Business performance and ownership": 3,
+      "Government": 1
+    },
+    "totalVotes": 4
+  },
+  "210411": {
+    "category": "Business performance and ownership",
+    "confidence": 1,
+    "votes": {
+      "Business performance and ownership": 2
+    },
+    "totalVotes": 2
+  },
+  "210412": {
+    "category": "Labour",
+    "confidence": 1,
+    "votes": {
+      "Labour": 2
+    },
+    "totalVotes": 2
+  },
+  "210413": {
+    "category": "Travel and tourism",
+    "confidence": 0.6,
+    "votes": {
+      "Prices and price indexes": 2,
+      "Travel and tourism": 3
+    },
+    "totalVotes": 5
+  },
+  "210499": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Government": 1,
+      "Business and consumer services and culture": 2
+    },
+    "totalVotes": 3
+  },
+  "220401": {
+    "category": "Digital economy and society",
+    "confidence": 0.5,
+    "votes": {
+      "Digital economy and society": 1,
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 2
+  },
+  "220403": {
+    "category": "Digital economy and society",
+    "confidence": 0.4444444444444444,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Families, households and marital status": 2,
+      "Digital economy and society": 4,
+      "Science and technology": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 9
+  },
+  "230103": {
+    "category": "Transportation",
+    "confidence": 0.5,
+    "votes": {
+      "Transportation": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 2
+  },
+  "230104": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "230105": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 2
+    },
+    "totalVotes": 2
+  },
+  "230401": {
+    "category": "Transportation",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Society and community": 3,
+      "Transportation": 6
+    },
+    "totalVotes": 9
+  },
+  "230402": {
+    "category": "Transportation",
+    "confidence": 0.8235294117647058,
+    "votes": {
+      "Transportation": 14,
+      "Government": 1,
+      "Society and community": 1,
+      "Families, households and marital status": 1
+    },
+    "totalVotes": 17
+  },
+  "230403": {
+    "category": "Society and community",
+    "confidence": 0.625,
+    "votes": {
+      "Transportation": 3,
+      "Society and community": 5
+    },
+    "totalVotes": 8
+  },
+  "230404": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 2
+    },
+    "totalVotes": 2
+  },
+  "230405": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 2
+    },
+    "totalVotes": 2
+  },
+  "230499": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "250702": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 6
+    },
+    "totalVotes": 6
+  },
+  "250703": {
+    "category": "Society and community",
+    "confidence": 0.75,
+    "votes": {
+      "Transportation": 1,
+      "Society and community": 3
+    },
+    "totalVotes": 4
+  },
+  "270301": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.9,
+    "votes": {
+      "Business and consumer services and culture": 9,
+      "Labour": 1
+    },
+    "totalVotes": 10
+  },
+  "270302": {
+    "category": "Society and community",
+    "confidence": 0.75,
+    "votes": {
+      "Society and community": 15,
+      "Business and consumer services and culture": 5
+    },
+    "totalVotes": 20
+  },
+  "270303": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 15
+    },
+    "totalVotes": 15
+  },
+  "270304": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "270306": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "270399": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 1
+  },
+  "270501": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "270502": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "270503": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "270599": {
+    "category": "Society and community",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "320101": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 9
+    },
+    "totalVotes": 9
+  },
+  "320102": {
+    "category": "Society and community",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Society and community": 5,
+      "Manufacturing": 1
+    },
+    "totalVotes": 6
+  },
+  "320104": {
+    "category": "Society and community",
+    "confidence": 0.8,
+    "votes": {
+      "Society and community": 4,
+      "Manufacturing": 1
+    },
+    "totalVotes": 5
+  },
+  "320105": {
+    "category": "Society and community",
+    "confidence": 0.8571428571428571,
+    "votes": {
+      "Society and community": 12,
+      "Manufacturing": 2
+    },
+    "totalVotes": 14
+  },
+  "320199": {
+    "category": "Society and community",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Society and community": 6,
+      "Manufacturing": 2
+    },
+    "totalVotes": 9
+  },
+  "320201": {
+    "category": "Society and community",
+    "confidence": 0.9565217391304348,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Society and community": 22
+    },
+    "totalVotes": 23
+  },
+  "320202": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 6
+    },
+    "totalVotes": 6
+  },
+  "320204": {
+    "category": "Society and community",
+    "confidence": 0.8928571428571429,
+    "votes": {
+      "Society and community": 25,
+      "Income, pensions, spending and wealth": 3
+    },
+    "totalVotes": 28
+  },
+  "320299": {
+    "category": "Society and community",
+    "confidence": 0.8888888888888888,
+    "votes": {
+      "Society and community": 8,
+      "Agriculture and food": 1
+    },
+    "totalVotes": 9
+  },
+  "320301": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "320302": {
+    "category": "Society and community",
+    "confidence": 0.8823529411764706,
+    "votes": {
+      "Society and community": 15,
+      "Population and demography": 1,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 17
+  },
+  "320399": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 6
+    },
+    "totalVotes": 6
+  },
+  "320401": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "320402": {
+    "category": "Society and community",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Society and community": 5,
+      "Agriculture and food": 1
+    },
+    "totalVotes": 6
+  },
+  "320403": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 4
+    },
+    "totalVotes": 4
+  },
+  "320405": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 9
+    },
+    "totalVotes": 9
+  },
+  "320407": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 6
+    },
+    "totalVotes": 6
+  },
+  "320408": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 3
+    },
+    "totalVotes": 3
+  },
+  "320409": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 9
+    },
+    "totalVotes": 9
+  },
+  "320499": {
+    "category": "Society and community",
+    "confidence": 0.4,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Society and community": 2,
+      "Health": 1,
+      "Manufacturing": 1
+    },
+    "totalVotes": 5
+  },
+  "320501": {
+    "category": "Society and community",
+    "confidence": 0.8,
+    "votes": {
+      "Health": 3,
+      "Society and community": 16,
+      "Manufacturing": 1
+    },
+    "totalVotes": 20
+  },
+  "320502": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 11
+    },
+    "totalVotes": 11
+  },
+  "320503": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "320504": {
+    "category": "Society and community",
+    "confidence": 0.6,
+    "votes": {
+      "Income, pensions, spending and wealth": 1,
+      "Prices and price indexes": 1,
+      "Society and community": 3
+    },
+    "totalVotes": 5
+  },
+  "320599": {
+    "category": "International trade",
+    "confidence": 1,
+    "votes": {
+      "International trade": 1
+    },
+    "totalVotes": 1
+  },
+  "320601": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 4
+    },
+    "totalVotes": 4
+  },
+  "320604": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 6
+    },
+    "totalVotes": 6
+  },
+  "320699": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 1
+    },
+    "totalVotes": 1
+  },
+  "330101": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.7611940298507462,
+    "votes": {
+      "Labour": 4,
+      "Statistical methods": 2,
+      "Business and consumer services and culture": 51,
+      "Digital economy and society": 1,
+      "Retail and wholesale": 1,
+      "Science and technology": 1,
+      "Society and community": 1,
+      "Income, pensions, spending and wealth": 3,
+      "International trade": 3
+    },
+    "totalVotes": 67
+  },
+  "330102": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.9565217391304348,
+    "votes": {
+      "Business and consumer services and culture": 22,
+      "Population and demography": 1
+    },
+    "totalVotes": 23
+  },
+  "330103": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6291946308724832,
+    "votes": {
+      "Manufacturing": 3,
+      "Business and consumer services and culture": 375,
+      "Labour": 46,
+      "Statistical methods": 5,
+      "Prices and price indexes": 2,
+      "Income, pensions, spending and wealth": 34,
+      "Retail and wholesale": 4,
+      "International trade": 19,
+      "Society and community": 48,
+      "Population and demography": 40,
+      "Government": 3,
+      "Energy": 2,
+      "Languages": 8,
+      "Science and technology": 2,
+      "Immigration and ethnocultural diversity": 1,
+      "Indigenous peoples": 1,
+      "Digital economy and society": 2,
+      "Business performance and ownership": 1
+    },
+    "totalVotes": 596
+  },
+  "330105": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.935064935064935,
+    "votes": {
+      "Business and consumer services and culture": 72,
+      "Labour": 4,
+      "Statistical methods": 1
+    },
+    "totalVotes": 77
+  },
+  "330199": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6909090909090909,
+    "votes": {
+      "Business and consumer services and culture": 38,
+      "Society and community": 5,
+      "Labour": 2,
+      "International trade": 4,
+      "Population and demography": 4,
+      "Government": 1,
+      "Income, pensions, spending and wealth": 1
+    },
+    "totalVotes": 55
+  },
+  "330299": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.42857142857142855,
+    "votes": {
+      "Society and community": 4,
+      "Business and consumer services and culture": 6,
+      "Population and demography": 2,
+      "Immigration and ethnocultural diversity": 1,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 14
+  },
+  "330301": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Income, pensions, spending and wealth": 4,
+      "Government": 1,
+      "Retail and wholesale": 1
+    },
+    "totalVotes": 6
+  },
+  "330302": {
+    "category": "Society and community",
+    "confidence": 0.5,
+    "votes": {
+      "Society and community": 3,
+      "Retail and wholesale": 1,
+      "Business and consumer services and culture": 2
+    },
+    "totalVotes": 6
+  },
+  "330303": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.2857142857142857,
+    "votes": {
+      "Labour": 3,
+      "Government": 1,
+      "Transportation": 1,
+      "Business and consumer services and culture": 8,
+      "Income, pensions, spending and wealth": 6,
+      "Retail and wholesale": 1,
+      "Energy": 1,
+      "Population and demography": 5,
+      "Society and community": 2
+    },
+    "totalVotes": 28
+  },
+  "330305": {
+    "category": "Business performance and ownership",
+    "confidence": 0.31666666666666665,
+    "votes": {
+      "Travel and tourism": 5,
+      "Health": 3,
+      "Labour": 4,
+      "Housing": 5,
+      "Agriculture and food": 3,
+      "Business performance and ownership": 19,
+      "Society and community": 16,
+      "Transportation": 1,
+      "Manufacturing": 2,
+      "Business and consumer services and culture": 2
+    },
+    "totalVotes": 60
+  },
+  "330399": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.75,
+    "votes": {
+      "Business and consumer services and culture": 24,
+      "Society and community": 4,
+      "Income, pensions, spending and wealth": 3,
+      "Population and demography": 1
+    },
+    "totalVotes": 32
+  },
+  "350101": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6111111111111112,
+    "votes": {
+      "Business and consumer services and culture": 11,
+      "Population and demography": 7
+    },
+    "totalVotes": 18
+  },
+  "350102": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.6,
+    "votes": {
+      "Population and demography": 2,
+      "Business and consumer services and culture": 6,
+      "Children and youth": 2
+    },
+    "totalVotes": 10
+  },
+  "350199": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "350201": {
+    "category": "Society and community",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Society and community": 10,
+      "Labour": 1,
+      "Children and youth": 3,
+      "Population and demography": 1
+    },
+    "totalVotes": 15
+  },
+  "350202": {
+    "category": "Digital economy and society",
+    "confidence": 1,
+    "votes": {
+      "Digital economy and society": 1
+    },
+    "totalVotes": 1
+  },
+  "350203": {
+    "category": "Children and youth",
+    "confidence": 0.9333333333333333,
+    "votes": {
+      "Children and youth": 14,
+      "Population and demography": 1
+    },
+    "totalVotes": 15
+  },
+  "350204": {
+    "category": "Digital economy and society",
+    "confidence": 0.7333333333333333,
+    "votes": {
+      "Digital economy and society": 11,
+      "Business and consumer services and culture": 4
+    },
+    "totalVotes": 15
+  },
+  "350299": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "350303": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 3
+    },
+    "totalVotes": 3
+  },
+  "350304": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Population and demography": 2,
+      "Transportation": 1,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 4
+  },
+  "350305": {
+    "category": "Digital economy and society",
+    "confidence": 1,
+    "votes": {
+      "Digital economy and society": 1
+    },
+    "totalVotes": 1
+  },
+  "350399": {
+    "category": "Children and youth",
+    "confidence": 0.5217391304347826,
+    "votes": {
+      "Society and community": 6,
+      "Children and youth": 12,
+      "Transportation": 1,
+      "Crime and justice": 2,
+      "Digital economy and society": 2
+    },
+    "totalVotes": 23
+  },
+  "350501": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Transportation": 2,
+      "Population and demography": 4
+    },
+    "totalVotes": 6
+  },
+  "350502": {
+    "category": "Transportation",
+    "confidence": 0.4166666666666667,
+    "votes": {
+      "Housing": 1,
+      "Transportation": 5,
+      "Children and youth": 2,
+      "Business and consumer services and culture": 2,
+      "Population and demography": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 12
+  },
+  "350503": {
+    "category": "Transportation",
+    "confidence": 0.5,
+    "votes": {
+      "Transportation": 4,
+      "Population and demography": 3,
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 8
+  },
+  "350504": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 2
+    },
+    "totalVotes": 2
+  },
+  "350506": {
+    "category": "Transportation",
+    "confidence": 0.6,
+    "votes": {
+      "Transportation": 3,
+      "Crime and justice": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 5
+  },
+  "350599": {
+    "category": "Population and demography",
+    "confidence": 0.8,
+    "votes": {
+      "Transportation": 1,
+      "Population and demography": 4
+    },
+    "totalVotes": 5
+  },
+  "360301": {
+    "category": "Government",
+    "confidence": 0.7857142857142857,
+    "votes": {
+      "Government": 11,
+      "Health": 1,
+      "Education, training and learning": 1,
+      "International trade": 1
+    },
+    "totalVotes": 14
+  },
+  "360302": {
+    "category": "Government",
+    "confidence": 0.48484848484848486,
+    "votes": {
+      "Government": 16,
+      "Income, pensions, spending and wealth": 8,
+      "Education, training and learning": 4,
+      "Health": 2,
+      "Retail and wholesale": 1,
+      "Families, households and marital status": 1,
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 33
+  },
+  "360399": {
+    "category": "Government",
+    "confidence": 1,
+    "votes": {
+      "Government": 1
+    },
+    "totalVotes": 1
+  },
+  "360501": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 1,
+    "votes": {
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 4
+  },
+  "360502": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.4426229508196721,
+    "votes": {
+      "Digital economy and society": 2,
+      "Labour": 3,
+      "Income, pensions, spending and wealth": 27,
+      "Society and community": 2,
+      "Prices and price indexes": 7,
+      "Families, households and marital status": 1,
+      "Government": 9,
+      "Economic accounts": 5,
+      "Health": 1,
+      "Retail and wholesale": 1,
+      "Housing": 2,
+      "Population and demography": 1
+    },
+    "totalVotes": 61
+  },
+  "360503": {
+    "category": "Prices and price indexes",
+    "confidence": 0.2727272727272727,
+    "votes": {
+      "Economic accounts": 2,
+      "Society and community": 2,
+      "Prices and price indexes": 3,
+      "Population and demography": 2,
+      "Science and technology": 2
+    },
+    "totalVotes": 11
+  },
+  "360504": {
+    "category": "Prices and price indexes",
+    "confidence": 0.35,
+    "votes": {
+      "International trade": 4,
+      "Society and community": 5,
+      "Economic accounts": 1,
+      "Prices and price indexes": 7,
+      "Science and technology": 3
+    },
+    "totalVotes": 20
+  },
+  "360599": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Society and community": 1,
+      "Income, pensions, spending and wealth": 2,
+      "Economic accounts": 2,
+      "Science and technology": 1
+    },
+    "totalVotes": 6
+  },
+  "360601": {
+    "category": "Labour",
+    "confidence": 1,
+    "votes": {
+      "Labour": 7
+    },
+    "totalVotes": 7
+  },
+  "360602": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 1
+  },
+  "360801": {
+    "category": "Science and technology",
+    "confidence": 0.5,
+    "votes": {
+      "International trade": 1,
+      "Science and technology": 2,
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 4
+  },
+  "360803": {
+    "category": "Society and community",
+    "confidence": 1,
+    "votes": {
+      "Society and community": 2
+    },
+    "totalVotes": 2
+  },
+  "360805": {
+    "category": "Science and technology",
+    "confidence": 0.5,
+    "votes": {
+      "Science and technology": 2,
+      "Labour": 2
+    },
+    "totalVotes": 4
+  },
+  "360806": {
+    "category": "Prices and price indexes",
+    "confidence": 0.5,
+    "votes": {
+      "Prices and price indexes": 1,
+      "Manufacturing": 1
+    },
+    "totalVotes": 2
+  },
+  "360899": {
+    "category": "Labour",
+    "confidence": 0.5,
+    "votes": {
+      "Income, pensions, spending and wealth": 2,
+      "Labour": 4,
+      "Economic accounts": 2
+    },
+    "totalVotes": 8
+  },
+  "370201": {
+    "category": "Education, training and learning",
+    "confidence": 0.8,
+    "votes": {
+      "Education, training and learning": 8,
+      "Population and demography": 1,
+      "Prices and price indexes": 1
+    },
+    "totalVotes": 10
+  },
+  "370202": {
+    "category": "Education, training and learning",
+    "confidence": 0.4117647058823529,
+    "votes": {
+      "Education, training and learning": 7,
+      "Society and community": 5,
+      "Children and youth": 1,
+      "Science and technology": 1,
+      "International trade": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 17
+  },
+  "370299": {
+    "category": "Education, training and learning",
+    "confidence": 0.6,
+    "votes": {
+      "Education, training and learning": 6,
+      "Income, pensions, spending and wealth": 1,
+      "Prices and price indexes": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 10
+  },
+  "370301": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 2,
+      "Labour": 1
+    },
+    "totalVotes": 3
+  },
+  "370302": {
+    "category": "Population and demography",
+    "confidence": 0.6923076923076923,
+    "votes": {
+      "Population and demography": 9,
+      "Education, training and learning": 1,
+      "Science and technology": 3
+    },
+    "totalVotes": 13
+  },
+  "370303": {
+    "category": "Education, training and learning",
+    "confidence": 0.5,
+    "votes": {
+      "Population and demography": 3,
+      "Prices and price indexes": 1,
+      "Society and community": 1,
+      "Education, training and learning": 5
+    },
+    "totalVotes": 10
+  },
+  "370304": {
+    "category": "Population and demography",
+    "confidence": 0.8333333333333334,
+    "votes": {
+      "Population and demography": 15,
+      "Education, training and learning": 2,
+      "Society and community": 1
+    },
+    "totalVotes": 18
+  },
+  "370305": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.8,
+    "votes": {
+      "Income, pensions, spending and wealth": 4,
+      "Population and demography": 1
+    },
+    "totalVotes": 5
+  },
+  "370399": {
+    "category": "Population and demography",
+    "confidence": 0.5555555555555556,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 5,
+      "Labour": 1,
+      "Income, pensions, spending and wealth": 1,
+      "Science and technology": 1
+    },
+    "totalVotes": 9
+  },
+  "371401": {
+    "category": "Population and demography",
+    "confidence": 0.65,
+    "votes": {
+      "Languages": 1,
+      "Education, training and learning": 6,
+      "Population and demography": 13
+    },
+    "totalVotes": 20
+  },
+  "371402": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 4,
+      "Education, training and learning": 2
+    },
+    "totalVotes": 6
+  },
+  "371403": {
+    "category": "Population and demography",
+    "confidence": 0.3333333333333333,
+    "votes": {
+      "Population and demography": 3,
+      "Education, training and learning": 3,
+      "Labour": 3
+    },
+    "totalVotes": 9
+  },
+  "371499": {
+    "category": "Education, training and learning",
+    "confidence": 0.5,
+    "votes": {
+      "Education, training and learning": 1,
+      "Population and demography": 1
+    },
+    "totalVotes": 2
+  },
+  "371501": {
+    "category": "Population and demography",
+    "confidence": 0.5925925925925926,
+    "votes": {
+      "Population and demography": 16,
+      "Education, training and learning": 4,
+      "Society and community": 3,
+      "Science and technology": 4
+    },
+    "totalVotes": 27
+  },
+  "371502": {
+    "category": "Population and demography",
+    "confidence": 0.75,
+    "votes": {
+      "Society and community": 1,
+      "Population and demography": 3
+    },
+    "totalVotes": 4
+  },
+  "371503": {
+    "category": "Population and demography",
+    "confidence": 0.4642857142857143,
+    "votes": {
+      "Science and technology": 8,
+      "Population and demography": 13,
+      "Education, training and learning": 3,
+      "Income, pensions, spending and wealth": 3,
+      "Health": 1
+    },
+    "totalVotes": 28
+  },
+  "371504": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.3902439024390244,
+    "votes": {
+      "Population and demography": 13,
+      "Education, training and learning": 4,
+      "Society and community": 2,
+      "Income, pensions, spending and wealth": 16,
+      "Science and technology": 6
+    },
+    "totalVotes": 41
+  },
+  "371505": {
+    "category": "Population and demography",
+    "confidence": 0.625,
+    "votes": {
+      "Population and demography": 5,
+      "Education, training and learning": 2,
+      "Health": 1
+    },
+    "totalVotes": 8
+  },
+  "371508": {
+    "category": "Education, training and learning",
+    "confidence": 1,
+    "votes": {
+      "Education, training and learning": 18
+    },
+    "totalVotes": 18
+  },
+  "371599": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "380103": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.25,
+    "votes": {
+      "Business and consumer services and culture": 1,
+      "Environment": 1,
+      "Housing": 1,
+      "Society and community": 1
+    },
+    "totalVotes": 4
+  },
+  "380199": {
+    "category": "Business and consumer services and culture",
+    "confidence": 1,
+    "votes": {
+      "Business and consumer services and culture": 1
+    },
+    "totalVotes": 1
+  },
+  "380301": {
+    "category": "Society and community",
+    "confidence": 0.56,
+    "votes": {
+      "Society and community": 14,
+      "Science and technology": 4,
+      "Population and demography": 2,
+      "Energy": 2,
+      "Families, households and marital status": 1,
+      "Housing": 1,
+      "Environment": 1
+    },
+    "totalVotes": 25
+  },
+  "380302": {
+    "category": "Labour",
+    "confidence": 0.2916666666666667,
+    "votes": {
+      "Business and consumer services and culture": 1,
+      "Science and technology": 1,
+      "International trade": 1,
+      "Labour": 7,
+      "Housing": 1,
+      "Population and demography": 6,
+      "Society and community": 2,
+      "Environment": 2,
+      "Transportation": 1,
+      "Families, households and marital status": 1,
+      "Retail and wholesale": 1
+    },
+    "totalVotes": 24
+  },
+  "380399": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.4117647058823529,
+    "votes": {
+      "Business and consumer services and culture": 7,
+      "Population and demography": 6,
+      "Society and community": 1,
+      "Science and technology": 1,
+      "Environment": 2
+    },
+    "totalVotes": 17
+  },
+  "380601": {
+    "category": "Population and demography",
+    "confidence": 0.5384615384615384,
+    "votes": {
+      "Society and community": 5,
+      "Population and demography": 7,
+      "Science and technology": 1
+    },
+    "totalVotes": 13
+  },
+  "380602": {
+    "category": "Environment",
+    "confidence": 1,
+    "votes": {
+      "Environment": 1
+    },
+    "totalVotes": 1
+  },
+  "380603": {
+    "category": "Population and demography",
+    "confidence": 0.5333333333333333,
+    "votes": {
+      "Society and community": 4,
+      "Population and demography": 8,
+      "Labour": 2,
+      "Science and technology": 1
+    },
+    "totalVotes": 15
+  },
+  "380699": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  },
+  "380701": {
+    "category": "Transportation",
+    "confidence": 1,
+    "votes": {
+      "Transportation": 1
+    },
+    "totalVotes": 1
+  },
+  "380704": {
+    "category": "Environment",
+    "confidence": 0.5454545454545454,
+    "votes": {
+      "Environment": 6,
+      "Society and community": 2,
+      "Population and demography": 2,
+      "Science and technology": 1
+    },
+    "totalVotes": 11
+  },
+  "420101": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 1
+    },
+    "totalVotes": 1
+  },
+  "420199": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 3
+  },
+  "430501": {
+    "category": "Population and demography",
+    "confidence": 0.5238095238095238,
+    "votes": {
+      "Education, training and learning": 5,
+      "Population and demography": 11,
+      "Income, pensions, spending and wealth": 5
+    },
+    "totalVotes": 21
+  },
+  "430502": {
+    "category": "Immigration and ethnocultural diversity",
+    "confidence": 1,
+    "votes": {
+      "Immigration and ethnocultural diversity": 1
+    },
+    "totalVotes": 1
+  },
+  "430504": {
+    "category": "Population and demography",
+    "confidence": 0.4782608695652174,
+    "votes": {
+      "Immigration and ethnocultural diversity": 4,
+      "Labour": 2,
+      "Population and demography": 11,
+      "Income, pensions, spending and wealth": 4,
+      "Education, training and learning": 2
+    },
+    "totalVotes": 23
+  },
+  "430505": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.96,
+    "votes": {
+      "Income, pensions, spending and wealth": 24,
+      "Population and demography": 1
+    },
+    "totalVotes": 25
+  },
+  "430506": {
+    "category": "Population and demography",
+    "confidence": 0.7777777777777778,
+    "votes": {
+      "Population and demography": 14,
+      "Income, pensions, spending and wealth": 4
+    },
+    "totalVotes": 18
+  },
+  "430507": {
+    "category": "Population and demography",
+    "confidence": 0.5882352941176471,
+    "votes": {
+      "Immigration and ethnocultural diversity": 5,
+      "Population and demography": 10,
+      "Income, pensions, spending and wealth": 1,
+      "Health": 1
+    },
+    "totalVotes": 17
+  },
+  "430508": {
+    "category": "Population and demography",
+    "confidence": 0.64,
+    "votes": {
+      "Health": 1,
+      "Population and demography": 16,
+      "Immigration and ethnocultural diversity": 1,
+      "Income, pensions, spending and wealth": 6,
+      "Education, training and learning": 1
+    },
+    "totalVotes": 25
+  },
+  "430509": {
+    "category": "Population and demography",
+    "confidence": 0.6551724137931034,
+    "votes": {
+      "Immigration and ethnocultural diversity": 4,
+      "Population and demography": 19,
+      "Society and community": 3,
+      "Income, pensions, spending and wealth": 2,
+      "Education, training and learning": 1
+    },
+    "totalVotes": 29
+  },
+  "430599": {
+    "category": "Income, pensions, spending and wealth",
+    "confidence": 0.75,
+    "votes": {
+      "Income, pensions, spending and wealth": 6,
+      "Population and demography": 2
+    },
+    "totalVotes": 8
+  },
+  "451001": {
+    "category": "Health",
+    "confidence": 1,
+    "votes": {
+      "Health": 3
+    },
+    "totalVotes": 3
+  },
+  "451002": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.5428571428571428,
+    "votes": {
+      "Labour": 5,
+      "Statistical methods": 1,
+      "Business and consumer services and culture": 19,
+      "Society and community": 5,
+      "Population and demography": 5
+    },
+    "totalVotes": 35
+  },
+  "451003": {
+    "category": "Business and consumer services and culture",
+    "confidence": 0.54,
+    "votes": {
+      "Income, pensions, spending and wealth": 10,
+      "Health": 1,
+      "Prices and price indexes": 3,
+      "Retail and wholesale": 1,
+      "Society and community": 1,
+      "Statistical methods": 1,
+      "Business and consumer services and culture": 27,
+      "Labour": 1,
+      "Government": 2,
+      "Business performance and ownership": 1,
+      "Population and demography": 2
+    },
+    "totalVotes": 50
+  },
+  "451004": {
+    "category": "Health",
+    "confidence": 0.4,
+    "votes": {
+      "Health": 2,
+      "Business and consumer services and culture": 1,
+      "Prices and price indexes": 2
+    },
+    "totalVotes": 5
+  },
+  "451099": {
+    "category": "Population and demography",
+    "confidence": 0.5,
+    "votes": {
+      "Population and demography": 3,
+      "Society and community": 1,
+      "Business and consumer services and culture": 2
+    },
+    "totalVotes": 6
+  },
+  "451101": {
+    "category": "Population and demography",
+    "confidence": 0.625,
+    "votes": {
+      "Labour": 1,
+      "Population and demography": 5,
+      "Income, pensions, spending and wealth": 1,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 8
+  },
+  "451102": {
+    "category": "Population and demography",
+    "confidence": 0.6666666666666666,
+    "votes": {
+      "Population and demography": 4,
+      "Income, pensions, spending and wealth": 1,
+      "Indigenous peoples": 1
+    },
+    "totalVotes": 6
+  },
+  "451199": {
+    "category": "Population and demography",
+    "confidence": 1,
+    "votes": {
+      "Population and demography": 1
+    },
+    "totalVotes": 1
+  }
+}

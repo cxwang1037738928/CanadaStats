@@ -2,8 +2,10 @@
 //
 // 1. Fetches all StatCan cubes
 // 2. Filters to only cubes that include all 10 Canadian provinces in the geography
-// 3. Generates embeddings using Xenova/all-MiniLM-L6-v2
-// 4. Saves results to cubesWithEmbeddings.json
+// 3. Extracts richer metadata for each matching cube (footnotes, non-geography
+//    dimensions/members, dates, frequency, etc.) and saves it to cubesMetadata.json
+// 4. Generates embeddings for "title + startDate + endDate" using 5 different
+//    Xenova embedding models, saving one output file per model
 //
 
 import axios from "axios";
@@ -24,6 +26,17 @@ const REQUIRED_PROVINCES = [
   "Alberta",
   "British Columbia",
 ];
+
+// Embedding models to generate separate embedding files for.
+const EMBEDDING_MODELS = [
+  "Xenova/all-MiniLM-L6-v2",
+  "Xenova/all-MiniLM-L12-v2",
+  "Xenova/paraphrase-MiniLM-L3-v2",
+  "Xenova/all-mpnet-base-v2",
+  "Xenova/bge-small-en-v1.5",
+];
+
+const METADATA_OUT_PATH = "./cubesMetadata.json";
 
 // -----------------------------
 // Fetch all cubes
@@ -69,19 +82,26 @@ async function getCubeMetadata(productId) {
 }
 
 // -----------------------------
+// Find the Geography dimension object (raw, from metadata.dimension)
+// -----------------------------
+function findGeographyDimension(metadata) {
+  if (!metadata) return null;
+  const dimensions = metadata.dimension;
+  if (!Array.isArray(dimensions)) return null;
+
+  return (
+    dimensions.find((dim) => {
+      const name = dim.dimensionNameEn || "";
+      return name === "Geography" || name.includes("Geography");
+    }) || null
+  );
+}
+
+// -----------------------------
 // Extract geography member names from metadata
 // -----------------------------
 function getGeographyMembers(metadata) {
-  if (!metadata) return [];
-
-  const dimensions = metadata.dimension;
-  if (!Array.isArray(dimensions)) return [];
-
-  const geographyDim = dimensions.find((dim) => {
-    const name = dim.dimensionNameEn || "";
-    return name === "Geography" || name.includes("Geography");
-  });
-
+  const geographyDim = findGeographyDimension(metadata);
   if (!geographyDim) return [];
 
   const members = geographyDim.member;
@@ -102,6 +122,45 @@ function containsAllProvinces(geographies) {
 }
 
 // -----------------------------
+// Extract non-geography dimensions: just name + member names (skip the
+// heavy per-member classification/vintage/etc. fields to keep this light)
+// -----------------------------
+function getNonGeographyDimensions(metadata) {
+  if (!metadata) return [];
+  const dimensions = metadata.dimension;
+  if (!Array.isArray(dimensions)) return [];
+
+  return dimensions
+    .filter((dim) => {
+      const name = dim.dimensionNameEn || "";
+      return !(name === "Geography" || name.includes("Geography"));
+    })
+    .map((dim) => {
+      const members = Array.isArray(dim.member) ? dim.member : [];
+      return {
+        dimensionNameEn: dim.dimensionNameEn || null,
+        dimensionNameFr: dim.dimensionNameFr || null,
+        memberNames: members
+          .map((m) => m.memberNameEn || m.memberName)
+          .filter(Boolean),
+      };
+    });
+}
+
+// -----------------------------
+// Flatten footnotes into a plain list of English footnote strings
+// -----------------------------
+function getFootnotes(metadata) {
+  if (!metadata) return [];
+  const footnotes = metadata.footnote;
+  if (!Array.isArray(footnotes)) return [];
+
+  return footnotes
+    .map((f) => f.footnotesEn)
+    .filter(Boolean);
+}
+
+// -----------------------------
 // Verify API connectivity with a known cube
 // -----------------------------
 async function testApi() {
@@ -115,16 +174,15 @@ async function testApi() {
   return false;
 }
 
-
 // -----------------------------
-// Find all provincial cubes
+// Find all provincial cubes and build their full metadata records
 // -----------------------------
 async function findProvincialCubes(cubes, maxToCheck = 9000) {
   const limit = Math.min(cubes.length, maxToCheck);
   const provincialCubes = [];
 
   for (let i = 0; i < limit; i++) {
-    const cube = relevantCubes[i];
+    const cube = cubes[i];
 
     const metadata = await getCubeMetadata(cube.productId);
 
@@ -135,15 +193,22 @@ async function findProvincialCubes(cubes, maxToCheck = 9000) {
         console.log(`\n✓ ${cube.productId}: ${cube.cubeTitleEn}`);
 
         provincialCubes.push({
-          cubeId: cube.productId.toString(),
-          title: cube.cubeTitleEn,
+          cubeId: String(cube.productId),
+          title: metadata.cubeTitleEn,
+          titleFr: metadata.cubeTitleFr,
           startDate: metadata.cubeStartDate,
           endDate: metadata.cubeEndDate,
           releaseTime: metadata.releaseTime,
           frequencyCode: metadata.frequencyCode,
+          archiveStatusCode: metadata.archiveStatusCode,
+          archiveStatusEn: metadata.archiveStatusEn,
+          nbSeriesCube: metadata.nbSeriesCube,
+          nbDatapointsCube: metadata.nbDatapointsCube,
           geographyCount: geographies.length,
-          surveyCode: metadata.surveyCode,
-          subjectCode: metadata.subjectCode,
+          surveyCode: metadata.surveyCode || [],
+          subjectCode: metadata.subjectCode || [],
+          footnotes: getFootnotes(metadata),
+          dimensions: getNonGeographyDimensions(metadata),
         });
       }
     }
@@ -161,16 +226,14 @@ async function findProvincialCubes(cubes, maxToCheck = 9000) {
 }
 
 // -----------------------------
-// Generate embeddings for each cube
+// Generate embeddings for each cube using a single given model.
+// Embedding text is title + start/end date only, as before.
 // -----------------------------
-async function addEmbeddings(cubes) {
-  console.log("\nLoading embedding model (Xenova/all-MiniLM-L6-v2)...");
-  const extractor = await pipeline(
-    "feature-extraction",
-    "Xenova/all-MiniLM-L6-v2"
-  );
+async function addEmbeddings(cubes, modelName) {
+  console.log(`\nLoading embedding model (${modelName})...`);
+  const extractor = await pipeline("feature-extraction", modelName);
 
-  console.log(`Generating embeddings for ${cubes.length} cubes...`);
+  console.log(`Generating embeddings for ${cubes.length} cubes with ${modelName}...`);
 
   const results = [];
 
@@ -206,6 +269,14 @@ async function addEmbeddings(cubes) {
 }
 
 // -----------------------------
+// Turn a model name like "Xenova/all-MiniLM-L6-v2" into a safe file slug
+// like "all-MiniLM-L6-v2"
+// -----------------------------
+function modelToFileSlug(modelName) {
+  return modelName.split("/").pop();
+}
+
+// -----------------------------
 // Main
 // -----------------------------
 async function main() {
@@ -233,17 +304,32 @@ async function main() {
     return;
   }
 
-  const cubesWithEmbeddings = await addEmbeddings(provincialCubes);
+  // Save the full metadata once, independent of embeddings.
+  await fs.writeFile(METADATA_OUT_PATH, JSON.stringify(provincialCubes, null, 2));
+  const metaStats = await fs.stat(METADATA_OUT_PATH);
+  console.log(
+    `\n✓ Saved ${METADATA_OUT_PATH} (${(metaStats.size / (1024 * 1024)).toFixed(2)} MB)`
+  );
 
-  const outPath = "./cubesWithEmbeddings.json";
-  await fs.writeFile(outPath, JSON.stringify(cubesWithEmbeddings, null, 2));
+  // Generate one embeddings file per model.
+  for (const modelName of EMBEDDING_MODELS) {
+    const cubesWithEmbeddings = await addEmbeddings(provincialCubes, modelName);
 
-  const stats = await fs.stat(outPath);
-  const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
-  const dims = cubesWithEmbeddings[0]?.embedding.length ?? 0;
+    const slug = modelToFileSlug(modelName);
+    const outPath = `./cubesWithEmbeddings.${slug}.json`;
+    await fs.writeFile(outPath, JSON.stringify(cubesWithEmbeddings, null, 2));
 
-  console.log(`\n✓ Saved ${outPath}`);
-  console.log(`  ${cubesWithEmbeddings.length} cubes · ${dims} dimensions · ${sizeMB} MB`);
+    const stats = await fs.stat(outPath);
+    const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
+    const dims = cubesWithEmbeddings[0]?.embedding.length ?? 0;
+
+    console.log(`\n✓ Saved ${outPath}`);
+    console.log(
+      `  ${cubesWithEmbeddings.length} cubes · ${dims} dimensions · ${sizeMB} MB`
+    );
+  }
+
+  console.log("\nAll done.");
 }
 
 main().catch(console.error);
