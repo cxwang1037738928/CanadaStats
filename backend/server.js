@@ -6,6 +6,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import axios from 'axios'; // auto built in json parsing and sets timeout
 import { pipeline } from '@xenova/transformers';
+import {
+  getMlpModel,
+  rerankByCategory,
+  enrichWithMetadata,
+  isCurrentCube,
+  CLASSIFIER_EMBEDDING_MODEL
+} from './Search_Utils.js';
 
 const allowedOrigins = [
    "https://canadamapped.ca",
@@ -45,18 +52,26 @@ app.use(express.json());
 // In-memory cache for cube metadata and embeddings to avoid file reads on every request
 let cachedCubes    = null;
 let embeddingModel = null;
+let mlpWarmedUp    = false; // tracks whether the MLP query classifier (Search_Utils.js) has finished its startup warm-up
 
 // ── Startup loaders ───────────────────────────────────────────────────────────
 // loads the cube metadata as json objects from the pre-generated file with embeddings
+// NOTE: this must stay in sync with CLASSIFIER_EMBEDDING_MODEL (Search_Utils.js) —
+// the MLP query classifier was trained on all-MiniLM-L12-v2 vectors, so the
+// search embeddings and the search-time embedder both need to use that same
+// model or category re-ranking (rerankByCategory) will be comparing vectors
+// from different embedding spaces.
 async function loadCubes() {
   if (cachedCubes) return cachedCubes; // return cached version if already loaded, saves file read time on subsequent requests
   
+  const EMBEDDINGS_FILENAME = 'cubesWithEmbeddings.all-MiniLM-L12-v2.json';
+
   // two paths in case of different launch contexts(in case of hosting only backend)  
   // Path option A: If you launched Node from the project ROOT directory
-  const rootWorkspacePath = path.join(process.cwd(), 'canada-data-pipeline', 'src', 'collectors', 'cubesWithEmbeddings.json');
+  const rootWorkspacePath = path.join(process.cwd(), 'canada-data-pipeline', 'src', 'collectors', EMBEDDINGS_FILENAME);
   
   // Path option B: If you launched Node from INSIDE the /backend folder
-  const internalBackendPath = path.join(__dirname, '../canada-data-pipeline/src/collectors/cubesWithEmbeddings.json');
+  const internalBackendPath = path.join(__dirname, '../canada-data-pipeline/src/collectors', EMBEDDINGS_FILENAME);
 
   let resolvedPath;
   try {
@@ -81,17 +96,20 @@ async function loadCubes() {
   }
 }
 // load the embedding once once at startup anc cache it
+// Uses CLASSIFIER_EMBEDDING_MODEL (all-MiniLM-L12-v2) rather than a separately
+// hardcoded model string, so the search embedder can never drift out of sync
+// with the model the MLP query classifier (Search_Utils.js) was trained on.
 // Outputs tensor with the properties below:
 // Tensor {
 //   dims: [ 2, 384 ],
 //   type: 'float32',
-//   data: Float32Array(768) [ 0.04592696577310562, 0.07328180968761444, ... ],
-//   size: 768
+//   data: Float32Array(384) [ 0.04592696577310562, 0.07328180968761444, ... ],
+//   size: 384
 // }
 async function getEmbeddingModel() {
   if (!embeddingModel) {
-    console.log('Loading embedding model…');
-    embeddingModel = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+    console.log(`Loading embedding model (${CLASSIFIER_EMBEDDING_MODEL})…`);
+    embeddingModel = await pipeline('feature-extraction', CLASSIFIER_EMBEDDING_MODEL);
     console.log('Model ready');
   }
   return embeddingModel;
@@ -238,17 +256,35 @@ app.post('/api/search', async (req, res) => {
     // console.log('qVec sample:', qVec.slice(0,5), 'qVec length:', qVec.length);
     
     // cube structure: { cubeId, title, embedding}
-    // performs a cosine similary check between the query embedding and each
-    // cube embedding, then sorts by similarity and takes the top K results
-    const ranked = cubes
+    // performs a cosine similary check between the query embedding and every
+    // cube embedding (full list, not yet sliced to topK).
+    const allScored = cubes
       .map(c => ({ cubeId: c.cubeId, title: c.title, similarity: cosineSimilarity(qVec, c.embedding) }))
-      .sort((a, b) => b.similarity - a.similarity) // sort in descending order
-      .slice(0, topK);
+      .sort((a, b) => b.similarity - a.similarity); // sort in descending order
+
+    // Re-ranks the FULL scored list (not just the topK slice) using the MLP
+    // query classifier: predicts a category for this query from qVec, then
+    // boosts the similarity score of any cube whose mapped category matches
+    // before re-sorting. Done before slicing so a cube just outside the raw
+    // top-K on cosine similarity alone can still surface if its category
+    // matches — slicing first would make the boost unable to pull in cubes
+    // that didn't already make the cut.
+    const { reranked, predictedCategory, predictedCategoryConfidence } =
+      await rerankByCategory(allScored, query, qVec);
+
+    if (predictedCategory) {
+      console.log(
+        `Predicted query category: ${predictedCategory} ` +
+        `(confidence: ${(predictedCategoryConfidence * 100).toFixed(1)}%)`
+      );
+    }
+
+    const ranked = reranked.slice(0, topK);
     
     console.log('Top results:');
     // logs the top K results with their similarity scores, truncated title to 60 characters and similarity percentage to 1 decimal place
     ranked.forEach((r, i) =>
-      console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%)`)
+      console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%, category: ${r.cubeCategory ?? 'unknown'}, keyword matches: ${r.keywordMatches ?? 0})`)
     );
     // fetches the metadata for each of the top K cubes
     for (const candidate of ranked) {
@@ -334,6 +370,12 @@ app.post('/api/search', async (req, res) => {
 
       console.log(`Using cube ${candidate.cubeId}: ${candidate.title.slice(0, 60)}`);
 
+      // Pulls in the richer fields from cubesMetadata.json that aren't part
+      // of the slim cubesWithEmbeddings.*.json used for the similarity
+      // search — footnotes, bilingual title, full dimension names/members,
+      // subject/survey codes, archive status, series/datapoint counts.
+      const extraMetadata = await enrichWithMetadata(candidate.cubeId);
+
       return res.json({
         success: true,
         cubeId:       candidate.cubeId,
@@ -341,8 +383,14 @@ app.post('/api/search', async (req, res) => {
         unit,
         tableUrl,
         geoDimIndex,
-        provinces,       
-        dimensionMeta,   
+        provinces,
+        dimensionMeta,
+        predictedCategory,
+        predictedCategoryConfidence,
+        cubeCategory: candidate.cubeCategory ?? null,
+        keywordMatches: candidate.keywordMatches ?? 0,
+        isCurrent: isCurrentCube(extraMetadata),
+        ...extraMetadata,
       });
     }
 
@@ -419,8 +467,28 @@ app.post('/api/data', async (req, res) => {
 });
 // check if the server is running and if the cubes are loaded in memory
 app.get('/api/health', (_req, res) =>
-  res.json({ status: 'healthy', cubesLoaded: !!cachedCubes })
+  res.json({
+    status: 'healthy',
+    cubesLoaded: !!cachedCubes,
+    embeddingModelLoaded: !!embeddingModel,
+    mlpReady: mlpWarmedUp
+  })
 );
 
 app.listen(PORT, () => console.log(`\nServer running on port ${PORT}`));
-loadCubes().catch(console.error); // loads the cubes on server start 
+loadCubes().catch(console.error); // loads the cubes on server start
+
+// Warms up the MLP query classifier at startup too, same reasoning as
+// loadCubes() above — avoids the first /api/search request paying the cold
+// model-load cost. Tracked separately from cachedCubes/embeddingModel since
+// getMlpModel() caches internally inside Search_Utils.js; this flag is just
+// for /api/health visibility.
+getMlpModel()
+  .then(() => { mlpWarmedUp = true; })
+  .catch(err => {
+    console.error(
+      '❌ Failed to warm up MLP query classifier at startup — category ' +
+      're-ranking will be unavailable until this succeeds:',
+      err.message
+    );
+  });

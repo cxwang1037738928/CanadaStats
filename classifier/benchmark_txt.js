@@ -7,7 +7,7 @@ import { loadMLP } from "./train_mlp.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rawData = JSON.parse(fs.readFileSync("benchmark_results.json", "utf8"));
-const testData = JSON.parse(fs.readFileSync(path.join("input_data", "outputs", "test", "test.json"), "utf8"));
+const testData = JSON.parse(fs.readFileSync(path.join("input_data", "outputs", "test.json"), "utf8"));
 
 const CATEGORIES = ["Government", "Income, pensions, spending and wealth", "International trade", "Health", "Labour", "Languages", "Manufacturing", "Population and demography", "Prices and price indexes", "Statistical methods", "Retail and wholesale", "Business and consumer services and culture", "Digital economy and society", "Transportation", "Travel and tourism", "Energy", "Science and technology", "Agriculture and food", "Business performance and ownership", "Construction", "Crime and justice", "Economic accounts", "Education, training and learning", "Environment", "Families, households and marital status", "Indigenous peoples", "Children and youth", "Immigration and ethnocultural diversity", "Older adults and population aging", "Society and community", "Housing"];
 const labelToId = Object.fromEntries(CATEGORIES.map((c, i) => [c, i]));

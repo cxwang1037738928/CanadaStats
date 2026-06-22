@@ -1,0 +1,31 @@
+=== server.js /api/search Benchmark vs. Ground Truth ===
+Target server: http://localhost:5000
+Run date: 2026-06-22T00:06:10.110Z
+
+Distinct queries in searchResults.json: 2295
+  No ground-truth link:                 675  (excluded)
+  Unwinnable (expected cube not in system): 297  (excluded)
+  Winnable (used for accuracy):          1323
+
+Overall accuracy: 29.2% (386/1323)
+
+=== Accuracy by Category (expected cube's category) ===
+
+Category                                   | Accuracy
+-----------------------------------------------------
+Business and consumer services and culture | 25.0% (22/88)
+Business performance and ownership         | 0.0% (0/5)
+Construction                               | 0.0% (0/1)
+Education, training and learning           | 26.7% (8/30)
+Environment                                | 24.1% (13/54)
+Health                                     | 14.8% (4/27)
+Income, pensions, spending and wealth      | 20.0% (39/195)
+International trade                        | 76.9% (10/13)
+Labour                                     | 15.3% (24/157)
+Manufacturing                              | 55.6% (5/9)
+Population and demography                  | 23.0% (66/287)
+Prices and price indexes                   | 6.5% (4/62)
+Retail and wholesale                       | 68.8% (11/16)
+Society and community                      | 48.5% (116/239)
+Transportation                             | 46.6% (54/116)
+Travel and tourism                         | 41.7% (10/24)
