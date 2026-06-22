@@ -106,6 +106,7 @@ const CATEGORIES = [
 // (never excludes a cube outright) per the chosen design — cubes that don't
 // match are left at their original similarity score.
 const CATEGORY_BOOST_FACTOR = 1.15;
+const ARCHIVE_PENALTY = 0.85;
 
 // How much to multiply similarity by, per matched keyword, when the user's
 // query contains one of a cube's category's top distinctive keywords (see
@@ -331,7 +332,10 @@ export async function rerankByCategory(rankedCandidates, query, queryEmbedding) 
     const keywordMatches = cubeCategory
       ? countKeywordMatches(queryWords, cubeCategory, categoryKeywords)
       : 0;
-
+    
+    // archived cubes (archiveStatusCode !== "2") are penalized across the board, since they're less likely to be relevant to a current query — but the penalty is milder for cubes that match the predicted category, since relevance is relevance even if archived. The penalty is applied before category/keyword boosts so it doesn't get multiplied by them — e.g. an archived cube that matches the predicted category still gets the full category boost, just off a lower base similarity.
+    const isCurrent = cube?.archiveStatusCode === "2";
+    const archivePenalty = isCurrent ? 1 : ARCHIVE_PENALTY; // tuned by testing different numbers
     const categoryMultiplier = matchesPredictedCategory ? CATEGORY_BOOST_FACTOR : 1;
     const keywordMultiplier = Math.pow(KEYWORD_BOOST_FACTOR, keywordMatches);
 
@@ -339,7 +343,7 @@ export async function rerankByCategory(rankedCandidates, query, queryEmbedding) 
       ...candidate,
       cubeCategory,
       keywordMatches,
-      boostedSimilarity: candidate.similarity * categoryMultiplier * keywordMultiplier
+      boostedSimilarity: candidate.similarity * categoryMultiplier * keywordMultiplier * archivePenalty
     };
   });
 
