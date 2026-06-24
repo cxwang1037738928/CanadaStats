@@ -65,7 +65,7 @@ const CATEGORY_KEYWORDS_PATH = path.join(
 
 // The embedding model used for the search endpoint and the MLP classifier
 // must match — the MLP was trained on vectors from this specific model.
-export const CLASSIFIER_EMBEDDING_MODEL = "Xenova/all-MiniLM-L12-v2";
+export const CLASSIFIER_EMBEDDING_MODEL = "Xenova/all-MiniLM-L12-v2"; // matches cubesWithEmbeddings.all-MiniLM-L12-v2.json
 
 const CATEGORIES = [
   "Government",

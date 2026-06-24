@@ -14,6 +14,9 @@ import {
   CLASSIFIER_EMBEDDING_MODEL
 } from './Search_Utils.js';
 
+// const EMBEDDINGS_FILENAME = 'cubesWithEmbeddings.all-mpnet-base-v2.json';
+const EMBEDDINGS_FILENAME = 'cubesWithEmbeddings.all-MiniLM-L12-v2.json'; // matches CLASSIFIER_EMBEDDING_MODEL
+
 const allowedOrigins = [
    "https://canadamapped.ca",
    "https://www.canadamapped.ca",
@@ -64,7 +67,6 @@ let mlpWarmedUp    = false; // tracks whether the MLP query classifier (Search_U
 async function loadCubes() {
   if (cachedCubes) return cachedCubes; // return cached version if already loaded, saves file read time on subsequent requests
   
-  const EMBEDDINGS_FILENAME = 'cubesWithEmbeddings.all-MiniLM-L12-v2.json';
 
   // two paths in case of different launch contexts(in case of hosting only backend)  
   // Path option A: If you launched Node from the project ROOT directory
@@ -376,6 +378,10 @@ app.post('/api/search', async (req, res) => {
       // subject/survey codes, archive status, series/datapoint counts.
       const extraMetadata = await enrichWithMetadata(candidate.cubeId);
 
+      // Raw cosine similarity before category/keyword boosts — bounded [0,1]
+      // so the frontend can display it as a clean 0–100% confidence figure.
+      const matchConfidence = allScored.find(s => s.cubeId === candidate.cubeId)?.similarity ?? 0;
+
       return res.json({
         success: true,
         cubeId:       candidate.cubeId,
@@ -390,6 +396,7 @@ app.post('/api/search', async (req, res) => {
         cubeCategory: candidate.cubeCategory ?? null,
         keywordMatches: candidate.keywordMatches ?? 0,
         isCurrent: isCurrentCube(extraMetadata),
+        matchConfidence,
         ...extraMetadata,
       });
     }

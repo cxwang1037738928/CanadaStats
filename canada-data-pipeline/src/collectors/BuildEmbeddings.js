@@ -226,10 +226,101 @@ async function findProvincialCubes(cubes, maxToCheck = 9000) {
 }
 
 // -----------------------------
-// Generate embeddings for each cube using a single given model.
-// Embedding text is title + start/end date only, as before.
+// Precompute document frequencies for member names and dimension names
+// across all cubes in the metadata set. Used by buildSearchText() to filter
+// out generic cross-cutting terms before embedding.
+//
+// A member that appears in more than GENERIC_THRESHOLD of cubes (e.g. every
+// NAICS industry name, standard age bands, ownership-type breakdowns) carries
+// no subject-discriminating signal — embedding it adds noise, not meaning.
+// IDF handles this naturally: df/N > threshold → IDF ≈ 0 → filter it out.
+//
+// Thresholds chosen from the real cubesMetadata.json distribution:
+//   - 5% of cubes (180/3600) cleanly separates the 93 NAICS-industry members
+//     that appear in 25%+ of cubes (pure structural breakdowns reused across
+//     every subject area) from the 43,855 subject-specific members.
+//   - Same 5% threshold for dimension names filters: Sex, Age group,
+//     Statistics, NAICS, Gender, Characteristics — structural labels that
+//     appear in 180–684 cubes — while keeping 2,157 specific dimension names.
 // -----------------------------
-async function addEmbeddings(cubes, modelName) {
+const GENERIC_THRESHOLD_RATIO = 0.05; // >5% of all cubes → generic, filter out
+const MEMBERS_PER_DIM = 8;            // max specific members to include per dimension
+
+function buildDocumentFrequencies(cubes) {
+  const memberDocFreq = new Map();
+  const dimNameDocFreq = new Map();
+
+  for (const cube of cubes) {
+    const seenMembers = new Set();
+    const seenDims = new Set();
+
+    for (const dim of (cube.dimensions || [])) {
+      const dimName = dim.dimensionNameEn;
+      if (dimName) seenDims.add(dimName);
+      for (const m of (dim.memberNames || [])) {
+        seenMembers.add(m);
+      }
+    }
+
+    for (const m of seenMembers) {
+      memberDocFreq.set(m, (memberDocFreq.get(m) || 0) + 1);
+    }
+    for (const d of seenDims) {
+      dimNameDocFreq.set(d, (dimNameDocFreq.get(d) || 0) + 1);
+    }
+  }
+
+  return { memberDocFreq, dimNameDocFreq };
+}
+
+// -----------------------------
+// Build the enriched search text for a single cube.
+//
+// Format: title. startDate. endDate. [dim name.] [member. member. ...]
+// Only dimension names and member names that appear in ≤5% of cubes are
+// included — those are the terms that actually distinguish this cube's
+// subject matter from others. Generic structural labels (NAICS industries,
+// age bands, Sex/Gender/Statistics dimensions) are dropped.
+//
+// This directly addresses the vocabulary gap between casual natural-language
+// queries and formal StatCan table titles: "throws away the most garbage"
+// has no overlap with "Disposal of waste, by source" at the title level, but
+// the dimension members "Landfill", "Recycled", "Composted" give the
+// embedding model something to anchor on.
+// -----------------------------
+function buildSearchText(cube, memberDocFreq, dimNameDocFreq, totalCubes) {
+  const genericCutoff = Math.floor(totalCubes * GENERIC_THRESHOLD_RATIO);
+  const parts = [cube.title];
+
+  if (cube.startDate) parts.push(cube.startDate);
+  if (cube.endDate) parts.push(cube.endDate);
+
+  for (const dim of (cube.dimensions || [])) {
+    const dimName = dim.dimensionNameEn;
+
+    // Include the dimension name only if it's subject-specific (not generic).
+    if (dimName && (dimNameDocFreq.get(dimName) || 0) <= genericCutoff) {
+      parts.push(dimName);
+    }
+
+    // Include up to MEMBERS_PER_DIM specific members from this dimension.
+    const specificMembers = (dim.memberNames || [])
+      .filter(m => (memberDocFreq.get(m) || 0) <= genericCutoff)
+      .slice(0, MEMBERS_PER_DIM);
+
+    parts.push(...specificMembers);
+  }
+
+  return parts.join(". ");
+}
+
+// -----------------------------
+// Generate embeddings for each cube using a single given model.
+// Uses enriched search text (title + dates + specific dimension names +
+// specific member names) instead of title + dates only.
+// -----------------------------
+async function addEmbeddings(cubes, modelName, memberDocFreq, dimNameDocFreq) {
+  const totalCubes = cubes.length;
   console.log(`\nLoading embedding model (${modelName})...`);
   const extractor = await pipeline("feature-extraction", modelName);
 
@@ -239,7 +330,7 @@ async function addEmbeddings(cubes, modelName) {
 
   for (let i = 0; i < cubes.length; i++) {
     const cube = cubes[i];
-    const searchText = `${cube.title} ${cube.startDate || ""} ${cube.endDate || ""}`;
+    const searchText = buildSearchText(cube, memberDocFreq, dimNameDocFreq, totalCubes);
 
     const embedding = await extractor(searchText, {
       pooling: "mean",
@@ -311,9 +402,26 @@ async function main() {
     `\n✓ Saved ${METADATA_OUT_PATH} (${(metaStats.size / (1024 * 1024)).toFixed(2)} MB)`
   );
 
+  // Precompute document frequencies across all provincial cubes once — used
+  // by buildSearchText() to filter generic dimension names and member names
+  // before embedding. Done here rather than inside addEmbeddings() so it
+  // runs once regardless of how many models are being embedded.
+  console.log("\nComputing document frequencies for dimension/member filtering...");
+  const { memberDocFreq, dimNameDocFreq } = buildDocumentFrequencies(provincialCubes);
+  const genericCutoff = Math.floor(provincialCubes.length * GENERIC_THRESHOLD_RATIO);
+  const genericMemberCount = [...memberDocFreq.values()].filter(n => n > genericCutoff).length;
+  const genericDimCount = [...dimNameDocFreq.values()].filter(n => n > genericCutoff).length;
+  console.log(`  ${memberDocFreq.size} distinct member names — ${genericMemberCount} generic (filtered), ${memberDocFreq.size - genericMemberCount} specific (kept)`);
+  console.log(`  ${dimNameDocFreq.size} distinct dim names  — ${genericDimCount} generic (filtered), ${dimNameDocFreq.size - genericDimCount} specific (kept)`);
+
+  // Log the first cube's enriched text so you can sanity-check what's being
+  // embedded before waiting for the full run to complete.
+  const sampleText = buildSearchText(provincialCubes[0], memberDocFreq, dimNameDocFreq, provincialCubes.length);
+  console.log(`\nSample enriched text (first cube):\n  "${sampleText.slice(0, 300)}..."`);
+
   // Generate one embeddings file per model.
   for (const modelName of EMBEDDING_MODELS) {
-    const cubesWithEmbeddings = await addEmbeddings(provincialCubes, modelName);
+    const cubesWithEmbeddings = await addEmbeddings(provincialCubes, modelName, memberDocFreq, dimNameDocFreq);
 
     const slug = modelToFileSlug(modelName);
     const outPath = `./cubesWithEmbeddings.${slug}.json`;

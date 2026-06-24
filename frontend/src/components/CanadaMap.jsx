@@ -322,9 +322,9 @@ export default function CanadaMap() {
       {/* Header */}
       <header className="header">
         <div className="wordmark">
-          <span className="w-primary">STATCAN</span>
+          <span className="w-primary">CANADA</span>
           <span className="w-div">/</span>
-          <span className="w-secondary">Explorer</span>
+          <span className="w-secondary">in maps</span>
         </div>
         <div className="search-wrap">
           <svg className="search-icon" viewBox="0 0 20 20" fill="none">
@@ -480,27 +480,23 @@ export default function CanadaMap() {
             <div className="hint-card">Click a province to see details</div>
           )}
 
-          {/* Rankings */}
-          <div className="rank-card">
-            <div className="section-title">Rankings</div>
-            {rankings.length > 0
-              ? rankings.map((p, i) => (
-                  <div key={p.province}
-                    className="rank-row"
-                    style={{
-                      background: selected?.name === p.province ? '#eff6ff' : 'transparent',
-                    }}
-                    onClick={() => setSelected({ name:p.province, value:p.value, year:p.year })}
-                  >
-                    <span className="rank-num">{i + 1}</span>
-                    <span className="rank-name">{ABBR[p.province] ?? p.province}</span>
-                    <span className="rank-val">{fmtVal(p.value)}</span>
-                  </div>
-                ))
-              : <div style={{ fontSize:11, color:'#d1d5db', fontStyle:'italic', marginTop:4 }}>
-                  {cubeMeta ? 'No data for this selection' : 'No data yet'}
+          {/* Search Match Confidence */}
+          <div className="match-card">
+            <div className="section-title">Search Match</div>
+            {cubeMeta ? (
+              <>
+                <div className="confidence-value">
+                  {Math.round((cubeMeta.matchConfidence ?? 0) * 100)}%
                 </div>
-            }
+                <div className="confidence-label">semantic similarity</div>
+                <div className="meta-label" style={{ marginTop: 12 }}>Category</div>
+                <div className="meta-value">{cubeMeta.cubeCategory ?? '—'}</div>
+              </>
+            ) : (
+              <div style={{ fontSize: 11, color: '#d1d5db', fontStyle: 'italic', marginTop: 4 }}>
+                No search yet
+              </div>
+            )}
           </div>
         </aside>
       </main>

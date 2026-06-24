@@ -162,7 +162,8 @@ async function callSearch(baseUrl, query) {
   });
 
   if (res.status === 404) {
-    return { cubeId: null, category: null, raw: await res.json() };
+    const body = await res.json();
+    return { cubeId: null, category: null, candidates: body.candidates ?? [], raw: body };
   }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -170,7 +171,12 @@ async function callSearch(baseUrl, query) {
   }
 
   const body = await res.json();
-  return { cubeId: body.cubeId ?? null, category: body.cubeCategory ?? null, raw: body };
+  // candidates is only populated when targeting test_server.js — falls back
+  // to [cubeId] so top-3/top-5 degrade gracefully to top-1 against server.js.
+  const candidates = body.candidates?.length > 0
+    ? body.candidates
+    : (body.cubeId ? [body.cubeId] : []);
+  return { cubeId: body.cubeId ?? null, category: body.cubeCategory ?? null, candidates, raw: body };
 }
 
 function sleep(ms) {
@@ -236,7 +242,10 @@ async function main() {
   console.log(`\nQuerying ${baseUrl}/api/search for ${winnableQueries.length} winnable queries…\n`);
 
   let hitCount = 0;
+  let top3HitCount = 0;
+  let top5HitCount = 0;
   const mismatched = [];
+  let sameCategoryMisses = 0; // misses where actual cube's category === expected cube's category
 
   // category -> { hit, total }
   const categoryStats = new Map();
@@ -249,11 +258,16 @@ async function main() {
       result = await callSearch(baseUrl, q.query);
     } catch (err) {
       console.error(`[${i + 1}/${winnableQueries.length}] ERROR for "${q.query}": ${err.message}`);
-      result = { cubeId: null, category: null, raw: { error: err.message } };
+      result = { cubeId: null, category: null, candidates: [], raw: { error: err.message } };
     }
 
-    const isHit = result.cubeId !== null && q.expectedCubeIds.has(result.cubeId);
-    if (isHit) hitCount++;
+    const isHit     = result.cubeId !== null && q.expectedCubeIds.has(result.cubeId);
+    const isTop3Hit = result.candidates.slice(0, 3).some(id => q.expectedCubeIds.has(id));
+    const isTop5Hit = result.candidates.slice(0, 5).some(id => q.expectedCubeIds.has(id));
+
+    if (isHit)     hitCount++;
+    if (isTop3Hit) top3HitCount++;
+    if (isTop5Hit) top5HitCount++;
 
     const categoryKey = q.category ?? "Unknown";
     if (!categoryStats.has(categoryKey)) categoryStats.set(categoryKey, { hit: 0, total: 0 });
@@ -262,19 +276,35 @@ async function main() {
     if (isHit) stats.hit++;
 
     if (!isHit) {
+      // Check if the actual returned cube shares the same expected category —
+      // a "right area, wrong table" miss vs. a "completely wrong direction" miss.
+      // result.category comes from server.js's response field cubeCategory,
+      // which Search_Utils.js computes via subjectCodeToCategory.json for the
+      // returned cube — the same map used to assign q.category for the expected
+      // cube, so the comparison is apples-to-apples.
+      const isSameCategory =
+        result.category !== null &&
+        q.category !== null &&
+        result.category === q.category;
+
+      if (isSameCategory) sameCategoryMisses++;
+
       mismatched.push({
         id: q.id,
         query: q.query,
         expected: [...q.expectedCubeIds],
         actual: result.cubeId,
         actualTitle: result.raw?.title ?? null,
-        category: q.category
+        category: q.category,
+        actualCategory: result.category ?? null,
+        sameCategory: isSameCategory,
       });
     }
 
     if ((i + 1) % 50 === 0 || i === winnableQueries.length - 1) {
+      const n = i + 1;
       console.log(
-        `[${i + 1}/${winnableQueries.length}] running accuracy: ${formatPercent(hitCount, i + 1)}`
+        `[${n}/${winnableQueries.length}] top1: ${formatPercent(hitCount, n)} | top3: ${formatPercent(top3HitCount, n)} | top5: ${formatPercent(top5HitCount, n)}`
       );
     }
 
@@ -294,8 +324,20 @@ async function main() {
   lines.push(`  Unwinnable (expected cube not in system): ${unwinnableQueries.length}  (excluded)`);
   lines.push(`  Winnable (used for accuracy):          ${winnableQueries.length}`);
   lines.push("");
-  lines.push(`Overall accuracy: ${formatPercent(hitCount, winnableQueries.length)}`);
+  lines.push(`Top-1 accuracy: ${formatPercent(hitCount, winnableQueries.length)}`);
+  lines.push(`Top-3 accuracy: ${formatPercent(top3HitCount, winnableQueries.length)}`);
+  lines.push(`Top-5 accuracy: ${formatPercent(top5HitCount, winnableQueries.length)}`);
+  lines.push("  (Top-3/Top-5 require test_server.js — fall back to Top-1 values when run against server.js)");
   lines.push("");
+
+  const totalMisses = winnableQueries.length - hitCount;
+  const diffCategoryMisses = totalMisses - sameCategoryMisses;
+  lines.push("=== Mismatch Analysis ===");
+  lines.push("");
+  lines.push(`Total misses: ${totalMisses}`);
+  lines.push(`  Same-category miss (right area, wrong table): ${sameCategoryMisses} (${totalMisses > 0 ? ((sameCategoryMisses / totalMisses) * 100).toFixed(1) : "n/a"}% of misses)`);
+  lines.push(`  Different-category miss (wrong direction):    ${diffCategoryMisses} (${totalMisses > 0 ? ((diffCategoryMisses / totalMisses) * 100).toFixed(1) : "n/a"}% of misses)`);
+  lines.push(`  (Note: misses where actual or expected category is unknown are counted as different-category)`);
   lines.push("=== Accuracy by Category (expected cube's category) ===");
   lines.push("");
 
@@ -314,7 +356,7 @@ async function main() {
   await fs.writeFile(MISMATCHED_OUTPUT_PATH, JSON.stringify(mismatched, null, 2));
   console.log(`Saved ${MISMATCHED_OUTPUT_PATH} (${mismatched.length} mismatches)`);
 
-  console.log(`\nFinal accuracy: ${formatPercent(hitCount, winnableQueries.length)}`);
+  console.log(`\nTop-1: ${formatPercent(hitCount, winnableQueries.length)} | Top-3: ${formatPercent(top3HitCount, winnableQueries.length)} | Top-5: ${formatPercent(top5HitCount, winnableQueries.length)}`);
 }
 
 main().catch(err => {

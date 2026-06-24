@@ -390,41 +390,26 @@
   flex-shrink: 0;
 }
 
-/* Rankings items modified to safely fit layout scroll */
-.rank-card {
+/* Search match confidence card */
+.match-card {
   flex: 1;
   padding: 14px 16px;
-  min-height: 200px; /* Ensures space remains allocated to see rankings if whole sidebar scrolls */
+  min-height: 120px;
 }
 
-.rank-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 4px;
-  border-radius: 4px;
-  transition: background 0.1s;
-  cursor: pointer;
+.confidence-value {
+  font-size: 40px;
+  font-weight: 700;
+  color: #1d4ed8;
+  line-height: 1;
+  margin-top: 4px;
 }
 
-.rank-num {
+.confidence-label {
   font-size: 10px;
-  color: #d1d5db;
-  width: 16px;
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.rank-name {
-  font-size: 11px;
-  color: #374151;
-  flex: 1;
-}
-
-.rank-val {
-  font-size: 11px;
-  color: #111;
-  font-weight: 600;
+  color: #9ca3af;
+  margin-top: 2px;
+  letter-spacing: 0.04em;
 }
 
 /* Tooltip definitions */

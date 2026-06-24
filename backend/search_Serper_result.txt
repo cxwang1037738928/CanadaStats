@@ -1,31 +1,40 @@
 === server.js /api/search Benchmark vs. Ground Truth ===
 Target server: http://localhost:5000
-Run date: 2026-06-22T16:45:31.947Z
+Run date: 2026-06-23T17:04:40.226Z
 
 Distinct queries in searchResults.json: 2295
   No ground-truth link:                 675  (excluded)
   Unwinnable (expected cube not in system): 297  (excluded)
   Winnable (used for accuracy):          1323
 
-Overall accuracy: 31.6% (418/1323)
+Top-1 accuracy: 23.1% (306/1323)
+Top-3 accuracy: 38.0% (503/1323)
+Top-5 accuracy: 45.5% (602/1323)
+  (Top-3/Top-5 require test_server.js — fall back to Top-1 values when run against server.js)
 
+=== Mismatch Analysis ===
+
+Total misses: 1017
+  Same-category miss (right area, wrong table): 669 (65.8% of misses)
+  Different-category miss (wrong direction):    348 (34.2% of misses)
+  (Note: misses where actual or expected category is unknown are counted as different-category)
 === Accuracy by Category (expected cube's category) ===
 
 Category                                   | Accuracy
 -----------------------------------------------------
-Business and consumer services and culture | 23.9% (21/88)
-Business performance and ownership         | 20.0% (1/5)
+Business and consumer services and culture | 9.1% (8/88)
+Business performance and ownership         | 0.0% (0/5)
 Construction                               | 0.0% (0/1)
-Education, training and learning           | 33.3% (10/30)
-Environment                                | 25.9% (14/54)
-Health                                     | 25.9% (7/27)
-Income, pensions, spending and wealth      | 33.3% (65/195)
-International trade                        | 76.9% (10/13)
-Labour                                     | 17.2% (27/157)
-Manufacturing                              | 88.9% (8/9)
-Population and demography                  | 22.3% (64/287)
-Prices and price indexes                   | 6.5% (4/62)
-Retail and wholesale                       | 56.3% (9/16)
-Society and community                      | 45.2% (108/239)
-Transportation                             | 58.6% (68/116)
-Travel and tourism                         | 8.3% (2/24)
+Education, training and learning           | 16.7% (5/30)
+Environment                                | 0.0% (0/54)
+Health                                     | 7.4% (2/27)
+Income, pensions, spending and wealth      | 12.8% (25/195)
+International trade                        | 61.5% (8/13)
+Labour                                     | 18.5% (29/157)
+Manufacturing                              | 66.7% (6/9)
+Population and demography                  | 20.9% (60/287)
+Prices and price indexes                   | 12.9% (8/62)
+Retail and wholesale                       | 75.0% (12/16)
+Society and community                      | 37.2% (89/239)
+Transportation                             | 46.6% (54/116)
+Travel and tourism                         | 0.0% (0/24)

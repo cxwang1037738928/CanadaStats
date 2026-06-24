@@ -1,14 +1,23 @@
 === server.js /api/search Benchmark vs. Ground Truth ===
 Target server: http://localhost:5000
-Run date: 2026-06-22T15:04:52.427Z
+Run date: 2026-06-23T16:31:45.643Z
 
 Distinct queries in searchResults.json: 2295
   No ground-truth link:                 675  (excluded)
   Unwinnable (expected cube not in system): 297  (excluded)
   Winnable (used for accuracy):          1323
 
-Overall accuracy: 32.3% (427/1323)
+Top-1 accuracy: 32.3% (427/1323)
+Top-3 accuracy: 46.5% (615/1323)
+Top-5 accuracy: 52.5% (695/1323)
+  (Top-3/Top-5 require test_server.js — fall back to Top-1 values when run against server.js)
 
+=== Mismatch Analysis ===
+
+Total misses: 896
+  Same-category miss (right area, wrong table): 590 (65.8% of misses)
+  Different-category miss (wrong direction):    306 (34.2% of misses)
+  (Note: misses where actual or expected category is unknown are counted as different-category)
 === Accuracy by Category (expected cube's category) ===
 
 Category                                   | Accuracy
