@@ -451,7 +451,7 @@ app.post('/api/data', async (req, res) => {
       }
       // prevents too many API requests to StatCan in a short period of time
       // since StatCan limits requests from servers to 50 per second
-      await new Promise(r => setTimeout(r, 60)); 
+      await new Promise(r => setTimeout(r, 10)); 
     }
 
     if (!results.length) {
