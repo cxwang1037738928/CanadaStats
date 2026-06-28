@@ -65,7 +65,7 @@ const STOPWORDS = new Set([
   "persons", "percentage"
 ]);
 
-const MIN_WORD_LENGTH = 3;
+const MIN_WORD_LENGTH = 3; // gets rid of small words like "of", "to", "by" that aren't in the stopword list but are still generic and unhelpful.
 
 async function loadJson(filePath) {
   const raw = await fs.readFile(filePath, "utf8");
