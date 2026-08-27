@@ -57,6 +57,15 @@ let cachedCubes    = null;
 let embeddingModel = null;
 let mlpWarmedUp    = false; // tracks whether the MLP query classifier (Search_Utils.js) has finished its startup warm-up
 
+// In-flight promises for the two lazy singletons below. Without these, requests
+// that arrive while a cold start is still loading each kick off their OWN copy
+// of the work — several concurrent 20 MB JSON parses and duplicate embedding
+// model loads. On a small instance that memory spike can OOM the process, which
+// looks like a random server error to the user. Caching the promise (not just
+// the result) means concurrent callers all await the same single load.
+let cubesLoadPromise = null;
+let embeddingLoadPromise = null;
+
 // ── Startup loaders ───────────────────────────────────────────────────────────
 // loads the cube metadata as json objects from the pre-generated file with embeddings
 // NOTE: this must stay in sync with CLASSIFIER_EMBEDDING_MODEL (Search_Utils.js) —
@@ -66,9 +75,16 @@ let mlpWarmedUp    = false; // tracks whether the MLP query classifier (Search_U
 // from different embedding spaces.
 async function loadCubes() {
   if (cachedCubes) return cachedCubes; // return cached version if already loaded, saves file read time on subsequent requests
-  
+  // A load is already running — join it instead of starting a second one.
+  if (cubesLoadPromise) return cubesLoadPromise;
 
-  // two paths in case of different launch contexts(in case of hosting only backend)  
+  cubesLoadPromise = loadCubesUncached()
+    .finally(() => { cubesLoadPromise = null; }); // clear so a failed load can be retried
+  return cubesLoadPromise;
+}
+
+async function loadCubesUncached() {
+  // two paths in case of different launch contexts(in case of hosting only backend)
   // Path option A: If you launched Node from the project ROOT directory
   const rootWorkspacePath = path.join(process.cwd(), 'canada-data-pipeline', 'src', 'collectors', EMBEDDINGS_FILENAME);
   
@@ -109,12 +125,19 @@ async function loadCubes() {
 //   size: 384
 // }
 async function getEmbeddingModel() {
-  if (!embeddingModel) {
+  if (embeddingModel) return embeddingModel;
+  // Same in-flight de-duplication as loadCubes() — concurrent cold-start
+  // requests must not each load their own copy of the model.
+  if (embeddingLoadPromise) return embeddingLoadPromise;
+
+  embeddingLoadPromise = (async () => {
     console.log(`Loading embedding model (${CLASSIFIER_EMBEDDING_MODEL})…`);
     embeddingModel = await pipeline('feature-extraction', CLASSIFIER_EMBEDDING_MODEL);
     console.log('Model ready');
-  }
-  return embeddingModel;
+    return embeddingModel;
+  })().finally(() => { embeddingLoadPromise = null; }); // clear so a failed load can be retried
+
+  return embeddingLoadPromise;
 }
 // normalized dot product similarity since all vectors are normalized to length 1, so we can skip the denominator for faster calculations
 function cosineSimilarity(a, b) {
@@ -200,15 +223,59 @@ function isAggregate(name) {
 "link":{"footnoteId":22,"dimensionPositionId":2,"memberId":12}}],"correctionFootnote":[],"geoAttribute":[],"correction":[],"issueDate":"2021-04-13"}}]
 */
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
+// Number of attempts per cube before giving up on it. StatCan drops connections
+// (ECONNRESET) and times out intermittently; retrying once or twice turns most
+// of those into a successful fetch instead of a skipped candidate.
+const META_ATTEMPTS   = 3;
+const META_RETRY_MS    = 150; // base backoff, multiplied by attempt number
+
+// Returns the cube metadata object, or null if it could not be retrieved or is
+// unusable. NEVER throws — a rejection here used to unwind all the way to the
+// /api/search handler's catch and turn one transient StatCan hiccup into a 500
+// for the whole request. Callers treat null as "skip this candidate".
 async function fetchMeta(cubeId) {
-  const r = await axios.post( // auto parses r as JSON
-    `${STATCAN}/getCubeMetadata`,
-    [{ productId: parseInt(cubeId) }], // body, list of objects, fetches metadata for the cubeId, can be extended to fetch multiple cubes at once if needed in the future
-    { headers: { 'Content-Type': 'application/json' }, 
-     timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
-  );
-  console.log(`Fetched metadata for cube ${cubeId}:`, r.data?.[0]?.object?.cubeTitleEn ?? 'No title found');
-  return r.data?.[0]?.object ?? null;
+  for (let attempt = 1; attempt <= META_ATTEMPTS; attempt++) {
+    try {
+      const r = await axios.post( // auto parses r as JSON
+        `${STATCAN}/getCubeMetadata`,
+        [{ productId: parseInt(cubeId) }], // body, list of objects, fetches metadata for the cubeId, can be extended to fetch multiple cubes at once if needed in the future
+        { headers: { 'Content-Type': 'application/json' },
+         timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
+      );
+
+      const entry = r.data?.[0];
+      const meta  = entry?.object ?? null;
+
+      // StatCan answers HTTP 200 with status:"FAILED" and `object` as a STRING
+      // for withdrawn / non-existent product IDs, e.g.
+      //   "The cube product ID 12345678 does not exist. Error code = CUBE_NOT_AVAILABLE"
+      // That string is truthy, so a plain `if (!metadata)` guard downstream does
+      // not catch it and `metadata.dimension.find(...)` throws a TypeError.
+      // Cubes go missing between index rebuilds (925 of the indexed cubes are
+      // already ARCHIVED), so this is expected traffic, not an exceptional case.
+      if (typeof meta === 'string' || !Array.isArray(meta?.dimension)) {
+        console.warn(
+          `Cube ${cubeId}: unusable metadata (status=${entry?.status ?? 'unknown'}) — skipping. ` +
+          (typeof meta === 'string' ? meta : 'no dimension array')
+        );
+        return null; // not retryable — the cube itself is gone/malformed
+      }
+
+      console.log(`Fetched metadata for cube ${cubeId}:`, meta.cubeTitleEn ?? 'No title found');
+      return meta;
+
+    } catch (err) {
+      const last = attempt === META_ATTEMPTS;
+      console.warn(
+        `Cube ${cubeId}: metadata fetch attempt ${attempt}/${META_ATTEMPTS} failed ` +
+        `(${err.code ?? err.message}${err.response?.status ? ` http ${err.response.status}` : ''})` +
+        (last ? ' — giving up on this candidate.' : ' — retrying.')
+      );
+      if (last) return null;
+      await new Promise(r => setTimeout(r, META_RETRY_MS * attempt));
+    }
+  }
+  return null;
 }
 
 
@@ -289,19 +356,27 @@ app.post('/api/search', async (req, res) => {
       console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%, category: ${r.cubeCategory ?? 'unknown'}, keyword matches: ${r.keywordMatches ?? 0})`)
     );
     // fetches the metadata for each of the top K cubes
-    for (const candidate of ranked) {
-      const metadata = await fetchMeta(candidate.cubeId);
-      if (!metadata) {
+    // Counts candidates we could not even evaluate because StatCan didn't answer,
+    // so an upstream outage can be reported as 503 rather than being confused
+    // with "we looked and nothing matched" (404). See the end of the loop.
+    let unreachableCandidates = 0;
 
-       // console.warn(`No metadata found for cube ${candidate.cubeId}`);
-        continue;}
+    for (const candidate of ranked) {
+      const metadata = await fetchMeta(candidate.cubeId); // never throws; null = skip
+      if (!metadata) {
+        unreachableCandidates++;
+        continue;
+      }
       // locates the geography dimension by looking for keywords
+      // (fetchMeta guarantees metadata.dimension is an array)
       const geoDim = metadata.dimension.find(d =>
         d.dimensionNameEn === 'Geography' || d.dimensionNameEn?.includes('Geography')
       );
 
       // does not consider cubes that do not have a geography dimension, since we need provincial data for the map
-      if (!geoDim) continue;
+      // Array.isArray guard: StatCan occasionally returns a dimension with no
+      // member list at all, which would throw on .filter below.
+      if (!geoDim || !Array.isArray(geoDim.member)) continue;
       // removes members that are not provinces based on PROVINCE_MAPPING
 
       const provinces = geoDim.member // object with all the memebrs of the geography dimension
@@ -398,6 +473,17 @@ app.post('/api/search', async (req, res) => {
         isCurrent: isCurrentCube(extraMetadata),
         matchConfidence,
         ...extraMetadata,
+      });
+    }
+
+    // Distinguish "StatCan was down for every candidate we tried" from "we
+    // checked them all and none carry provincial data". Previously both a
+    // transient outage and a genuine no-match produced the same message — and
+    // an outage produced a 500 before that, since fetchMeta rethrew.
+    if (unreachableCandidates === ranked.length && ranked.length > 0) {
+      console.error(`All ${ranked.length} candidates unreachable — treating as upstream outage.`);
+      return res.status(503).json({
+        error: 'Statistics Canada is temporarily unavailable. Please try again in a moment.'
       });
     }
 
