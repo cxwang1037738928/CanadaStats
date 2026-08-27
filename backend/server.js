@@ -57,15 +57,6 @@ let cachedCubes    = null;
 let embeddingModel = null;
 let mlpWarmedUp    = false; // tracks whether the MLP query classifier (Search_Utils.js) has finished its startup warm-up
 
-// In-flight promises for the two lazy singletons below. Without these, requests
-// that arrive while a cold start is still loading each kick off their OWN copy
-// of the work — several concurrent 20 MB JSON parses and duplicate embedding
-// model loads. On a small instance that memory spike can OOM the process, which
-// looks like a random server error to the user. Caching the promise (not just
-// the result) means concurrent callers all await the same single load.
-let cubesLoadPromise = null;
-let embeddingLoadPromise = null;
-
 // ── Startup loaders ───────────────────────────────────────────────────────────
 // loads the cube metadata as json objects from the pre-generated file with embeddings
 // NOTE: this must stay in sync with CLASSIFIER_EMBEDDING_MODEL (Search_Utils.js) —
@@ -75,16 +66,9 @@ let embeddingLoadPromise = null;
 // from different embedding spaces.
 async function loadCubes() {
   if (cachedCubes) return cachedCubes; // return cached version if already loaded, saves file read time on subsequent requests
-  // A load is already running — join it instead of starting a second one.
-  if (cubesLoadPromise) return cubesLoadPromise;
+  
 
-  cubesLoadPromise = loadCubesUncached()
-    .finally(() => { cubesLoadPromise = null; }); // clear so a failed load can be retried
-  return cubesLoadPromise;
-}
-
-async function loadCubesUncached() {
-  // two paths in case of different launch contexts(in case of hosting only backend)
+  // two paths in case of different launch contexts(in case of hosting only backend)  
   // Path option A: If you launched Node from the project ROOT directory
   const rootWorkspacePath = path.join(process.cwd(), 'canada-data-pipeline', 'src', 'collectors', EMBEDDINGS_FILENAME);
   
@@ -125,19 +109,12 @@ async function loadCubesUncached() {
 //   size: 384
 // }
 async function getEmbeddingModel() {
-  if (embeddingModel) return embeddingModel;
-  // Same in-flight de-duplication as loadCubes() — concurrent cold-start
-  // requests must not each load their own copy of the model.
-  if (embeddingLoadPromise) return embeddingLoadPromise;
-
-  embeddingLoadPromise = (async () => {
+  if (!embeddingModel) {
     console.log(`Loading embedding model (${CLASSIFIER_EMBEDDING_MODEL})…`);
     embeddingModel = await pipeline('feature-extraction', CLASSIFIER_EMBEDDING_MODEL);
     console.log('Model ready');
-    return embeddingModel;
-  })().finally(() => { embeddingLoadPromise = null; }); // clear so a failed load can be retried
-
-  return embeddingLoadPromise;
+  }
+  return embeddingModel;
 }
 // normalized dot product similarity since all vectors are normalized to length 1, so we can skip the denominator for faster calculations
 function cosineSimilarity(a, b) {
@@ -223,132 +200,38 @@ function isAggregate(name) {
 "link":{"footnoteId":22,"dimensionPositionId":2,"memberId":12}}],"correctionFootnote":[],"geoAttribute":[],"correction":[],"issueDate":"2021-04-13"}}]
 */
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
-// StatCan drops connections (ECONNRESET) and times out intermittently, so a
-// single attempt is not reliable. But retrying is only worth it for errors that
-// might succeed next time — a 406 for a malformed product ID never will, and
-// retrying it just burns the caller's latency budget.
-const REQUEST_TIMEOUT_MS = 5000;  // StatCan normally answers well under 1s; a longer
-                                  // wait almost always means a dead connection.
-const MAX_ATTEMPTS       = 3;
-const RETRY_BASE_MS      = 120;   // backoff, multiplied by attempt number
-
-// Overall wall-clock budgets. Retries multiply worst-case latency (attempts x
-// candidates x timeout), which is what made searches feel like they hung when
-// StatCan was having a bad day. Once a budget is spent we stop retrying and
-// work with whatever we already have.
-const SEARCH_BUDGET_MS = 20000;
-const DATA_BUDGET_MS   = 25000;
-
-// Below this many provinces the choropleth is more misleading than useful.
-// Matches the >= 8 province requirement /api/search uses when picking a cube.
-const MIN_PROVINCES_FOR_MAP = 8;
-
-// Transient = worth retrying. No response at all (connection reset / timeout /
-// DNS), rate limiting, or a server-side error. Anything else is the request's
-// own fault and will fail identically on a retry.
-function isTransient(err) {
-  const status = err.response?.status;
-  if (status === undefined) return true;        // no response: network-level failure
-  return status === 429 || status >= 500;
-}
-
-// POSTs to StatCan with bounded retries. Returns the axios response, or null if
-// every attempt failed. NEVER throws — callers decide what a null means.
-// `label` is only used for logging so failures are attributable in the server log.
-async function statcanPost(endpoint, body, label, deadline = Infinity) {
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      return await axios.post(`${STATCAN}/${endpoint}`, body, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: REQUEST_TIMEOUT_MS
-      });
-    } catch (err) {
-      const status    = err.response?.status;
-      const transient = isTransient(err);
-      const expired   = Date.now() >= deadline;
-      const last      = attempt === MAX_ATTEMPTS || !transient || expired;
-
-      console.warn(
-        `${label}: attempt ${attempt}/${MAX_ATTEMPTS} failed ` +
-        `(${err.code ?? err.message}${status ? ` http ${status}` : ''})` +
-        (last
-          ? ` — giving up${!transient ? ' (not retryable)' : expired ? ' (deadline reached)' : ''}.`
-          : ' — retrying.')
-      );
-
-      if (last) return null;
-      await new Promise(r => setTimeout(r, RETRY_BASE_MS * attempt));
-    }
-  }
-  return null;
-}
-
-// Returns the cube metadata object, or null if it could not be retrieved or is
-// unusable. NEVER throws — a rejection here used to unwind all the way to the
-// /api/search handler's catch and turn one transient StatCan hiccup into a 500
-// for the whole request. Callers treat null as "skip this candidate".
-async function fetchMeta(cubeId, deadline) {
-  const r = await statcanPost(
-    'getCubeMetadata',
-    [{ productId: parseInt(cubeId) }], // list of objects; could fetch several cubes at once later
-    `Cube ${cubeId} metadata`,
-    deadline
+async function fetchMeta(cubeId) {
+  const r = await axios.post( // auto parses r as JSON
+    `${STATCAN}/getCubeMetadata`,
+    [{ productId: parseInt(cubeId) }], // body, list of objects, fetches metadata for the cubeId, can be extended to fetch multiple cubes at once if needed in the future
+    { headers: { 'Content-Type': 'application/json' }, 
+     timeout: 10000 } // 10 second timeout to prevent hanging if StatCan is too slow
   );
-  if (!r) return null;
+  console.log(`Fetched metadata for cube ${cubeId}:`, r.data?.[0]?.object?.cubeTitleEn ?? 'No title found');
+  return r.data?.[0]?.object ?? null;
+}
 
-  const entry = r.data?.[0];
-  const meta  = entry?.object ?? null;
 
-  // StatCan answers HTTP 200 with status:"FAILED" and `object` as a STRING for
-  // withdrawn / non-existent product IDs, e.g.
-  //   "The cube product ID 12345678 does not exist. Error code = CUBE_NOT_AVAILABLE"
-  // That string is truthy, so a plain `if (!metadata)` guard downstream does not
-  // catch it and `metadata.dimension.find(...)` throws a TypeError. Cubes go
-  // missing between index rebuilds (925 of the indexed cubes are already
-  // ARCHIVED), so this is expected traffic, not an exceptional case.
-  if (typeof meta === 'string' || !Array.isArray(meta?.dimension)) {
-    console.warn(
-      `Cube ${cubeId}: unusable metadata (status=${entry?.status ?? 'unknown'}) — skipping. ` +
-      (typeof meta === 'string' ? meta : 'no dimension array')
+// Fetch a single coordinate for a single province — returns { value, year } or null
+async function fetchCoordinate(cubeId, coordinate) {
+  try {
+    const r = await axios.post(
+      `${STATCAN}/getDataFromCubePidCoordAndLatestNPeriods`,
+      [{ productId: parseInt(cubeId), coordinate, latestN: 1 }], // only go back 1 period for the latest data.
+      { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
     );
-    return null;
-  }
+    // single point response, object contains the data, vectorDataPoint is an array of datapoints
+    // only the first (the latest) datapoint is returned
+    const pt = r.data?.[0]?.object?.vectorDataPoint?.[0];
 
-  console.log(`Fetched metadata for cube ${cubeId}:`, meta.cubeTitleEn ?? 'No title found');
-  return meta;
-}
-
-
-// Fetch a single coordinate for a single province.
-//
-// Returns a DISCRIMINATED result rather than a bare null, because the two
-// failure modes need different handling and used to be indistinguishable:
-//   { ok: true,  value, year }      - got a datapoint
-//   { ok: false, reason: 'empty' }  - StatCan answered, but this cube genuinely
-//                                     has no value at this coordinate
-//   { ok: false, reason: 'failed' } - the request itself failed after retries
-//
-// Collapsing both into null is what let a flaky StatCan silently render a map
-// with one province on it and no indication anything had gone wrong.
-async function fetchCoordinate(cubeId, coordinate, deadline) {
-  const r = await statcanPost(
-    'getDataFromCubePidCoordAndLatestNPeriods',
-    [{ productId: parseInt(cubeId), coordinate, latestN: 1 }], // only the latest period
-    `Cube ${cubeId} coord ${coordinate}`,
-    deadline
-  );
-  if (!r) return { ok: false, reason: 'failed' };
-
-  // single point response; vectorDataPoint is an array, take the latest
-  const pt = r.data?.[0]?.object?.vectorDataPoint?.[0];
-  if (!pt || pt.value == null) return { ok: false, reason: 'empty' };
-
-  const decimals = pt.decimals ?? 0;
-  const value = decimals > 0
-    ? Math.round(pt.value * 10 ** decimals) / 10 ** decimals
-    : Number(pt.value);
-  // returns year, gets rid of the '-' from the period string
-  return { ok: true, value, year: pt.refPer?.split('-')[0] ?? 'N/A' };
+    if (!pt || pt.value == null) return null;
+    const decimals = pt.decimals ?? 0;
+    const value = decimals > 0
+      ? Math.round(pt.value * 10 ** decimals) / 10 ** decimals
+      : Number(pt.value);
+    // returns year, gets rid of the '-' from the period string
+    return { value, year: pt.refPer?.split('-')[0] ?? 'N/A' };
+  } catch { return null; }
 }
 
 // ── POST /api/search ──────────────────────────────────────────────────────────
@@ -406,28 +289,19 @@ app.post('/api/search', async (req, res) => {
       console.log(`  ${i+1}. [${r.cubeId}] ${r.title.slice(0,60)}… (${(r.similarity*100).toFixed(1)}%, category: ${r.cubeCategory ?? 'unknown'}, keyword matches: ${r.keywordMatches ?? 0})`)
     );
     // fetches the metadata for each of the top K cubes
-    // Counts candidates we could not even evaluate because StatCan didn't answer,
-    // so an upstream outage can be reported as 503 rather than being confused
-    // with "we looked and nothing matched" (404). See the end of the loop.
-    let unreachableCandidates = 0;
-    const deadline = Date.now() + SEARCH_BUDGET_MS;
-
     for (const candidate of ranked) {
-      const metadata = await fetchMeta(candidate.cubeId, deadline); // never throws; null = skip
+      const metadata = await fetchMeta(candidate.cubeId);
       if (!metadata) {
-        unreachableCandidates++;
-        continue;
-      }
+
+       // console.warn(`No metadata found for cube ${candidate.cubeId}`);
+        continue;}
       // locates the geography dimension by looking for keywords
-      // (fetchMeta guarantees metadata.dimension is an array)
       const geoDim = metadata.dimension.find(d =>
         d.dimensionNameEn === 'Geography' || d.dimensionNameEn?.includes('Geography')
       );
 
       // does not consider cubes that do not have a geography dimension, since we need provincial data for the map
-      // Array.isArray guard: StatCan occasionally returns a dimension with no
-      // member list at all, which would throw on .filter below.
-      if (!geoDim || !Array.isArray(geoDim.member)) continue;
+      if (!geoDim) continue;
       // removes members that are not provinces based on PROVINCE_MAPPING
 
       const provinces = geoDim.member // object with all the memebrs of the geography dimension
@@ -527,17 +401,6 @@ app.post('/api/search', async (req, res) => {
       });
     }
 
-    // Distinguish "StatCan was down for every candidate we tried" from "we
-    // checked them all and none carry provincial data". Previously both a
-    // transient outage and a genuine no-match produced the same message — and
-    // an outage produced a 500 before that, since fetchMeta rethrew.
-    if (unreachableCandidates === ranked.length && ranked.length > 0) {
-      console.error(`All ${ranked.length} candidates unreachable — treating as upstream outage.`);
-      return res.status(503).json({
-        error: 'Statistics Canada is temporarily unavailable. Please try again in a moment.'
-      });
-    }
-
     return res.status(404).json({ error: 'No suitable cube found with provincial data' });
 
   } catch (err) {
@@ -565,11 +428,8 @@ app.post('/api/data', async (req, res) => {
     console.log(`\nFetching data for cube ${cubeId}`);
     console.log(`Selections:`, selections);
 
-    const results         = [];
-    const failedProvinces = []; // request failed after retries — data may exist
-    const emptyProvinces  = []; // StatCan answered: no value at this coordinate
-    const deadline        = Date.now() + DATA_BUDGET_MS;
-
+    const results = [];
+    
     for (const province of provinces) {
       // initializes [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const coord = Array(10).fill('0');
@@ -585,47 +445,17 @@ app.post('/api/data', async (req, res) => {
       const coordinateStr = coord.join('.');
       console.log(`  ${province.name}: ${coordinateStr}`);
       // fetch the data for the current province and coordinates
-      const result = await fetchCoordinate(cubeId, coordinateStr, deadline);
-      if (result.ok) {
+      const result = await fetchCoordinate(cubeId, coordinateStr);
+      if (result) {
         results.push({ province: province.name, value: result.value, year: result.year });
-      } else if (result.reason === 'failed') {
-        failedProvinces.push(province.name);   // request error — data may well exist
-      } else {
-        emptyProvinces.push(province.name);    // cube genuinely has no value here
       }
-      // prevents too many API requests to StatCan in a short period of time.
-      // StatCan limits servers to ~50 req/s, i.e. one per 20 ms — 10 ms was over
-      // that ceiling and risked getting requests rate-limited (which then looked
-      // like missing provinces on the map).
-      await new Promise(r => setTimeout(r, 25));
-    }
-
-    if (failedProvinces.length) {
-      console.error(
-        `${failedProvinces.length}/${provinces.length} provinces failed to fetch ` +
-        `(${failedProvinces.join(', ')}) — returning a partial result.`
-      );
+      // prevents too many API requests to StatCan in a short period of time
+      // since StatCan limits requests from servers to 50 per second
+      await new Promise(r => setTimeout(r, 10)); 
     }
 
     if (!results.length) {
-      // Nothing came back at all. Which error depends on WHY: an upstream outage
-      // is retryable and the user should be told to try again, whereas a cube
-      // that simply has no data for this dimension combination is not.
-      return failedProvinces.length
-        ? res.status(503).json({ error: 'Statistics Canada is temporarily unavailable. Please try again in a moment.' })
-        : res.status(404).json({ error: 'No data found for this combination' });
-    }
-
-    // A map drawn from one or two provinces is misleading, and silently drawing
-    // it is what made this look like a data problem rather than a fetch problem.
-    // Bail out only when the shortfall is due to failed requests — a cube that
-    // genuinely only reports a few provinces is the cube's business, not an error.
-    if (results.length < MIN_PROVINCES_FOR_MAP && failedProvinces.length) {
-      return res.status(503).json({
-        error:
-          `Only ${results.length} of ${provinces.length} provinces could be retrieved ` +
-          `from Statistics Canada. Please try again in a moment.`
-      });
+      return res.status(404).json({ error: 'No data found for this combination' });
     }
     // takes only the year value from results
     const years = results.map(r => r.year).filter(y => y !== 'N/A');
@@ -634,22 +464,8 @@ app.post('/api/data', async (req, res) => {
       years.filter(v => v === b).length - years.filter(v => v === a).length
     )[0] ?? 'N/A';
 
-    console.log(
-      `  → ${results.length}/${provinces.length} provinces returned` +
-      (failedProvinces.length ? ` (${failedProvinces.length} fetch failures)` : '') +
-      (emptyProvinces.length  ? ` (${emptyProvinces.length} with no data)`    : '')
-    );
-    // `incomplete` lets the frontend say why the map has gaps instead of
-    // presenting a partial picture as though it were the whole story.
-    return res.json({
-      success: true,
-      provinces: results,
-      year,
-      requestedProvinces: provinces.length,
-      failedProvinces,
-      emptyProvinces,
-      incomplete: results.length < provinces.length
-    });
+    console.log(`  → ${results.length} provinces returned`);
+    return res.json({ success: true, provinces: results, year });
 
   } catch (err) {
     console.error('Data fetch error:', err);

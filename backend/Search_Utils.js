@@ -105,23 +105,7 @@ const CATEGORIES = [
 // matches the MLP's predicted category for the query. Re-ranking only
 // (never excludes a cube outright) per the chosen design — cubes that don't
 // match are left at their original similarity score.
-//
-// Lowered 1.15 -> 1.05 after an ablation over all 1323 winnable ground-truth
-// queries (searchResults.json, same harness as test_result.js):
-//
-//   factor   top-1    top-3    top-5
-//   1.15     32.3%    46.5%    52.5%   <- previous value
-//   1.05     33.0%    48.7%    55.8%   <- best top-1, near-best top-5
-//   1.00     32.6%    49.1%    56.5%
-//
-// Paired flips 1.15 -> 1.05: top-1 gained 29 / lost 19, top-5 gained 57 /
-// lost 14. The boost was too strong because the MLP only predicts the right
-// category ~58% of the time on real queries (and is overconfident: 77% of
-// queries land in its 0.7-1.0 bucket, where it is still only ~66% correct),
-// so at 1.15 a wrong prediction routinely shoved the correct cube out of the
-// top 5. Note the keyword boost below is ALSO category-level, so the two
-// multiply on the same signal — keep this factor small.
-const CATEGORY_BOOST_FACTOR = 1.05;
+const CATEGORY_BOOST_FACTOR = 1.15;
 const ARCHIVE_PENALTY = 0.85;
 
 // How much to multiply similarity by, per matched keyword, when the user's
@@ -145,9 +129,6 @@ let cachedMetadataById = null;
 let cachedSubjectCodeMap = null;
 let cachedCategoryKeywords = null;
 let cachedMlpModel = null;
-// In-flight promise, so a request arriving during the startup warm-up joins
-// that load instead of kicking off a second concurrent tfjs model load.
-let mlpLoadPromise = null;
 
 // ── MLP loading ────────────────────────────────────────────────────────────
 //
@@ -179,17 +160,12 @@ async function loadMLP(modelId) {
 // startup, same as getEmbeddingModel() in server.js, so the first search
 // request isn't slowed down by a cold load.
 export async function getMlpModel() {
-  if (cachedMlpModel) return cachedMlpModel;
-  if (mlpLoadPromise) return mlpLoadPromise; // a load is already running — join it
-
-  mlpLoadPromise = (async () => {
+  if (!cachedMlpModel) {
     console.log(`Loading MLP classifier for ${CLASSIFIER_EMBEDDING_MODEL}…`);
     cachedMlpModel = await loadMLP(CLASSIFIER_EMBEDDING_MODEL);
     console.log("MLP classifier ready");
-    return cachedMlpModel;
-  })().finally(() => { mlpLoadPromise = null; }); // clear so a failed load can be retried
-
-  return mlpLoadPromise;
+  }
+  return cachedMlpModel;
 }
 
 // Predicts a category for a single already-computed query embedding vector
@@ -338,21 +314,11 @@ function categoryForCube(cube, subjectCodeMap) {
 // at their original score for both boosts — boosting is opportunity, not a
 // filter, so nothing is excluded if a mapping is incomplete.
 export async function rerankByCategory(rankedCandidates, query, queryEmbedding) {
-  // The category prediction is an optional refinement, not a prerequisite: if
-  // the MLP fails to load or predict, fall back to no category boost and keep
-  // serving cosine-ranked results. Previously a classifier failure rejected
-  // this whole promise and surfaced as a 500 for an otherwise fine search.
   const [subjectCodeMap, categoryKeywords, metadataById, predicted] = await Promise.all([
     loadSubjectCodeMap(),
     loadCategoryKeywords(),
     loadMetadataById(),
-    classifyQueryEmbedding(queryEmbedding).catch(err => {
-      console.error(
-        "MLP query classification failed — serving this search without the " +
-        "category boost:", err.message
-      );
-      return { category: null, confidence: 0 };
-    })
+    classifyQueryEmbedding(queryEmbedding)
   ]);
 
   const queryWords = tokenizeQuery(query);
